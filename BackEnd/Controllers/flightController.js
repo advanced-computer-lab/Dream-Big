@@ -12,7 +12,7 @@ router.route('/getAllFlights').get(async(req, res) => {
  });
 
 router.route('/getSearchedFlights').get(async(req, res) => {
-  const flights = await Flights.find(req.query)
+    const flights = await Flights.find(req.query)
     try{
         res.send(flights)
     }
