@@ -5,66 +5,19 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-// import Form from "react-bootstrap"
- const  CreateFlight= () =>
+
+const CreateFlight= () =>
 {
     const [flight,setFlight] = React.useState({});
-    const [value, onChange] = useState(new Date());
-    const [value2, onChange2] = useState(new Date());
-    
-    // const flightNumber = useId();
-    // flight.ID=flightID;
-    // const [submitted,setSubmitted]=React.useState(false);;
-    // const [name,setName] = React.useState("");
     const baseURL = 'http://localhost:8000/flights';
-    
-    // React.useEffect(() => {
-       
-    // },submitted);const [validated, setValidated] = useState(false);
     const [validated, setValidated] = useState(false);
 
-    // const handleSubmit2 = (event) => {
-    //     event.preventDefault();
-    //     const form = event.currentTarget;
-    //     if (form.checkValidity() === false) {
-    //         event.preventDefault();
-    //         event.stopPropagation();
-    //     }
-
-    //     setValidated(true);
-    // };
-      
-    // const handleSubmit = (evt) => {
-    //     // setSubmitted(true);
-        
-    //     evt.preventDefault();
-    //     const form = event.currentTarget;
-
-    //     if (form.checkValidity() === false) {
-    //         evt.preventDefault();
-    //         evt.stopPropagation();
-    //     }
-
-    //     setValidated(true);
-    //     alert('Creating Flight');
-    //     axios.post(`${baseURL}/createFlight`,flight  
-    //     )
-    //     .then((response) => {
-    //         setFlight(response.data);
-    //         console.log("Flight",flight);
-    //         })
-    //     .catch(err => console.log(err))
-
-       
-    // } 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
         }
-
-        // event.preventDefault();
 
         setValidated(true);
         axios.post(`${baseURL}/createFlight`,flight  )
@@ -94,7 +47,7 @@ import Button from 'react-bootstrap/Button'
                                       id="validationCustomUsername"
                                        aria-describedby="inputGroupPrepend"
                                         required
-                                        onChange = {e => {setFlight(Object.assign(flight,{["FlightNumber"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FlightNumber":e.target.value}))}}
                                         
                                     />  
                                 </Form.Group>
@@ -110,7 +63,7 @@ import Button from 'react-bootstrap/Button'
                                         type="text"
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["From"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"From":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -123,7 +76,7 @@ import Button from 'react-bootstrap/Button'
                                         type="text"
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["To"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"To":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -136,7 +89,7 @@ import Button from 'react-bootstrap/Button'
                                                   type="text"
                                                   aria-describedby="inputGroupPrepend"
                                                   className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["Airport"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"Airport":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -150,15 +103,8 @@ import Button from 'react-bootstrap/Button'
                                      
                                      aria-describedby="inputGroupPrepend"
                                      className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["Terminal"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"Terminal":e.target.value}))}}
                                     />
-                                    {/* <Form.Select defaultValue="Terminal" 
-                                    onChange = {e => {setFlight(Object.assign(flight,{["Terminal"]:e.target.value}))}}>
-                                        <option value = "">Select A Terminal</option>
-                                        <option value = {1}>1</option>
-                                        <option value = {2}>2</option>
-                                        <option value = {3}>3</option>
-                                    </Form.Select> */}
                                 </Form.Group>
                             </Row>
                            
@@ -172,7 +118,7 @@ import Button from 'react-bootstrap/Button'
                                         id="validationCustomUsername"
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["FlightDepDate"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FlightDepDate":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -187,7 +133,7 @@ import Button from 'react-bootstrap/Button'
                                      
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["FlightDepTime"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FlightDepTime":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -202,7 +148,7 @@ import Button from 'react-bootstrap/Button'
                                         
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["FlightArrDate"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FlightArrDate":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -217,7 +163,7 @@ import Button from 'react-bootstrap/Button'
                                         
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["FlightArrTime"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FlightArrTime":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -232,7 +178,7 @@ import Button from 'react-bootstrap/Button'
                                        
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["FirstSeats"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FirstSeats":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -247,7 +193,7 @@ import Button from 'react-bootstrap/Button'
                                        
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["BusinessSeats"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"BusinessSeats":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -262,7 +208,7 @@ import Button from 'react-bootstrap/Button'
                                         
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{["EconomySeats"]:e.target.value}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"EconomySeats":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -282,6 +228,5 @@ import Button from 'react-bootstrap/Button'
                 </Card>
             )
         }
-    
-        // onClick = {handleSubmit}
+        
 export default CreateFlight;
