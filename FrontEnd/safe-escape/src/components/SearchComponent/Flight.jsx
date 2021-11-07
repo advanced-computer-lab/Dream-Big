@@ -39,7 +39,7 @@ const Flight = props => {
             <Button className = 'm-3 w-25' variant="info" onClick={getDetailsRoute}>
                 View Flight Details
             </Button>
-            <Button className = 'm-3 w-25' variant="danger">
+            <Button className = 'm-3 w-25' variant="danger" onClick={() =>  props.deleteFlights(props.flightInfo._id) }>
                 Delete Flight
             </Button>
             </Container>  

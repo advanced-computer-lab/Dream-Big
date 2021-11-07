@@ -33,6 +33,19 @@ const Search = () => {
         }
     }
 
+    function deleteFlights(id) {
+        if (window.confirm('Are you sure you want to delete this Flight?')) {
+            fetch(`http://localhost:8000/flights/${id}`, {
+
+                method: 'DELETE'
+            }).then((result) => {
+                result.json().then((resp) => {
+                    console.warn(resp)
+                })
+            })
+        }
+    }
+
     const handleSubmit = () => {
         setLoading(true);
         axios.get('http://localhost:8000/flights/getSearchedFlights', { 
@@ -63,7 +76,7 @@ const Search = () => {
                     ) 
                     : 
                     (
-                    <ResultList title = { (searchedFlights === '') ?  "Search To Find Flights" : "Searched Flights" } searchedFlights = {searchedFlights === '' ? searchedFlights : searchedFlights.filter((v,i,a)=>a.findIndex(t=>(t.From === v.From && t.To===v.To))===i)}/>
+                    <ResultList title = { (searchedFlights === '') ?  "Search To Find Flights" : "Searched Flights" } searchedFlights = {searchedFlights === '' ? searchedFlights : searchedFlights.filter((v,i,a)=>a.findIndex(t=>(t.From === v.From && t.To===v.To))===i)} deleteFlights = {deleteFlights}/>
                     )
                 }
                 </Col>

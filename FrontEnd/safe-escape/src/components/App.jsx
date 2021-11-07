@@ -5,7 +5,7 @@ import NavBar from "./NavBar";
 import Search from './SearchComponent/Search';
 import ListAllFlight from './ListAllComponent/ListAllFlights';
 import Userform from './UpdateComponent/TextForm';
-import CreateFlight from "./CreateFlights/CreateFlight";
+import CreateFlight from "./CreateFlightsComponent/CreateFlight";
 import FlightDetails from './ViewComponent/FlightDetails';
 
 const App = () => {

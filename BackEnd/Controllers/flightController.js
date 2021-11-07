@@ -35,6 +35,18 @@ router.route('/getAllFlights').get(async(req, res) => {
 }
 );
 
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const result = await Flights.findByIdAndDelete({ _id: req.params.id }, { new: true });
+    console.log(result);
+    res.send(result);
+  }
+  catch (err) {
+    console.log(err.message);
+  }
+})
+
  router.patch('/:id', async (req, res, next) => {
    try{
      const id = req.params;
