@@ -9,17 +9,18 @@ import ResultList from '../SearchComponent/ResultList'
 const ListAllFlight = () => {
     const [ displayedFlights, setDisplayedFlights] = useState('');
     const [ loading, setLoading ] = useState(false);
+    const [ deleted, setDeleted ] = useState(false);
 
     useEffect(() => {
-
         setLoading(true);
         axios.get('http://localhost:8000/flights/getAllFlights').then(res => {
             setDisplayedFlights(res.data)
             setLoading(false)
+            setDeleted(false)
         });
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [displayedFlights]);
+    }, [deleted]);
 
     function deleteFlights(id) {
         if (window.confirm('Are you sure you want to delete this Flight?')) {
@@ -27,6 +28,7 @@ const ListAllFlight = () => {
 
                 method: 'DELETE'
             }).then((result) => {
+                setDeleted(true)
                 result.json().then((resp) => {
                     console.warn(resp)
                 })

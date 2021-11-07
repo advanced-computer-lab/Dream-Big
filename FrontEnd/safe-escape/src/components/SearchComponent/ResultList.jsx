@@ -63,7 +63,7 @@ const ResultList = props => {
                         <Card.Title className = 'm-auto text-center'>No flights with this search criteria</Card.Title> 
                     : 
                         displayedFlights.map(flight => (
-                            <Flight key = {flight._id} flightInfo = {flight}/>
+                            <Flight key = {flight._id} flightInfo = {flight} deleteFlights = {props.deleteFlights}/>
                         )))
                 }
             </Card.Body>
