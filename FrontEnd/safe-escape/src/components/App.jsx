@@ -17,7 +17,7 @@ const App = () => {
       <Route exact path = '/search'>
         <Search/>
       </Route>
-      
+
       <Route path = '/flights/update/:fID'>
         Update
       </Route>
