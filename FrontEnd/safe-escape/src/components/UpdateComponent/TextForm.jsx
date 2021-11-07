@@ -5,27 +5,13 @@ import Col from 'react-bootstrap/Col'
 import axios from 'axios'
 
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
     useParams
 } from "react-router-dom";
-import { Component, useState, useEffect } from 'react';
-import { Alert } from 'react-alert';
+import { useState } from 'react';
 
 const Userform = () => {
 
-    const state = {
-        checkbox: "",
-        checkboxValid: false,
-        errorMsg: {},
-        selectedCheckBox: 0
-    };
-
     const [validated, setValidated] = useState(false);
-
-    const [checkBox, setCheckBox] = useState(false);
 
     const handleSubmit = (event) => {
         
