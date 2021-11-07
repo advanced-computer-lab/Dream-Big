@@ -9,20 +9,46 @@ const flightSchema = new Schema({
   },
   To: {
     type: String,
-    required: true    
+    required: true
   },
-  FlightDate: {
+  FlightDepDate: {
     type: Date,
+    required: true,
+  },
+  FlightArrDate: {
+    type: Date,
+    required: true,
+  },
+  FlightDepTime: {
+    type: String,
+    required: true,
+  },
+  FlightArrTime: {
+    type: String,
     required: true,
   },
   Cabin: {
     type: String,
+    required: true,
+  },
+  "Seats Available on Flight": {
+    type: Number,
     required: true
   },
-  SeatsAvailable: {
+  FlightNumber: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Airport: {
+    type: String,
+    required: true
+  },
+  Terminal: {
     type: Number,
     required: true
   }
+
 }, { timestamps: true });
 
 const Flight = mongoose.model('Flight', flightSchema);
