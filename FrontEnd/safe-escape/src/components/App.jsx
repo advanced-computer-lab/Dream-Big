@@ -1,10 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Route, Switch } from 'react-router-dom'
+import {Switch, Route } from 'react-router-dom'
 import NavBar from "./NavBar";
 import Search from './SearchComponent/Search';
 import ListAllFlight from './ListAllComponent/ListAllFlights';
 import Userform from './UpdateComponent/TextForm';
+import CreateFlight from "./CreateFlights/CreateFlight";
 
 const App = () => {
   return (
@@ -27,9 +28,13 @@ const App = () => {
       <Route path = '/flights/viewdetails/:fID'>
         View Details
       </Route>
+
+      <Route exact path='/CreateFlights' component={CreateFlight}>
+      </Route>
     </Switch>
     </>
-  )
-}
+  );
+  }
+
 
 export default App;

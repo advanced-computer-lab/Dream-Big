@@ -33,6 +33,18 @@ router.route('/getAllFlights').get(async(req, res) => {
    catch(err){
      console.log(err.message);
    }
- })
+ });
+
+ router.post('/createFlight',async(req, res) => {
+  const flight =new Flights( req.body);
+  try{
+      await flight.save();
+  }
+  catch(err)
+  {
+      console.log("ERRORR");
+      res.status(500).send(err)
+  }
+ });
 
 module.exports = router;
