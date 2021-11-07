@@ -19,7 +19,20 @@ const ListAllFlight = () => {
         });
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [displayedFlights]);
+
+    function deleteFlights(id) {
+        if (window.confirm('Are you sure you want to delete this Flight?')) {
+            fetch(`http://localhost:8000/flights/${id}`, {
+
+                method: 'DELETE'
+            }).then((result) => {
+                result.json().then((resp) => {
+                    console.warn(resp)
+                })
+            })
+        }
+    }
 
     return (
         <>
@@ -32,7 +45,7 @@ const ListAllFlight = () => {
             ) 
             : 
             (
-            <ResultList  title = 'All Flights' searchedFlights = {displayedFlights === '' ? displayedFlights : displayedFlights.filter((v,i,a)=>a.findIndex(t=>(t.From === v.From && t.To===v.To))===i)}/>
+            <ResultList  title = 'All Flights' searchedFlights = {displayedFlights === '' ? displayedFlights : displayedFlights.filter((v,i,a)=>a.findIndex(t=>(t.From === v.From && t.To===v.To))===i)} deleteFlights = {deleteFlights}/>
             )
         }
         </>

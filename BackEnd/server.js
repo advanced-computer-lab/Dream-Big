@@ -8,7 +8,6 @@ dotenv.config()
 const MongoURI = process.env.Mongo_URI
 
 const port = process.env.PORT || "8000";
-const Flights = require('./models/Flights');
 
 const flightCont = require('./Controllers/flightController');
 
