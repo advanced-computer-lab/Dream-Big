@@ -8,8 +8,13 @@ const Flight = props => {
 
     const history = useHistory();
 
-    const routeChange = () =>{ 
-        let path = `/flights/${props.flightInfo._id}`; 
+    const updateRoute = () =>{ 
+        let path = `/flights/update/${props.flightInfo._id}`; 
+        history.push(path);
+    }
+
+    const getDetailsRoute = () =>{ 
+        let path = `/flights/viewdetails/${props.flightInfo._id}`; 
         history.push(path);
     }
 
@@ -28,8 +33,11 @@ const Flight = props => {
             <Card.Text>
                 Date: {props.flightInfo['Flight Date']}
             </Card.Text>
-            <Button className = 'm-3 w-25' variant="info" onClick={routeChange}>
+            <Button className = 'm-3 w-25' variant="primary" onClick={updateRoute}>
                 Update Flight
+            </Button>
+            <Button className = 'm-3 w-25' variant="info" onClick={getDetailsRoute}>
+                View Flight
             </Button>
             <Button className = 'm-3 w-25' variant="danger">
                 Delete Flight

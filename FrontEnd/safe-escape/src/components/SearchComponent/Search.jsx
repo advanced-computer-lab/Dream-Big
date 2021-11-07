@@ -16,48 +16,20 @@ const Search = () => {
     const [ searchedFlights, setSearchedFlights ] = useState('');
     const [ loading, setLoading ] = useState(false);
 
-    console.log('submit', search)
+    console.log('search', search)
 
     const handleChange = (field,data) => {
         if(data !== '' && data !== null){
-            if(field.includes('Date')){
-                setSearch({
-                    ...search,
-                    [field] : `${ data.getDate()}/${ data.getMonth() + 1}/${data.getFullYear()}`,
-                });
-            }
-            else if(field.includes('Time')){
-                setSearch({
-                    ...search,
-                    [field] : `${ data.getUTCHours() + 2}:${ data.getUTCMinutes()} `
-                });
-            }
-            else{
-                setSearch({
-                    ...search,
-                    [field] : data
-                });
-            }
+            setSearch({
+                ...search,
+                [field] : data
+            });
         }
         else{
-            if(field.includes('Date')){
-                delete search[field]
-                setSearch({
-                    ...search
-                });
-            }
-            else if(field.includes('Time')){
-                delete search[field]
-                setSearch({
-                    ...search
-                });
-            }
-            else{
-                delete search[field]
-                setSearch({
-                    ...search
-                });
-            }
+            delete search[field]
+            setSearch({
+                ...search
+            });
         }
     }
 
@@ -75,11 +47,13 @@ const Search = () => {
         <Card className ="m-auto">
             <Card.Body className ="d-flex">
 
-                <Col lg ={2} className='m-4'>
-                    <SideBar search = {search} handleChange = {handleChange} handleSubmit = {handleSubmit}/>
+                <Col lg ={2} >
+                    <Card className ="p-2">
+                        <SideBar search = {search} handleChange = {handleChange} handleSubmit = {handleSubmit}/>
+                    </Card>
                 </Col>
 
-                <Col lg ={10} className ="w-75">
+                <Col lg ={10} className ="w-75 m-auto">
                 {
                     (loading === true) ? 
                     (

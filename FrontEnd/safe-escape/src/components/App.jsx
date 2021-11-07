@@ -17,9 +17,13 @@ const App = () => {
       <Route exact path = '/search'>
         <Search/>
       </Route>
-
-      <Route path = '/flights/:fID'>
+      
+      <Route path = '/flights/update/:fID'>
         Update
+      </Route>
+
+      <Route path = '/flights/viewdetails/:fID'>
+        View Details
       </Route>
     </Switch>
     </>

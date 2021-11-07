@@ -11,17 +11,46 @@ const flightSchema = new Schema({
     type: String,
     required: true    
   },
-  'Flight Date': {
+  FlightDepDate: {
     type: String,
     required: true,
   },
-  Cabin: {
+  FlightArrDate: {
+    type: String,
+    required: true,
+  },
+  FlightDepTime: {
+    type: String,
+    required: true,
+  },
+  FlightArrTime: {
+    type: String,
+    required: true,
+  },
+  FlightNumber: {
+    type: String,
+    required: true,
+    unique:true
+  },
+  Airport: {
     type: String,
     required: true
   },
-  SeatsAvailable: {
+  Terminal: {
     type: Number,
     required: true
+  },
+  FirstSeats: {
+    type: Number,
+    required: false
+  },
+  BusinessSeats: {
+    type: Number,
+    required: false
+  },
+  EconomySeats: {
+    type: Number,
+    required: false
   }
 }, { timestamps: true });
 
