@@ -11,6 +11,19 @@ router.route('/getAllFlights').get(async(req, res) => {
     }
  });
 
+ router.get('/FlightDetails/:id',async(req, res) => {
+  console.log('id', req.params.id)
+    try{
+      const id = req.params.id;
+      const flights = await Flights.findById(id)
+        console.log(flights);
+        res.send(flights);
+    }
+    catch(err){
+        res.status(500).send(err)
+    }
+ });
+
  router.route('/getSearchedFlights').get(async(req, res) => {
   const flights = await Flights.find(req.query)
   try{

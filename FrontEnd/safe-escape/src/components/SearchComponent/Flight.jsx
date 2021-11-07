@@ -9,7 +9,7 @@ const Flight = props => {
     const history = useHistory();
 
     const updateRoute = () =>{ 
-        let path = `/flights/${props.flightInfo._id}`; 
+        let path = `/flights/update/${props.flightInfo._id}`; 
         history.push(path);
     }
 

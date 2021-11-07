@@ -6,6 +6,7 @@ import Search from './SearchComponent/Search';
 import ListAllFlight from './ListAllComponent/ListAllFlights';
 import Userform from './UpdateComponent/TextForm';
 import CreateFlight from "./CreateFlights/CreateFlight";
+import FlightDetails from './ViewComponent/FlightDetails';
 
 const App = () => {
   return (
@@ -20,13 +21,13 @@ const App = () => {
         <Search/>
       </Route>
 
-      <Route path="/flights/:id">
+      <Route path="/flights/update/:id">
         <h1>Update Flights Information</h1>
         <Userform />
       </Route>
 
-      <Route path = '/flights/viewdetails/:fID'>
-        View Details
+      <Route path = '/flights/viewdetails/:id'>
+        <FlightDetails/>
       </Route>
 
       <Route exact path='/CreateFlights' component={CreateFlight}>
