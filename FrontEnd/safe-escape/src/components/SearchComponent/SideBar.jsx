@@ -42,13 +42,10 @@ const SideBar = props => {
         <Row>
             <Form.Group controlId="formGridState">
                 <Form.Label>Enter Terminal</Form.Label>
-                <Form.Select defaultValue="Terminal" 
-                onChange = {(e) => props.handleChange("Terminal", e.target.value)}>
-                    <option value = "">Terminal</option>
-                    <option value = {1}>1</option>
-                    <option value = {2}>2</option>
-                    <option value = {3}>3</option>
-                </Form.Select>
+                <Form.Control placeholder="Enter A Terminal"
+                    type="number"
+                    onChange = {(e) => props.handleChange("Terminal", e.target.value)}
+                />
             </Form.Group>
         </Row>
         <Row>
