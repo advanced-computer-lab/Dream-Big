@@ -9,7 +9,7 @@ const Flight = props => {
     const history = useHistory();
 
     const updateRoute = () =>{ 
-        let path = `/flights/update/${props.flightInfo._id}`; 
+        let path = `/flights/${props.flightInfo._id}`; 
         history.push(path);
     }
 
@@ -25,19 +25,19 @@ const Flight = props => {
             <Container className = 'm-auto text-right'>
             <Card.Title>Flight</Card.Title>
             <Card.Text>
+                Flight Number: {props.flightInfo['FlightNumber']}
+            </Card.Text>
+            <Card.Text>
                 From: {props.flightInfo.From}
             </Card.Text>
             <Card.Text>
                 To: {props.flightInfo.To}
             </Card.Text>
-            <Card.Text>
-                Date: {props.flightInfo['Flight Date']}
-            </Card.Text>
             <Button className = 'm-3 w-25' variant="primary" onClick={updateRoute}>
                 Update Flight
             </Button>
             <Button className = 'm-3 w-25' variant="info" onClick={getDetailsRoute}>
-                View Flight
+                View Flight Details
             </Button>
             <Button className = 'm-3 w-25' variant="danger">
                 Delete Flight

@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import NavBar from "./NavBar";
 import Search from './SearchComponent/Search';
 import ListAllFlight from './ListAllComponent/ListAllFlights';
-import Userform from './TextForm';
+import Userform from './UpdateComponent/TextForm';
 
 const App = () => {
   return (
@@ -22,10 +22,6 @@ const App = () => {
       <Route path="/flights/:id">
         <h1>Update Flights Information</h1>
         <Userform />
-      </Route>
-
-      <Route path = '/flights/update/:fID'>
-        Update
       </Route>
 
       <Route path = '/flights/viewdetails/:fID'>
