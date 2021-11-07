@@ -1,25 +1,41 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios'
-import { BrowserRouter, Link, Route, Router, Switch } from 'react-router-dom';
 
-
+import {Switch, Route } from 'react-router-dom'
 import NavBar from "./NavBar";
-import FlightDetails from './FlightDetails';
+import Search from './SearchComponent/Search';
+import ListAllFlight from './ListAllComponent/ListAllFlights';
+import Userform from './UpdateComponent/TextForm';
+import CreateFlight from "./CreateFlights/CreateFlight";
+import FlightDetails from './ViewComponent/FlightDetails';
 
 const App = () => {
   return (
-    <div>
+    <>
+    <NavBar/>
     <Switch>
-          <Route path="/flights/:id">
-            <NavBar/>
-            <FlightDetails/>
-          </Route>
-        </Switch>
+      <Route exact path = '/'>
+        <ListAllFlight/>
+      </Route>
 
-    
-  
-    </div>
-  )
-}
+      <Route exact path = '/search'>
+        <Search/>
+      </Route>
+
+      <Route path="/flights/update/:id">
+        <h1>Update Flights Information</h1>
+        <Userform />
+      </Route>
+
+      <Route path = '/flights/viewdetails/:id'>
+        <FlightDetails/>
+      </Route>
+
+      <Route exact path='/CreateFlights' component={CreateFlight}>
+      </Route>
+    </Switch>
+    </>
+  );
+  }
+
 
 export default App;

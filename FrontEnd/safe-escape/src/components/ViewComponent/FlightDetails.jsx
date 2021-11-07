@@ -1,31 +1,13 @@
-import { Component, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios'
-//import Table from '@material-ui/core/Table';
-//import Table from 'material-ui-table';
-//import { Table } from '@mui/material';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Table from 'react-bootstrap/Table';
-import { withStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 const FlightDetails = () => {
   const [Flight, setFlight] = useState({});
   let { id } = useParams();
   const baseUrl = `http://localhost:8000/flights/FlightDetails/${id}`;
-  
- 
-
-  const TableHeaderCell = withStyles(() => ({
-    root: {
-      color: 'white',
-      backgroundColor: 'blue',
-    },
-  }) )
 
   useEffect(() => {
     axios.get(baseUrl).then((response) => {
