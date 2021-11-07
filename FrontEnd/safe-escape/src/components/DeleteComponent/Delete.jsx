@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-
-
 function Delete() {
     const [flights, setFlights] = useState([])
     useEffect(() => {
@@ -31,9 +29,7 @@ function Delete() {
                     console.warn(resp)
                 })
             })
-
         }
-
     }
 
     return (
