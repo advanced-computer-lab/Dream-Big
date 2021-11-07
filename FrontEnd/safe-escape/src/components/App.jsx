@@ -1,22 +1,39 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import React from 'react';
-import { BrowserRouter, Link, Route, Router, Switch } from 'react-router-dom';
-import Userform from './TextForm';
-import {render} from "react-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
+import { Route, Switch } from 'react-router-dom'
+import NavBar from "./NavBar";
+import Search from './SearchComponent/Search';
+import ListAllFlight from './ListAllComponent/ListAllFlights';
+import Userform from './TextForm';
+
+const App = () => {
   return (
-    <div className="">
-      <div className="content">
+    <>
+    <NavBar/>
+    <Switch>
+      <Route exact path = '/'>
+        <ListAllFlight/>
+      </Route>
+
+      <Route exact path = '/search'>
+        <Search/>
+      </Route>
+
+      <Route path="/flights/:id">
         <h1>Update Flights Information</h1>
-        <Switch>
-          <Route path="/flights/:id">
-            <Userform />
-          </Route>
-        </Switch>
-      </div>
-    </div>
-  );
+        <Userform />
+      </Route>
+
+      <Route path = '/flights/update/:fID'>
+        Update
+      </Route>
+
+      <Route path = '/flights/viewdetails/:fID'>
+        View Details
+      </Route>
+    </Switch>
+    </>
+  )
 }
 
 export default App;

@@ -27,18 +27,10 @@ const flightSchema = new Schema({
     type: String,
     required: true,
   },
-  Cabin: {
-    type: String,
-    required: true,
-  },
-  "Seats Available on Flight": {
-    type: Number,
-    required: true
-  },
   FlightNumber: {
     type: String,
     required: true,
-    unique: true
+    unique:true
   },
   Airport: {
     type: String,
@@ -47,8 +39,19 @@ const flightSchema = new Schema({
   Terminal: {
     type: Number,
     required: true
+  },
+  FirstSeats: {
+    type: Number,
+    required: false
+  },
+  BusinessSeats: {
+    type: Number,
+    required: false
+  },
+  EconomySeats: {
+    type: Number,
+    required: false
   }
-
 }, { timestamps: true });
 
 const Flight = mongoose.model('Flight', flightSchema);

@@ -11,6 +11,17 @@ router.route('/getAllFlights').get(async(req, res) => {
     }
  });
 
+ router.route('/getSearchedFlights').get(async(req, res) => {
+  const flights = await Flights.find(req.query)
+  try{
+      res.send(flights)
+  }
+  catch(err){
+      res.status(500).send(err);
+  }
+}
+);
+
  router.patch('/:id', async (req, res, next) => {
    try{
      const id = req.params;
