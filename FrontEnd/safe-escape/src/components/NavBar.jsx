@@ -7,7 +7,7 @@ import logo from '../assets/acl_logo.jpg'
 
 const NavBar = () => {
     return (
-        <Navbar bg="primary" variant="dark">
+        <Navbar bg="dark" variant="dark">
         <Image src={logo} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
         <Container>
         <Nav className="me-auto">

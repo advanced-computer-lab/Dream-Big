@@ -41,15 +41,30 @@ const flightSchema = new Schema({
     required: true
   },
   FirstSeats: {
-    type: Number,
+    availableSeatsNum: {
+      type: Number
+    },
+    allSeats: {
+      type: Array
+    },
     required: false
   },
   BusinessSeats: {
-    type: Number,
+    availableSeatsNum: {
+      type: Number
+    },
+    allSeats: {
+      type: Array
+    },
     required: false
   },
   EconomySeats: {
-    type: Number,
+    availableSeatsNum: {
+      type: Number
+    },
+    allSeats: {
+      type: Array
+    },
     required: false
   }
 }, { timestamps: true });
