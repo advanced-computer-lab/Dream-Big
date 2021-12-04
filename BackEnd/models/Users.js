@@ -30,12 +30,7 @@ const userSchema = new Schema({
   PhoneNumber: {
     type: String,
     required: true
-  },
-  PassportNumber:{
-    type: String,
-    required: true
-  },
-  ReservedFlights: [{ type: Schema.Types.ObjectId, ref: 'Flight' }]
+  }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

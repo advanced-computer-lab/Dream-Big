@@ -178,7 +178,7 @@ const CreateFlight= () =>
                                        
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{"FirstSeats":{availableSeatsNum: e.target.value}}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"FirstSeats":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -193,7 +193,7 @@ const CreateFlight= () =>
                                        
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{"BusinessSeats":{availableSeatsNum: e.target.value}}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"BusinessSeats":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
@@ -208,7 +208,7 @@ const CreateFlight= () =>
                                         
                                         aria-describedby="inputGroupPrepend"
                                         className="form-control"
-                                        onChange = {e => {setFlight(Object.assign(flight,{"EconomySeats":{availableSeatsNum: e.target.value}}))}}
+                                        onChange = {e => {setFlight(Object.assign(flight,{"EconomySeats":e.target.value}))}}
                                     />
                                 </Form.Group>
                             </Row>
