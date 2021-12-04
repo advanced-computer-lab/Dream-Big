@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import './UserSearch.css'
+import { color } from "@mui/system";
 
 const style = {
   position: 'absolute',
@@ -48,6 +49,8 @@ const UserSearch= (props) =>
     const [returnFlightsOutput,setReturnFlightsOutput]= useState([]);
     //show div in search
     const [showDiv,setShowDiv]= useState(false);
+    //noMatchingFlights
+    const [noMatchingFlights,setNoMatchingFlights]= useState(false);
     //
     const [cabin,setCabin]= useState('EconomySeats');
 
@@ -69,6 +72,8 @@ const UserSearch= (props) =>
         });
 
         props.setSearchCriteria({depCriteria:userSearchDeptInput,retCriteria:userSearchRetInput});
+        if(returnFlightsOutput.length==0 && departureFlightsOutput.length==0)
+            setNoMatchingFlights(true);
       
     }
 
@@ -172,6 +177,16 @@ const UserSearch= (props) =>
                                 <div>
                                 To {userSearchDeptInput.To}
                                 </div>
+                                </div>     
+                                </div> : ''}
+
+                                {noMatchingFlights ? 
+                               <div className="d-flex justify-content-center  align-items-center w-100">
+                               <div className="d-flex justify-content-center justify-content-between align-items-center w-0">
+                                 <div style={{color:'red', textAlign:'center'}}>
+                                  NO MATCHING FLIGHTS
+                                 </div>
+                                
                                 </div>     
                                 </div> : ''}
                            
