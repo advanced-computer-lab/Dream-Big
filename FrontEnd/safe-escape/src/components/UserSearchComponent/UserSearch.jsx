@@ -49,7 +49,7 @@ const UserSearch= (props) =>
     //show div in search
     const [showDiv,setShowDiv]= useState(false);
     //
-    const [cabin,setCabin]= useState('');
+    const [cabin,setCabin]= useState('EconomySeats');
 
       const handleClassChange = (event) => {
         setClassType(event.target.value);
@@ -142,8 +142,9 @@ const UserSearch= (props) =>
                                           defaultValue={'Select A Class Type'}
                                           className="mt-3"
                                           //onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"Cabin":e.target.value});setUserRetSearchInput({...userSearchRetInput,"Cabin":e.target.value})}}
-                                          onChange ={e=> {setCabin(e.target.value);}}
+                                          onChange ={e=> {if(!(e.target.value=='')){setCabin(e.target.value);}}}
                                         >
+                                          <option value={''}>Select A Cabin</option>
                                           <option value={'EconomySeats'}>Economy</option>
                                           <option value={'FirstSeats'}>First-Class</option>
                                           <option value={'BusinessSeats'}>Business</option>
@@ -192,7 +193,7 @@ const UserSearch= (props) =>
                        <form className="d-flex justify-content-center align-items-center" style={{ flexDirection: "column", flexWrap: "wrap"}}>
                              <div className="ml-3">
                                 <label>Adults</label>
-                                <input type="number" onChange={(e)=>setAdultsNumber(e.target.value)}/>
+                                <input type="number" onChange={(e)=>setAdultsNumber(e.target.value)} className="ml-2"/>
                               </div>
                               <div>
                                   <label>Children</label>
@@ -213,8 +214,9 @@ const UserSearch= (props) =>
                                       setTravellerDetailsValue(y);
                                       }
                                    setNumberOfPassengers(adultsNumber+childrenNumber);
-                                   setUserSearchDeptInput({...userSearchDeptInput,[cabin]:{availableSeatsNum: {$gte:adultsNumber+childrenNumber}}});
-                                   setUserRetSearchInput({...userSearchRetInput,[cabin]:{availableSeatsNum: {$gte:adultsNumber+childrenNumber}}});
+                                  //  setUserSearchDeptInput({...userSearchDeptInput,[cabin]:{"availableSeatsNum": {"$gte":parseInt(adultsNumber)+parseInt(childrenNumber)}}});
+                                  setUserSearchDeptInput({...userSearchDeptInput, [`${cabin}.availableSeatsNum`]: {$gte: parseInt(adultsNumber)+parseInt(childrenNumber)}});
+                                  setUserRetSearchInput({...userSearchRetInput,[`${cabin}.availableSeatsNum`]: {$gte: parseInt(adultsNumber)+parseInt(childrenNumber)}});
                                    setOpen(false);
                                    // { [req.body.Cabin] :{availableSeatsNum:{$gte : req.body.numberOfPassengers}}, ...req.body}
 
