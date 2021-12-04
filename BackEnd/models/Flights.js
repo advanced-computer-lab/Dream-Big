@@ -23,6 +23,10 @@ const flightSchema = new Schema({
     type: String,
     required: true,
   },
+  TDuration:{
+    type: Date,
+    required: true,
+  },
   FlightArrTime: {
     type: String,
     required: true,
@@ -51,7 +55,22 @@ const flightSchema = new Schema({
   EconomySeats: {
     type: Number,
     required: false
-  }
+  },
+
+  BaggageAllowance:{
+    type: Number,
+    required: false
+  },
+  // Price:{
+  //   type: Number,
+  //   required: false
+  // },
+  //I added this assuming i take it from the searc
+  returnFlight: {
+    type: String,
+    required: true,
+    unique:true
+  },
 }, { timestamps: true });
 
 const Flight = mongoose.model('Flight', flightSchema);
