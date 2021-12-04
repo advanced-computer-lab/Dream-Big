@@ -51,8 +51,14 @@ const UserSearch= (props) =>
     const [showDiv,setShowDiv]= useState(false);
     //noMatchingFlights
     const [noMatchingFlights,setNoMatchingFlights]= useState(false);
+    //isEmpty
+    const [isEmpty,setIsEmpty]= useState(true);
     //
     const [cabin,setCabin]= useState('EconomySeats');
+    //
+    const [depLengthZero,setDepLengthZero]=useState(false); 
+    //
+    const [retLengthZero,setRetLengthZero]= useState(false);
 
       const handleClassChange = (event) => {
         setClassType(event.target.value);
@@ -62,17 +68,22 @@ const UserSearch= (props) =>
         axios.post(baseURL,userSearchDeptInput).then(res => {
           setDepartureFlightsOutput(res.data);
           console.log(res.data);
-          props.setDepFlights(res.data);            
+          props.setDepFlights(res.data);    
+          if(res.data.length==0)
+            setDepLengthZero(true);        
         });
         axios.post(baseURL,userSearchRetInput).then(res => {
           setReturnFlightsOutput(res.data);
           console.log(res.data);
           props.setRetFlights(res.data);
+          if(res.data.length==0)
+            setRetLengthZero(true);
             
         });
 
         props.setSearchCriteria({depCriteria:userSearchDeptInput,retCriteria:userSearchRetInput});
-        if(returnFlightsOutput.length==0 && departureFlightsOutput.length==0)
+      
+        if(depLengthZero && retLengthZero)
             setNoMatchingFlights(true);
       
     }
@@ -97,7 +108,7 @@ const UserSearch= (props) =>
                                    <Row>
                                           <Col>
                                           <Form.Group controlId="validationCustom01">
-                                              <TextField id="standard-basic" label="From" variant="standard" onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"From":e.target.value});setUserRetSearchInput({...userSearchRetInput,"To":e.target.value})}}/>
+                                              <TextField id="standard-basic" label="From" variant="standard" onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"From":e.target.value});setUserRetSearchInput({...userSearchRetInput,"To":e.target.value}); setIsEmpty(false);}}/>
 
                                           </Form.Group>  
                                           <Form.Control.Feedback>Looks good!</Form.Control.Feedback> 
@@ -106,7 +117,7 @@ const UserSearch= (props) =>
                                           <Col>
                                           <Form.Group controlId="validationCustom01">
                                          
-                                              <TextField id="standard-basic" label="To" variant="standard" onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"To":e.target.value});setUserRetSearchInput({...userSearchRetInput,"From":e.target.value});setShowDiv(true);}}/>
+                                              <TextField id="standard-basic" label="To" variant="standard" onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"To":e.target.value});setUserRetSearchInput({...userSearchRetInput,"From":e.target.value});setShowDiv(true);setIsEmpty(false);}}/>
                                           </Form.Group>
                                           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                           </Col>
@@ -117,7 +128,7 @@ const UserSearch= (props) =>
                                              <div style={{display:'flex',flexDirection: "column", flexWrap: "wrap"}} className="d-flex justify-content-center align-items-center">
                                                <label>Departure Date</label> 
                                             
-                                            <input type="date" label="Departure Date" style={{borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan",borderRight:"tan"}} onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"FlightDepDate":e.target.value})}}/>
+                                            <input type="date" label="Departure Date" style={{borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan",borderRight:"tan"}} onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"FlightDepDate":e.target.value});setIsEmpty(false);}}/>
                                           
                                           
                                            </div>
@@ -132,7 +143,7 @@ const UserSearch= (props) =>
                                         <div style={{display:'flex',flexDirection: "column", flexWrap: "wrap"}} className="d-flex justify-content-center align-items-center">
                                                <label>Return Date</label> 
                                             
-                                            <input type="date" label="Return Date" style={{borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan",borderRight:"tan"}} onChange = {e => {setUserRetSearchInput({...userSearchRetInput,"FlightDepDate":e.target.value})}} />
+                                            <input type="date" label="Return Date" style={{borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan",borderRight:"tan"}} onChange = {e => {setUserRetSearchInput({...userSearchRetInput,"FlightDepDate":e.target.value});setIsEmpty(false);}} />
                                           
                                           
                                            </div>
@@ -190,7 +201,7 @@ const UserSearch= (props) =>
                                 </div>     
                                 </div> : ''}
                            
-                               <Button className="btn-warning" variant="success" onClick={handleSubmit}>Search</Button>
+                               <Button className="btn-warning" variant="success" onClick={handleSubmit} disabled={isEmpty}>Search</Button>
                              </Card.Body>
                              
              </Card>
@@ -206,27 +217,39 @@ const UserSearch= (props) =>
                       <Box sx={style}>
                         <h1>Travellers Details</h1>
                        <form className="d-flex justify-content-center align-items-center" style={{ flexDirection: "column", flexWrap: "wrap"}}>
-                             <div className="ml-3">
-                                <label>Adults</label>
-                                <input type="number" onChange={(e)=>setAdultsNumber(e.target.value)} className="ml-2"/>
+                           <div className="d-flex justify-content-center align-items-center flex-column">
+                             <div>
+                                <label className="m-2">Adults</label>
+                                <input type="number" onChange={(e)=>{if(e.target.value<0){e.target.value=0;}else{setAdultsNumber(e.target.value);}}}/>
                               </div>
                               <div>
-                                  <label>Children</label>
-                                  <input type="number"  onChange={(e)=>setChildrenNumber(e.target.value)}/>
-                                  </div>
-                                  </form>
-                                  <button className="btn-warning" onClick={()=>{
-                                    if(childrenNumber>0)
+                                <label>Children</label>
+                                <input type="number"  onChange={(e)=>{if(e.target.value<0){e.target.value=0;}else{setChildrenNumber(e.target.value);}}}/>
+                              </div>
+                              <button className="btn-warning" onClick={()=>{
+                                    if(childrenNumber>0 && adultsNumber>0)
+                                    {
+                                      setTravellerDetailsValue(` Adults ${adultsNumber}` +` ,Children ${childrenNumber}`);
+                                    }
+                                    else{
+
+                                      if(childrenNumber>0)
                                       {
-                                        setTravellerDetailsValue(`Children ${childrenNumber}`);
+                                        setTravellerDetailsValue(TravellerDetailsValue +` Children ${childrenNumber}`);
+                                        console.log(TravellerDetailsValue);
+
                                       //   const x =`Children ${childrenNumber}`;
                                       // Object.assign(TravellerDetailsValue, {x});
                                       }
                                       if(adultsNumber >0)
                                       {
-                                         const y =`${TravellerDetailsValue}`+` Adults ${adultsNumber}`;
+                                        //`${TravellerDetailsValue}`+` Adults ${adultsNumber}`)
+                                        setTravellerDetailsValue(TravellerDetailsValue+` Adults ${adultsNumber}`);
+                                        console.log(TravellerDetailsValue);
                                      // Object.assign(`${TravellerDetailsValue}`,` Adults ${adultsNumber}`);
-                                      setTravellerDetailsValue(y);
+                                     
+                                    }
+                                    // setTravellerDetailsValue(y);
                                       }
                                    setNumberOfPassengers(adultsNumber+childrenNumber);
                                   //  setUserSearchDeptInput({...userSearchDeptInput,[cabin]:{"availableSeatsNum": {"$gte":parseInt(adultsNumber)+parseInt(childrenNumber)}}});
@@ -236,6 +259,9 @@ const UserSearch= (props) =>
                                    // { [req.body.Cabin] :{availableSeatsNum:{$gte : req.body.numberOfPassengers}}, ...req.body}
 
                                   }}>Continue</button>
+                            </div>
+                                  </form>
+                                 
                         
                       </Box>
                     </Modal>

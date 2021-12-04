@@ -11,6 +11,9 @@ import Card from 'react-bootstrap/Card';
 
 const UpdateUser = () => {
     const [toBeUpdatedInUser, setToBeUpdatedInUser] = useState({});
+     //isEmpty
+     const [isEmpty,setIsEmpty]= useState(true);
+     //
     let { id } = useParams();
     const baseURL = `http://localhost:8000/users/${id}`;
 
@@ -43,13 +46,13 @@ const UpdateUser = () => {
             
             <Card sx={{ maxWidth: 345 }} className="mt-5 text-center m-auto w-50 mt-auto" style={{backgroundColor:"white", opacity:'0.85'}}>
             <Form noValidate validated={validated} onSubmit={handleSubmit} className="justify-content-center p-5">
-                <h1>Update User Details</h1>
+                <h1 style={{color:'black', fontWeight:'bold'}}>Update User Details</h1>
                 <Row className="mb-3 ml-2">
                     <Form.Group as={Col} md="4" controlId="validationCustom01">
-                        <Form.Label>FirstName</Form.Label>
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>FirstName</Form.Label>
                         <Form.Control
                             input="text"
-                            onChange={event => setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "FirstName": event.target.value }))}          
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "FirstName": event.target.value }));setIsEmpty(false);}}          
                             type="text"
                             placeholder="FirstName"
                         />
@@ -57,10 +60,10 @@ const UpdateUser = () => {
                     </Form.Group>
                  
                     <Form.Group as={Col} md="4" controlId="validationCustom03">
-                        <Form.Label>LastName</Form.Label>
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>LastName</Form.Label>
                         <Form.Control
                             input="text"
-                            onChange={event => setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "LastName": event.target.value }))}
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "LastName": event.target.value }));setIsEmpty(false);}}
                             
                             type="text"
                             placeholder="LastName"
@@ -68,11 +71,11 @@ const UpdateUser = () => {
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group as={Col} md="4" controlId="validationCustom04">
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>Email</Form.Label>
                         <Form.Control
                             input="text"
                             type="text"
-                            onChange={event => setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "Email": event.target.value }))}
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "Email": event.target.value }));setIsEmpty(false);}}
                             placeholder="Email"
                             
                         />
@@ -84,10 +87,10 @@ const UpdateUser = () => {
                 </Row>
                 <Row className="mb-5 mt-3" >
                     <Form.Group as={Col} md="4" controlId="validationCustom08">
-                        <Form.Label>PassportNumber</Form.Label>
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>PassportNumber</Form.Label>
                         <Form.Control
                             type="text"
-                            onChange={event => setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "PassportNumber": event.target.value }))}
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "PassportNumber": event.target.value }));setIsEmpty(false);}}
                             placeholder="Seat Number"
                             
                         />
@@ -104,11 +107,11 @@ const UpdateUser = () => {
                         feedback="You must agree before Updating."
                         feedbackType="invalid"
                     />
-                    <Form.Label>
+                    <Form.Label style={{color:'black', fontWeight:'bold'}}>
                     Are You Sure You Want to Update this Flight 
                     </Form.Label>
                 </Form.Group>
-                <Button variant="warning" type="submit" >Update User</Button>
+                <Button variant="warning" type="submit" disabled={isEmpty}>Update User</Button>
             </Form>
             </Card>
             </div>
