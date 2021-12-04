@@ -8,17 +8,18 @@ import logo2 from '../assets/Logo.png'
 
 const NavBar = () => {
     return (
-        <Navbar className = "bg-opacity-25" bg="primary">
-        <Image src={logo2} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
+        <Navbar bg="dark" variant="dark">
+        {/* <Image src={logo} rounded style = {{height : '100px', marginLeft : '2vw'}}/> */}
+        <h2 style={{color:'#f99965', marginLeft : '5px'}}>Safe Escape</h2>
         <Container>
         <Nav className="me-auto">
-          <Nav.Link href="/">List All</Nav.Link>
-          <Nav.Link href="/search">Search</Nav.Link>
-          <Nav.Link href="/CreateFlights">Create Flights</Nav.Link>
+          <Nav.Link href="/" style={{color:'white'}}>List All</Nav.Link>
+          <Nav.Link href="/search" style={{color:'white'}}>Search</Nav.Link>
+          <Nav.Link href="/CreateFlights" style={{color:'white'}}>Create Flights</Nav.Link>
         </Nav>
         </Container>
       </Navbar>
     );
 };
 
-export default NavBar
+export default NavBar;
