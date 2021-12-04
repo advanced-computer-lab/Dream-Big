@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav'
 import Image from 'react-bootstrap/Image'
 
 import logo from '../assets/acl_logo.jpg'
+import logo2 from '../assets/Logo.png'
 
 const NavBar = () => {
     return (
@@ -21,4 +22,4 @@ const NavBar = () => {
     );
 };
 
-export default NavBar
+export default NavBar;

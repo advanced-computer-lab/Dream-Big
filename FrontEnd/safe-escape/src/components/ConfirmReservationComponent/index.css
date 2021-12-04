@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+thead th {
+  padding-right: 50px;
+}
+
+.photo{
+  height: 200px;
+  width: 200px;
+}
