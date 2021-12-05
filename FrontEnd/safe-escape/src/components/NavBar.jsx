@@ -3,7 +3,11 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Image from 'react-bootstrap/Image'
 
+import './NavBar.css'
+
 import logo from '../assets/acl_logo.jpg'
+import logo2 from '../assets/Logo.png'
+import logoFinal from '../assets/LogoFinal.png'
 
 import { React } from 'react'
 import { useHistory } from "react-router-dom"
@@ -15,7 +19,7 @@ const NavBar = () => {
 
     return (
         <Navbar bg="dark" variant="dark" className= 'd-flex justify-content-between'>
-          <Image src={logo} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
+          <Image src={logoFinal} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
           <Container>
             <Nav className="me-auto">
               <Nav.Link onClick = {() => history.push('/listAll') }>List All</Nav.Link>
@@ -48,4 +52,4 @@ const NavBar = () => {
     );
 };
 
-export default NavBar
+export default NavBar;
