@@ -82,8 +82,8 @@ flightSchema.pre('save', function(next) {
         }
         else{
           row.push({id: j, number: j});
+          fAvailableSeatsNum--;
         }
-        fAvailableSeatsNum--;
       }
       else{
         if(j % 3 == 0){
@@ -137,8 +137,8 @@ flightSchema.pre('save', function(next) {
         }
         else{
           row.push({id: j, number: j});
+          eAvailableSeatsNum--;
         }
-        eAvailableSeatsNum--;
       }
       else{
         if(j % 3 == 0){
