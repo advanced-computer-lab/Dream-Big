@@ -25,10 +25,9 @@ import { useLocation } from "react-router-dom";
 export default function ViewDepDetails() {
 
     const location = useLocation();
-
-    const myParams = location.state.flightNumber;
-    console.log(myParams," My Params");
-
+    
+    const myParams = location.state.slide;
+    console.log(myParams, "OMAR");
     const { Step } = Steps;
 
     const [DepDate, setDD] = useState();
@@ -68,7 +67,7 @@ export default function ViewDepDetails() {
             setTo(response.data.To);
 
             function toDate(dStr, format) {
-                var now = new Date(response.data.FlightDepDate);
+                var now = new Date(myParams.FlightDepDate);
                 if (format == "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
@@ -79,7 +78,7 @@ export default function ViewDepDetails() {
             }
 
             function toDate2(dStr, format) {
-                var now = new Date(response.data.FlightArrDate);
+                var now = new Date(myParams.FlightArrDate);
                 if (format == "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
@@ -94,28 +93,28 @@ export default function ViewDepDetails() {
                 return diffInMs / (1000 * 60 * 60);
             }
             setayhaga(response.data);
-            setDD(response.data.FlightDepDate);
-            setAD(response.data.FlightArrDate);
-            setDT(response.data.FlightDepTime);
-            setAT(response.data.FlightArrTime);
-            setFN(response.data.FlightNumber);
-            setBA(response.data.BaggageAllowance);
-            setBBA(response.data.BusinessSeats);
-            setFS(response.data.FirstSeats);
-            setEA(response.data.EconomySeats);
-            setPrice(response.data.Price);
-            setA(response.data.FlightDepDate);
-            setB(response.data.FlightArrDate);
-            setBB(toDate(response.data.FlightDepTime, "h:m"));
-            setBBB(toDate2(response.data.FlightArrTime, "h:m"));
-            setTD(Math.floor(getDifferenceInHours(toDate(response.data.FlightDepTime, "h:m"), toDate2(response.data.FlightArrTime, "h:m"))))
+            // setDD(response.data.FlightDepDate);
+            // setAD(response.data.FlightArrDate);
+            // setDT(response.data.FlightDepTime);
+            // setAT(response.data.FlightArrTime);
+            // setFN(response.data.FlightNumber);
+            // setBA(response.data.BaggageAllowance);
+            // setBBA(response.data.BusinessSeats.availableSeatsNum);
+            // setFS(response.data.FirstSeats.availableSeatsNum);
+            // setEA(response.data.EconomySeats.availableSeatsNum);
+            // setPrice(response.data.Price);
+            // setA(response.data.FlightDepDate);
+            // setB(response.data.FlightArrDate);
+            // setBB(toDate(response.data.FlightDepTime, "h:m"));
+            // setBBB(toDate2(response.data.FlightArrTime, "h:m"));
+            setTD(Math.floor(getDifferenceInHours(toDate(myParams.FlightDepTime, "h:m"), toDate2(myParams.FlightArrTime, "h:m"))))
         })
     }, [])
 
-    const handleSubmit = () => {
+    const handleSubmit = (hello) => {
         setUR(updateReservedFlights.push(ayhaga));
-        let path = `/reserved`;
-        history.push(path);
+        let path = `/ViewReturnFlight`;
+        history.push(path, {hello});
         axios.put(baseUrl2, { updateReservedFlights }).then((response) => { console.log('updateddd', updateReservedFlights); })
     };
 
@@ -161,26 +160,26 @@ export default function ViewDepDetails() {
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
                                             <div className="d-flex flex-column align-items-center">
-                                                Flight Number : {myParams}
+                                                Flight Number : {myParams.FlightNumber}
                                             </div>
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            <div>Departure Date : {DepDate}</div>
-                                            <div>Arrival Date : {ArrDate}</div>
-                                            <div>Departure Time : {DepTime}</div>
-                                            <div>Arrival Time : {ArrTime}</div>
+                                            <div>Departure Date : {myParams.FlightDepDate}</div>
+                                            <div>Arrival Date : {myParams.FlightArrDate}</div>
+                                            <div>Departure Time : {myParams.FlightDepTime}</div>
+                                            <div>Arrival Time : {myParams.FlightArrTime}</div>
                                             <div>Trip Duartion in Hours: {tripDurate}</div>
-                                            <div>First Seats : {FirstSeats}</div>
-                                            <div>Business Seats : {BusinessSeats}</div>
-                                            <div>Economy Seats : {EconomySeats}</div>
-                                            <div>Baggage Allowance : {BaggageAllowance}</div>
-                                            <div>Price : {Price}</div>
+                                            <div>First Seats : {myParams.FirstSeats.availableSeatsNum}</div>
+                                            <div>Business Seats : {myParams.BusinessSeats.availableSeatsNum}</div>
+                                            <div>Economy Seats : {myParams.EconomySeats.availableSeatsNum}</div>
+                                            <div>Baggage Allowance : {myParams.BaggageAllowance}</div>
+                                            <div>Price : {myParams.Price}</div>
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
                                         <Button type="primary"
-                                            onClick={() => { handleSubmit() }}>
-                                            Confirm Reservation</Button>
+                                            onClick={() => {handleSubmit(myParams)}}>
+                                            Choose Flight</Button>
                                     </CardActions>
                                 </Card>
                             </div>

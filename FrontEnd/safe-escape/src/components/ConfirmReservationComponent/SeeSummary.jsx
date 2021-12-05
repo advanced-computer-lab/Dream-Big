@@ -87,11 +87,11 @@ export default function SeeSum() {
             <div className=" d-flex mt-2 ml-5">
                 <div>
                     <Avatar size={84} icon={<UserOutlined />} />
-                    <div>
+                    <div className = "ml-3">
                         <Button className = "mt-2 ml-5" type="primary" onClick={showModal}>
                             Show My Details
                         </Button>
-                        <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                        <Modal title="User Details" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                             <p>Age: {Age}</p>
                             <p>Email: {email}</p>
                             <p>Lives In: {LivesIn}</p>

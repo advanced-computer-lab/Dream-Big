@@ -35,8 +35,7 @@ router.get('/UserDetails/:id', async (req, res) => {
   console.log('id', req.params.id)
   try {
     const id = req.params.id;
-    const users = await Users.findById(id).
-      populate('ReservedFlights')
+    const users = await Users.findById(id).populate('ReservedFlights')
     console.log(users);
     res.send(users);
   }

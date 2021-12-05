@@ -15,19 +15,21 @@ import { useParams } from "react-router-dom";
 import { Steps } from 'antd';
 
 import { withRouter } from 'react-router-dom';
+import { useEffect } from "react";
 
 
 
-const ViewReturn2 = () => {
+const ViewReturn2 = (props) => {
 
+  const [tripDurate, setTD] = useState();
   const { Step } = Steps;
 
   const history = useHistory();
   const color = 'white'
 
   const routeChange = (slide) => {
-    let path = `/ReturnFlightDetails`;
-    history.push(path, { flightNumber: slide.flightNumber });
+    let path = `/ArrivalFlightDetails`;
+    history.push(path, { slide });
   }
 
   const [state, setState] = useState({
@@ -37,66 +39,33 @@ const ViewReturn2 = () => {
     config: config.gentle
   });
 
-  let slides = [
-    {
-      flightNumber: "A102",
-      Seats: 5,
+  let slides = props.depFlights.map((slide, index) => {
+    function toDate(dStr, format) {
+      var now = new Date(slide.FlightDepDate);
+      if (format == "h:m") {
+        now.setHours(dStr.substr(0, dStr.indexOf(":")));
+        now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+        now.setSeconds(0);
+        return now;
+      } else
+        return "Invalid Format";
+    }
 
-    },
-    {
+    function toDate2(dStr, format) {
+      var now = new Date(slide.FlightArrDate);
+      if (format == "h:m") {
+        now.setHours(dStr.substr(0, dStr.indexOf(":")));
+        now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+        now.setSeconds(0);
+        return now;
+      } else
+        return "Invalid Format";
+    }
 
-      flightNumber: "A199",
-      Seats: 9,
-
-    },
-    {
-
-      flightNumber: "9999",
-      Seats: 7,
-
-    },
-    {
-      flightNumber: "",
-      Seats: 5,
-
-    },
-    {
-
-      flightNumber: "A199",
-      Seats: 9,
-
-    },
-    {
-
-      flightNumber: "A18882",
-      Seats: 7,
-
-    },
-    {
-
-      flightNumber: "9999",
-      Seats: 7,
-
-    },
-    {
-      flightNumber: "ujujuu",
-      Seats: 5,
-
-    },
-    {
-
-      flightNumber: "7070",
-      Seats: 9,
-
-    },
-    {
-
-      flightNumber: "A9999",
-      Seats: 7,
-
-    },
-
-  ].map((slide, index) => {
+    function getDifferenceInHours(date1, date2) {
+      const diffInMs = Math.abs(date2 - date1);
+      return diffInMs / (1000 * 60 * 60);
+    }
     return {
       ...slide, content:
         (
@@ -113,14 +82,14 @@ const ViewReturn2 = () => {
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   <div className="d-flex flex-column align-items-center">
-                    {slide.flightNumber}
+                    {slide.FlightNumber}
                   </div>
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
 
                   <div> Departure time: {slide.FlightDepTime} </div>
                   <div>  Arrival time: {slide.FlightArrTime}</div>
-                  <div> Trip duration: {slide.TDuration} </div>
+                  <div> Trip duration in Hours: {Math.floor(getDifferenceInHours(toDate(slide.FlightDepTime, "h:m"), toDate2(slide.FlightArrTime, "h:m")))} </div>
 
                   <div> Price : {slide.Price} </div>
 
@@ -239,7 +208,7 @@ const ViewReturn2 = () => {
   return (
     <div>
       <div>
-        <div className="d-flex justify-content-center mt-3" >  <h3>Oubound Flights</h3> </div>,
+        <div className="d-flex justify-content-center mt-5"><h3>Outbound Flights</h3> </div>,
         <div
           style={{ width: "40%", height: "400px", margin: "0  auto" }}
           onTouchStart={handleTouchStart}

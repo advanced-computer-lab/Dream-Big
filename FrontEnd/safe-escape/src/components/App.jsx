@@ -26,6 +26,7 @@ import MyCarousel from './ConfirmReservationComponent/Demo';
 import ViewReturn from './DepArrComponent/ViewArrival';
 import ViewReturn2 from './DepArrComponent/ViewReturn';
 import ViewDepDetails from './DepArrComponent/ViewDepDetails';
+import ReservedSuccessfully2 from './ConfirmReservationComponent/LoadingSystem2';
 
 const { Step } = Steps;
 
@@ -60,7 +61,7 @@ const App = () => {
                     </Steps>
                   </div>
                 </div>
-                <ViewReturn />
+                <ViewReturn retFlights = {retFlights}/>
               </Route>
 
               <Route exact path='/ViewOutBoundFlight'>
@@ -73,7 +74,7 @@ const App = () => {
                     </Steps>
                   </div>
                 </div>
-                <ViewReturn2 />
+                <ViewReturn2 depFlights = {depFlights}/>
               </Route>
 
               <Route exact path='/ArrivalFlightDetails'>
@@ -88,8 +89,16 @@ const App = () => {
                 <SeeSum />
               </Route>
 
+              <Route exact path='/BookingTripInfo'>
+                <SeeDets />
+              </Route>
+
               <Route exact path='/reserved'>
                 <ReservedSuccessfully />
+              </Route>
+
+              <Route exact path='/reservedOneWay'>
+                <ReservedSuccessfully2 />
               </Route>
 
               <Route exact path='/search'>

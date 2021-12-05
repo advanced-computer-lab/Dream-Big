@@ -108,7 +108,7 @@ const UpdateUser = () => {
                         feedbackType="invalid"
                     />
                     <Form.Label style={{color:'black', fontWeight:'bold'}}>
-                    Are You Sure You Want to Update this Flight 
+                    Are You Sure You Want to Update this User 
                     </Form.Label>
                 </Form.Group>
                 <Button variant="warning" type="submit" disabled={isEmpty}>Update User</Button>

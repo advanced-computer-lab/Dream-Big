@@ -7,7 +7,8 @@ import { Result, Button } from 'antd';
 import { Steps } from 'antd';
 import { useLocation } from "react-router-dom";
 
-export default function ReservedSuccessfully() {
+
+export default function ReservedSuccessfully2() {
 
   const { Step } = Steps;
 
@@ -15,13 +16,10 @@ export default function ReservedSuccessfully() {
 
   const location = useLocation();
 
-  const Params = location.state.hello;
-
-  console.log(location.state);
-
+  const Params = location.state.flightNumb;
 
   const routeChange = () => {
-    let path = `/users/search`;
+    let path = `/ViewReturnFlight`;
     history.push(path);
   }
 
@@ -61,7 +59,7 @@ export default function ReservedSuccessfully() {
 
   return (
     <div className="d-flex flex-column align-items-center mt-2">
-      <div className = "mt-3">
+      <div className="mt-3">
         <Steps direction="horizontal" current={2}>
           <Step className="ml-2 mr-2" title="Finished" description="Choose Suitable Flight" />
           <Step className="ml-2 mr-2" title="Finished" description="Confirm Flight Reservation" />
@@ -73,7 +71,7 @@ export default function ReservedSuccessfully() {
         title="Successfully Reserved Flight"
         subTitle={`Flight Number: ${Params} has Been Reserved Successfully`}
       />
-      <Button type="primary" onClick = {routeChange}>Return To Main Menu</Button>
+      <Button type="primary" onClick={routeChange}>Book Return Flight</Button>
       <div className="mt-3"><Button type="primary">Cancel Booking</Button></div>
     </div>
   );
