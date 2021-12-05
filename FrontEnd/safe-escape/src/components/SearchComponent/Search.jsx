@@ -57,11 +57,11 @@ const Search = () => {
     }
 
     return (
-        <Card className ="m-auto">
+        <Card className ="m-auto w-75" style = {{backgroundColor: 'rgba(255, 255, 255, 0.2)'}}>
             <Card.Body className ="d-flex">
 
                 <Col lg ={2} >
-                    <Card className ="p-2">
+                    <Card className ="p-2" style = {{backgroundColor: 'rgba(255, 255, 255, 0.2)'}}>
                         <SideBar search = {search} handleChange = {handleChange} handleSubmit = {handleSubmit}/>
                     </Card>
                 </Col>

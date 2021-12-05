@@ -69,89 +69,89 @@ const flightSchema = new Schema({
   }
 }, { timestamps: true });
 
-flightSchema.pre('save', function (next) {
+flightSchema.pre('save', function(next) {
   // Check whether its multiple of 8 ao 5ali el input 3ady bas zawed nulls
   let firstSeats = [];
   let fAvailableSeatsNum = this.get('FirstSeats').availableSeatsNum;
-  for (let i = 1; i <= Math.ceil(this.get('FirstSeats').availableSeatsNum / 8); i++) {
+  for(let i = 1; i <= Math.ceil(this.get('FirstSeats').availableSeatsNum / 8); i++){
     let row = [];
-    for (let j = 1; j <= 8; j++) {
-      if (fAvailableSeatsNum > 0) {
-        if (j % 3 == 0) {
+    for(let j = 1 ; j <= 8; j++){
+      if(fAvailableSeatsNum > 0){
+        if(j % 3 == 0){
           row.push(null);
         }
-        else {
-          row.push({ id: j, number: j });
+        else{
+          row.push({id: j, number: j});
         }
         fAvailableSeatsNum--;
       }
-      else {
-        if (j % 3 == 0) {
+      else{
+        if(j % 3 == 0){
           row.push(null);
         }
-        else {
-          row.push({ id: j, number: j, isReserved: true });
+        else{
+          row.push({id: j, number: j, isReserved: true});
         }
       }
     }
     firstSeats.push(row);
   }
-  this.set('FirstSeats', { availableSeatsNum: this.get('FirstSeats').availableSeatsNum, allSeats: firstSeats })
+  this.set('FirstSeats', {availableSeatsNum: this.get('FirstSeats').availableSeatsNum, allSeats: firstSeats})
 
   let businessSeats = [];
   let bAvailableSeatsNum = this.get('BusinessSeats').availableSeatsNum;
-  for (let i = 1; i <= Math.ceil(this.get('BusinessSeats').availableSeatsNum / 8); i++) {
+  for(let i = 1; i <= Math.ceil(this.get('BusinessSeats').availableSeatsNum / 8); i++){
     let row = [];
-    for (let j = 1; j <= 8; j++) {
-      if (bAvailableSeatsNum > 0) {
-        if (j % 3 == 0) {
+    for(let j = 1 ; j <= 8; j++){
+      if(bAvailableSeatsNum > 0){
+        if(j % 3 == 0){
           row.push(null);
         }
-        else {
-          row.push({ id: j, number: j });
+        else{
+          row.push({id: j, number: j});
           bAvailableSeatsNum--;
         }
-
+        
       }
-      else {
-        if (j % 3 == 0) {
+      else{
+        if(j % 3 == 0){
           row.push(null);
         }
-        else {
-          row.push({ id: j, number: j, isReserved: true });
+        else{
+          row.push({id: j, number: j, isReserved: true});
         }
       }
     }
     businessSeats.push(row);
   }
-  this.set('BusinessSeats', { availableSeatsNum: this.get('BusinessSeats').availableSeatsNum, allSeats: businessSeats })
+  this.set('BusinessSeats', {availableSeatsNum: this.get('BusinessSeats').availableSeatsNum, allSeats: businessSeats})
 
   let economySeats = [];
   let eAvailableSeatsNum = this.get('EconomySeats').availableSeatsNum;
-  for (let i = 1; i <= Math.ceil(this.get('EconomySeats').availableSeatsNum / 8); i++) {
+  for(let i = 1; i <= Math.ceil(this.get('EconomySeats').availableSeatsNum / 8); i++){
     let row = [];
-    for (let j = 1; j <= 8; j++) {
-      if (eAvailableSeatsNum > 0) {
-        if (j % 3 == 0) {
+    for(let j = 1 ; j <= 8; j++){
+      if(eAvailableSeatsNum > 0){
+        if(j % 3 == 0){
           row.push(null);
         }
-        else {
-          row.push({ id: j, number: j });
+        else{
+          row.push({id: j, number: j});
         }
         eAvailableSeatsNum--;
       }
-      else {
-        if (j % 3 == 0) {
+      else{
+        if(j % 3 == 0){
           row.push(null);
         }
-        else {
-          row.push({ id: j, number: j, isReserved: true });
+        else{
+          row.push({id: j, number: j, isReserved: true});
         }
       }
     }
     economySeats.push(row);
   }
-  this.set('EconomySeats', { availableSeatsNum: this.get('EconomySeats').availableSeatsNum, allSeats: economySeats })
+  this.set('EconomySeats', {availableSeatsNum: this.get('EconomySeats').availableSeatsNum, allSeats: economySeats})
 
   next();
 });

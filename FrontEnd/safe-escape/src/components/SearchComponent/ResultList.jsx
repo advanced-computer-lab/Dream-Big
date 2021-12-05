@@ -46,7 +46,7 @@ const ResultList = props => {
     }
 
     return (
-        <Card className = 'm-auto text-center mt-4'>
+        <Card className = 'w-75 m-auto text-center mt-4' style = {{backgroundColor: 'rgba(255, 255, 255, 0.7)'}}>
             <Card.Header ref={myRef}>
                 <Card.Title >
                     {

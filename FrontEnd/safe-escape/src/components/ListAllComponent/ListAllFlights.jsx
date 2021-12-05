@@ -41,7 +41,8 @@ const ListAllFlight = () => {
         {
             (loading === true) ? 
             (
-            <Box sx={{ margin : '2rem', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ margin : '2rem', display: 'flex', justifyContent: 'center', 
+            height: '120vh' }}>
                 <CircularProgress />
             </Box>
             ) 
