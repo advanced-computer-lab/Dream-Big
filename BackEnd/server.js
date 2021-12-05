@@ -10,7 +10,7 @@ const MongoURI = process.env.Mongo_URI
 const port = process.env.PORT || "8000";
 
 const flightCont = require('./Controllers/flightController');
-const UserCont = require('./Controllers/UserController');
+const userCont = require('./Controllers/userController');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,8 +20,8 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => console.log("MongoDB is now connected"))
   .catch(err => console.log(err));
 
-app.use('/flights', flightCont);
-app.use('/Users', UserCont);
+app.use('/flights',flightCont);
+app.use('/users',userCont);
 
 app.get('/', (req, res) => {
   res.send('Welcome');
