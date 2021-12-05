@@ -69,7 +69,7 @@ export default function MediaCard() {
             setTo(response.data.To);
 
             function toDate(dStr, format) {
-                var now = new Date(response.data.FlightDepDate);
+                var now = new Date(myParams.FlightDepDate);
                 if (format == "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
@@ -80,7 +80,7 @@ export default function MediaCard() {
             }
 
             function toDate2(dStr, format) {
-                var now = new Date(response.data.FlightArrDate);
+                var now = new Date(myParams.FlightArrDate);
                 if (format == "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));

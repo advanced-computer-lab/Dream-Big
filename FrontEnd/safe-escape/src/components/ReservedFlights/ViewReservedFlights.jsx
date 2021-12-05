@@ -15,6 +15,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import CancelPage from './CancelPage';
+import { UserData } from '../../UserContext'
 
 import { useHistory } from "react-router-dom"
 
@@ -31,6 +32,8 @@ const ViewReservedFlight = (props) => {
     const [newList, setNewList] = useState([]);
 
     const [toSend, setToSend] = useState({});
+
+    const user = UserData();
 
     const handleChange = (e) => {
         setToSend({ ...toSend, [e.target.name]: e.target.value });
@@ -81,9 +84,17 @@ const ViewReservedFlight = (props) => {
 
     }
 
+    const routeChange = () => {
+        let path = `/BookingConfirmation`;
+        history.push(path, {});
+    }
+
+    console.log(user._id, "ID");
+
     useEffect(() => {
         setOpen(true)
-        axios.get('http://localhost:8000/users/61a49102b62a597189c517f0/getReservedFlights').then(res => {
+        axios.get(`http://localhost:8000/users/${user._id}/getReservedFlights`).then(res => {
+            console.log()
             setBookings(res.data)
             setOpen(false)
             console.log("result", res.data)
@@ -188,8 +199,7 @@ const ViewReservedFlight = (props) => {
                                     </Button>
                                     <Button
                                         variant="primary"
-                                    //   onClick={() => this.createAndDownloadPdf(booking)}
-                                    // href={"/book/" + flight._id}
+                                        // onClick = {routeChange}
                                     >
                                         {loadingCheckIn ? (
                                             <Spinner animation="border" size="sm" />
@@ -244,7 +254,7 @@ const ViewReservedFlight = (props) => {
                         <Card.Text>You have not booked any flight</Card.Text>
                         <Button variant="primary">
                             <Link
-                                to="/"
+                                to="/users/search"
                                 style={{ color: "inherit", textDecoration: "inherit" }}
                             >
                                 Search flight

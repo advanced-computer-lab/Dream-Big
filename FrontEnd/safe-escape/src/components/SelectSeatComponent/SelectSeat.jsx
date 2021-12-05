@@ -46,6 +46,9 @@ const SelectSeats = () => {
     console.log('deparrayy', depSeatsOfPass);
     console.log('retarrayyy', retSeatsOfPass);
 
+    console.log('deparrayy333', depBusinessSeats);
+    console.log('retarrayyy444', retBusinessSeats);
+
     console.log(scData, 'sdddd')
 
     const user = UserData();
@@ -64,6 +67,12 @@ const SelectSeats = () => {
         const sId = id;
         addCb(row, number, id, '')
         setLoading(true)
+        console.log('idd', id)
+        console.log(row, 'rowww')
+        console.log('user', user._id)
+        depBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
+          (seat, i) => console.log(seat, 'seatttt'))
+        
         if(cabin === 'First'){
           setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
           setDepCabinOfPass([...depCabinOfPass, 'First'])
@@ -71,7 +80,7 @@ const SelectSeats = () => {
           setChosenDepartureSeats([[...chosenDepartureSeats[0],`${row}${number}`],chosenDepartureSeats[1], chosenDepartureSeats[2]])
           setDepFirstSeats({availableSeatsNum: depFirstSeats.availableSeatsNum - 1 , allSeats: [...depFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
           depFirstSeats.allSeats[row.charCodeAt(0) - 65].map(
-            (seat, i) => i === (sId - 1) ? {id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
+            (seat, i) => (i === (sId)) ? {id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
             ...depFirstSeats.allSeats.slice((row.charCodeAt(0) - 65)+1, depFirstSeats.allSeats.length)]})
         }
         else if(cabin === 'Business'){
@@ -80,7 +89,7 @@ const SelectSeats = () => {
           setPassInfo({...passInfo,[`Passenger ${ depSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Economy'}})
           setChosenDepartureSeats([chosenDepartureSeats[0],[...chosenDepartureSeats[1],`${row}${number}`], chosenDepartureSeats[2]])
           setDepBusinessSeats({availableSeatsNum: depBusinessSeats.availableSeatsNum - 1 , allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),depBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
-            (seat, i) => i === (sId - 1) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
+            (seat, i) => (i === (sId)) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
             ...depBusinessSeats.allSeats.slice((row.charCodeAt(0) - 65)+1,depBusinessSeats.allSeats.length)]})
         }
         else{
@@ -89,7 +98,7 @@ const SelectSeats = () => {
           setPassInfo({...passInfo,[`Passenger ${ depSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Economy'}})
           setChosenDepartureSeats([chosenDepartureSeats[0],chosenDepartureSeats[1],[...chosenDepartureSeats[2],`${row}${number}`]])
           setDepEconomySeats({availableSeatsNum: depEconomySeats.availableSeatsNum - 1 , allSeats: [...depEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65),depEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
-            (seat, i) => i === (sId - 1) ? {id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
+            (seat, i) => (i === (sId)) ? {id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
             ...depEconomySeats.allSeats.slice((row.charCodeAt(0) - 65)+1, depEconomySeats.allSeats.length)]})
         }
         setLoading(false)
@@ -130,6 +139,7 @@ const SelectSeats = () => {
       const sId = id;
       addCb(row, number, id, '')
       setLoading(true)
+      console.log()
       if(cabin === 'First'){
         setRetSeatsOfPass([...retSeatsOfPass, `${row}${number}`])
         setRetCabinOfPass([...retCabinOfPass, 'First'])
@@ -137,7 +147,7 @@ const SelectSeats = () => {
         setChosenArrivalSeats([[...chosenArrivalSeats[0],`${row}${number}`],chosenArrivalSeats[1], chosenArrivalSeats[2]])
         setRetFirstSeats({availableSeatsNum: retFirstSeats.availableSeatsNum - 1 , allSeats: [...retFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65)
           ,retFirstSeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => i === (sId - 1) ? {id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you'} : seat), 
+          (seat, i) => (i === (sId)) ? {id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you'} : seat), 
           ...retFirstSeats.allSeats.slice((row.charCodeAt(0) - 65)+1, retFirstSeats.allSeats.length)]})
       }
       else if(cabin === 'Business'){
@@ -146,7 +156,7 @@ const SelectSeats = () => {
         setPassInfo1({...passInfo1,[`Passenger ${ retSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Business'}})
         setChosenArrivalSeats([chosenArrivalSeats[0],[...chosenArrivalSeats[1],`${row}${number}`], chosenArrivalSeats[2]])
         setRetBusinessSeats({availableSeatsNum: retBusinessSeats.availableSeatsNum - 1 , allSeats: [...retBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),retBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => i === (sId - 1) ? {id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you'} : seat), 
+          (seat, i) => (i === (sId) ) ? {id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you'} : seat), 
           ...retBusinessSeats.allSeats.slice((row.charCodeAt(0) - 65)+1,retBusinessSeats.allSeats.length)]})
       }
       else{
@@ -155,7 +165,7 @@ const SelectSeats = () => {
         setPassInfo1({...passInfo1,[`Passenger ${ retSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Economy'}})
         setChosenArrivalSeats([chosenArrivalSeats[0],chosenArrivalSeats[1],[...chosenArrivalSeats[2],`${row}${number}`]])
         setRetEconomySeats({availableSeatsNum: retEconomySeats.availableSeatsNum - 1 , allSeats: [...retEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65),retEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => i === (sId - 1) ? {id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you'} : seat), 
+          (seat, i) => (i === (sId)) ? {id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you'} : seat), 
           ...retEconomySeats.allSeats.slice((row.charCodeAt(0) - 65)+1, retEconomySeats.allSeats.length)]})
       }
       setLoading(false)
@@ -203,7 +213,7 @@ const SelectSeats = () => {
         .then((response) => {  console.log('arr updated: ', response); })
 
         history.push(`/BookingTripInfo`,{dFlight: location.state.departureFlight, rFlight: location.state.returnFlight, dSeats: depSeatsOfPass, rSeats:retSeatsOfPass,
-          cabin: scData.depCriteria.cabin })
+          cabin: scData.depCriteria.cabin, depPassInfo: passInfo, retPassInfo: passInfo1 })
     }
     ///BookingTripInfo
 
@@ -337,7 +347,7 @@ const SelectSeats = () => {
 
                                         <div>
                                           <Typography className = 'm-3' variant="h6" component="div">
-                                            Passengers Seats
+                                            Chosen Seats
                                           </Typography>
                                           <div className = 'd-flex flex-column justify-content-center'>
                                             { depSeatsOfPass.map(seat => (
@@ -350,7 +360,7 @@ const SelectSeats = () => {
 
                                         <div>
                                           <Typography className = 'm-3' variant="h6" component="div">
-                                            Passengers Class
+                                            Chosen Class
                                           </Typography>
                                           { depCabinOfPass.map(cabin => (
                                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
