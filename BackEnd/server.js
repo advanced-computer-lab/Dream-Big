@@ -10,21 +10,23 @@ const MongoURI = process.env.Mongo_URI
 const port = process.env.PORT || "8000";
 
 const flightCont = require('./Controllers/flightController');
+const UserCont = require('./Controllers/UserController');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true})
-.then(result =>console.log("MongoDB is now connected") )
-.catch(err => console.log(err));
+mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(result => console.log("MongoDB is now connected"))
+  .catch(err => console.log(err));
 
-app.use('/flights',flightCont);
+app.use('/flights', flightCont);
+app.use('/Users', UserCont);
 
-app.get('/',(req,res) => {
+app.get('/', (req, res) => {
   res.send('Welcome');
 })
 
 app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
-  });
+  console.log(`Listening to requests on http://localhost:${port}`);
+});
