@@ -2,8 +2,6 @@ const router = require('express').Router();
 let Users = require('../models/Users');
 let Flights = require('../models/Flights');
 
-
-
 router.route('/getUsers').get(async (req, res) => {
     const Users = await Users.find({})
     try {
