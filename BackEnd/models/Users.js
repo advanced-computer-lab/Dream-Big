@@ -31,7 +31,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  PassportNumber:{
+  PassportNumber: {
     type: String,
     required: true
   },

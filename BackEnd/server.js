@@ -16,17 +16,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true})
-.then(result =>console.log("MongoDB is now connected") )
-.catch(err => console.log(err));
+mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(result => console.log("MongoDB is now connected"))
+  .catch(err => console.log(err));
 
 app.use('/flights',flightCont);
 app.use('/users',userCont);
 
-app.get('/',(req,res) => {
+app.get('/', (req, res) => {
   res.send('Welcome');
 })
 
 app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
-  });
+  console.log(`Listening to requests on http://localhost:${port}`);
+});

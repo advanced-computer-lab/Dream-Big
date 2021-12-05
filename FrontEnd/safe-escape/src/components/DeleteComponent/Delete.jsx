@@ -6,6 +6,27 @@ function Delete() {
         getFlights()
     }, [flights])
 
+    const cancelBooking = (id) => {
+        return async (dispatch) => {
+            try {
+                const res = await axios.delete(
+                    `http://localhost:8000/flights/${id}`
+                );
+                console.log(res.data.success);
+                dispatch({
+                    type: CANCEL_BOOKING,
+                    payload: res.data.success,
+                });
+                // return res.data;
+            } catch (error) {
+                dispatch({
+                    type: FLIGHT_ERROR,
+                    payload: "Could not cancel booking",
+                });
+                console.log(error);
+            }
+        };
+    };
 
 
     function getFlights() {

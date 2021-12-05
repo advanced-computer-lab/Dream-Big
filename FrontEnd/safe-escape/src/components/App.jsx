@@ -9,6 +9,10 @@ import ListAllFlight from './ListAllComponent/ListAllFlights';
 import Userform from './UpdateComponent/TextForm';
 import CreateFlight from "./CreateFlightsComponent/CreateFlight";
 import FlightDetails from './ViewComponent/FlightDetails';
+import ViewReservedFlight from "./ReservedFlights/ViewReservedFlights";
+import CancelPage from "./ReservedFlights/CancelPage";
+import { useState, useEffect } from 'react';
+import { CancellationContext, CancellationData } from "../CancellationContext";
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
 import { useState } from "react";
@@ -31,10 +35,11 @@ import ReservedSuccessfully2 from './ConfirmReservationComponent/LoadingSystem2'
 const { Step } = Steps;
 
 const App = () => {
+  const [cancellation, setCancellation] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState({});
   const [retFlights, setRetFlights] = useState([]);
   const [depFlights, setDepFlights] = useState([]);
-  //const [userConte,setSearchCriteria]=useState({});
+  //const [userConte,setSearchCriteria]=useState({ });
   console.log("search criteria", searchCriteria);
   console.log("return flights", retFlights);
   console.log("departure flights", depFlights);
@@ -61,7 +66,7 @@ const App = () => {
                     </Steps>
                   </div>
                 </div>
-                <ViewReturn retFlights = {retFlights}/>
+                <ViewReturn retFlights={retFlights} />
               </Route>
 
               <Route exact path='/ViewOutBoundFlight'>
@@ -74,7 +79,15 @@ const App = () => {
                     </Steps>
                   </div>
                 </div>
-                <ViewReturn2 depFlights = {depFlights}/>
+                <ViewReturn2 depFlights={depFlights} />
+              </Route>
+
+              <Route exact path='/ReservedFlights'>
+                <ViewReservedFlight setCancellation={setCancellation} />
+              </Route>
+
+              <Route exact path='/CancelPage'>
+                <CancelPage cancellation={cancellation} />
               </Route>
 
               <Route exact path='/ArrivalFlightDetails'>
@@ -128,6 +141,7 @@ const App = () => {
         </RetFlightContext.Provider>
       </SearchCriteriaContext.Provider>
     </>
+
   );
 }
 

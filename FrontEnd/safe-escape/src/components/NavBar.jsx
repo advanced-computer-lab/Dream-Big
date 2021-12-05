@@ -19,9 +19,9 @@ const NavBar = () => {
           <Nav.Link href="/search" style={{color:'white'}}>Search</Nav.Link>
           <Nav.Link href="/CreateFlights" style={{color:'white'}}>Create Flights</Nav.Link>
         </Nav>
-        </Container>
-      </Navbar>
-    );
+      </Container>
+    </Navbar>
+  );
 };
 
 export default NavBar;
