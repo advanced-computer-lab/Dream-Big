@@ -122,7 +122,8 @@ const Userform = () => {
                         <Form.Label>First Class Number of Seats</Form.Label>
                         <Form.Control
                             type="number"
-                            onChange={event => setupdatedFlights(Object.assign(updatedFlights, { "FirstSeats": event.target.value }))}
+                            onChange={event => setupdatedFlights(Object.assign(updatedFlights, 
+                                { "FirstSeats.availableSeatsNum": event.target.value }))}
                             placeholder="Seat Number"
                             
                         />
@@ -133,7 +134,7 @@ const Userform = () => {
                         <Form.Label>Business Class Number of Seats</Form.Label>
                         <Form.Control
                             type="number"
-                            onChange={event => setupdatedFlights(Object.assign(updatedFlights, { "BusinessSeats": event.target.value }))}
+                            onChange={event => setupdatedFlights(Object.assign(updatedFlights, { "BusinessSeats.availableSeatsNum": event.target.value }))}
                             placeholder="Seat Number"
                             
                         />
@@ -144,7 +145,7 @@ const Userform = () => {
                         <Form.Label>Economy Class Number of Seats</Form.Label>
                         <Form.Control
                             type="number"
-                            onChange={event => setupdatedFlights(Object.assign(updatedFlights, { "EconomySeats": event.target.value }))}
+                            onChange={event => setupdatedFlights(Object.assign(updatedFlights, { "EconomySeats.availableSeatsNum": event.target.value }))}
                             placeholder="Seat Number"
                             
                         />

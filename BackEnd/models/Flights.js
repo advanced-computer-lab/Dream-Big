@@ -9,7 +9,7 @@ const flightSchema = new Schema({
   },
   To: {
     type: String,
-    required: true    
+    required: true
   },
   FlightDepDate: {
     type: Date,
@@ -30,7 +30,7 @@ const flightSchema = new Schema({
   FlightNumber: {
     type: String,
     required: true,
-    unique:true
+    unique: true
   },
   Airport: {
     type: String,
@@ -82,8 +82,8 @@ flightSchema.pre('save', function(next) {
         }
         else{
           row.push({id: j, number: j});
+          fAvailableSeatsNum--;
         }
-        fAvailableSeatsNum--;
       }
       else{
         if(j % 3 == 0){
@@ -109,8 +109,9 @@ flightSchema.pre('save', function(next) {
         }
         else{
           row.push({id: j, number: j});
+          bAvailableSeatsNum--;
         }
-        bAvailableSeatsNum--;
+        
       }
       else{
         if(j % 3 == 0){
@@ -136,8 +137,8 @@ flightSchema.pre('save', function(next) {
         }
         else{
           row.push({id: j, number: j});
+          eAvailableSeatsNum--;
         }
-        eAvailableSeatsNum--;
       }
       else{
         if(j % 3 == 0){

@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 
 const FlightDetails = () => {
   const [Flight, setFlight] = useState({});
+  const [fetched, setFetched] = useState(false);
   let { id } = useParams();
   const baseUrl = `http://localhost:8000/flights/FlightDetails/${id}`;
 
@@ -13,14 +14,16 @@ const FlightDetails = () => {
     axios.get(baseUrl).then((response) => {
       console.log('Response',response.data);
       setFlight(response.data)
+      setFetched(true)
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+ 
   return (
-
-    <Table class="table" striped bordered hover size="sm">
-  <thead>
+    (fetched) && 
+    <div style = {{height: '90vh'}}>
+    <Table className="table" striped bordered hover size="sm">
+    <thead>
     <tr>
       <th scope="col">From</th>
       <th scope="col">To</th>
@@ -47,14 +50,14 @@ const FlightDetails = () => {
       <td>{Flight.FlightNumber}</td>
       <td>{Flight.Airport}</td>
       <td> {Flight.Terminal}</td>
-      <td>{Flight.FirstSeats}</td>
-      <td>{Flight.BusinessSeats}</td>
-      <td> {Flight.EconomySeats}</td>
+      <td>{Flight.FirstSeats.availableSeatsNum}</td>
+      <td>{Flight.BusinessSeats.availableSeatsNum}</td>
+      <td> {Flight.EconomySeats.availableSeatsNum}</td>
       
     </tr>
     </tbody>
 </Table>
-   
+</div>
   
 );
 

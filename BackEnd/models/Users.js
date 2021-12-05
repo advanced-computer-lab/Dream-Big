@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
+var passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
   FirstName: {
@@ -35,8 +36,33 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  ReservedFlights: [{ type: Schema.Types.ObjectId, ref: 'Flight' }]
+  ReservedFlights: {
+    Departure: { type: Schema.Types.ObjectId, ref: 'Flight' },
+    Return: { type: Schema.Types.ObjectId, ref: 'Flight' },
+    ChosenDepSeats: {
+      type: Map,
+      of: String,
+      required: false
+    },
+    ChosenDepCabin: {
+      type: String,
+      required: false
+    },
+    ChosenRetSeats: {
+      type: Map,
+      of: String,
+      required: false
+    },
+    ChosenRetCabin: {
+      type: String,
+      required: false
+    }
+  }
 }, { timestamps: true });
 
+// plugin for passport-local-mongoose
+userSchema.plugin(passportLocalMongoose);
+
 const User = mongoose.model('User', userSchema);
+
 module.exports = User;
