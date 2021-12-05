@@ -16,7 +16,7 @@ const SeeDets = () => {
     const history = useHistory();
 
     const routeChange = () => {
-        let path = `/BookingConfirmation`;
+        let path = `/RoundTripReserved`;
         history.push(path);
     }
 
@@ -94,7 +94,7 @@ const SeeDets = () => {
             </Card>
         </div>
         <div className="d-flex justify-content-center mt-2">
-        <Button type = "primary" onClick = {routeChange}>See Round-Trip Summary</Button>
+        <Button type = "primary" onClick = {routeChange}>Confirm Booking</Button>
         </div>
         </div>
     );

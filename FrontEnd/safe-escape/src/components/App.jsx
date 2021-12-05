@@ -15,7 +15,6 @@ import { useState, useEffect } from 'react';
 import { CancellationContext, CancellationData } from "../CancellationContext";
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
-import { useState } from "react";
 import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaContext";
 import { UserContext, UserData } from "../UserContext";
 import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
@@ -31,6 +30,7 @@ import ViewReturn from './DepArrComponent/ViewArrival';
 import ViewReturn2 from './DepArrComponent/ViewReturn';
 import ViewDepDetails from './DepArrComponent/ViewDepDetails';
 import ReservedSuccessfully2 from './ConfirmReservationComponent/LoadingSystem2';
+import GreenConfirmation from './ConfirmReservationComponent/GreenConfirmation';
 
 const { Step } = Steps;
 
@@ -116,6 +116,10 @@ const App = () => {
 
               <Route exact path='/search'>
                 <Search />
+              </Route>
+
+              <Route exact path='/RoundTripReserved'>
+                <GreenConfirmation />
               </Route>
 
               <Route path="/flights/update/:id">

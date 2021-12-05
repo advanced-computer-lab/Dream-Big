@@ -6,9 +6,7 @@ import { Result, Button } from 'antd';
 // import { useLocation } from "react-router-dom";
 
 const CancelPage = (props) => {
-
-    // const location = useLocation();
-    // const myParams = location.state.id;
+    
     console.log("this props", props.cancellation);
     // console.log("paramssss", myParams);
 
@@ -19,7 +17,7 @@ const CancelPage = (props) => {
                     title="Booking cancelled!"
                     title="Your payment will be refunded soon "
                     extra={
-                        <Button variant="primary" >
+                        <Button type="primary" >
                             <Link
                                 to="/"
                                 style={{ color: "inherit", textDecoration: "inherit" }}

@@ -30,9 +30,6 @@ export default function MediaCard() {
     const myParams = location.state.slide;
     const myFlight = location.state.flight
 
-    console.log(myParams, "PARAMS");
-    console.log(myFlight, "Flightssssssssssss");
-
     const { Step } = Steps;
 
     const [DepDate, setDD] = useState();

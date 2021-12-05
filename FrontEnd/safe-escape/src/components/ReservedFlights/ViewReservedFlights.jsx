@@ -7,7 +7,8 @@ import { init } from 'emailjs-com';
 import { send } from 'emailjs-com';
 
 import React, { Component } from "react";
-import { Button, Card, Modal, Spinner } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
+import { Card } from 'react-bootstrap';
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -96,7 +97,7 @@ const ViewReservedFlight = (props) => {
 
 
     return (
-        <div>
+        <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }}><div>
             <h1>View all bookings</h1>
             <Backdrop
                 // className={classes.backdrop}
@@ -109,7 +110,7 @@ const ViewReservedFlight = (props) => {
                 <>
                     {bookings.map((booking) => (
                         <>
-                            <Card style={{ marginBottom: "2rem" }}>
+                            <Card>
                                 <Card.Header>{booking._id}</Card.Header>
                                 <Card.Body>
                                     <Card.Title>
@@ -254,7 +255,8 @@ const ViewReservedFlight = (props) => {
             )
             }
 
-        </div >
+        </div ></div>
+
     );
 };
 

@@ -30,7 +30,7 @@ export default function SeeSum() {
     const history = useHistory();
 
     const routeChange = () => {
-        let path = `/reserved`;
+        let path = `/ReservedFlights`;
         history.push(path);
     }
 
@@ -129,6 +129,9 @@ export default function SeeSum() {
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={print}>Print Ticket As PDF</Button>
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <Button onClick={routeChange}>View All Reserved Flights</Button>
             </div>
             <div>
                 <img src={qrcode} className="photo" alt="Logo" />;
