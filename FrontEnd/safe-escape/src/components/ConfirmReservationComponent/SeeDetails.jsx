@@ -9,31 +9,51 @@ import axios from 'axios'
 import { useParams } from "react-router-dom";
 import download from './download.jpg';
 import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom"
 import { Modal, Button } from 'antd';
+import { UserData } from '../../UserContext'
 
 const SeeDets = () => {
 
     const history = useHistory();
+    const location = useLocation();
+    const dflight =  location.state.dFlight;
+    const rflight =  location.state.rFlight;
+    const user = UserData();
+
+    console.log(dflight, 'fwofo')
+    console.log(rflight, 'kokokoo')
+    console.log(user, 'userrr')
+
+    const baseUrl = `http://localhost:8000/users/${user._id}`;
 
     const routeChange = () => {
-        let path = `/RoundTripReserved`;
-        history.push(path);
+        axios.put(baseUrl,{
+            updateReservedFlights: {
+                Departure: dflight,
+                Return: rflight,
+            }
+        }).then((response) => {
+            let path = `/RoundTripReserved`;
+            history.push(path);
+            console.log('respp', response)
+        })
+        
     }
 
-    const [flight_1, setFlight_1] = useState({});
-    const [flight_2, setFlight_2] = useState({});
+    const [flight_1, setFlight_1] = useState(location.state.dFlight);
+    const [flight_2, setFlight_2] = useState(location.state.rFlight);
 
     let { id } = useParams();
-    const baseUrl = `http://localhost:8000/users/UserDetails/61a4708e8c20bdc40a534333`;
 
-    useEffect(() => {
-        axios.get(baseUrl).then((response) => {
-            console.log(response.data);
-            setFlight_1(response.data.ReservedFlights[0]);
-            console.log(response.data.ReservedFlights[0], "w7da");
-            setFlight_2(response.data.ReservedFlights[1]);
-        })
-    }, []);
+    // useEffect(() => {
+    //     axios.get(baseUrl).then((response) => {
+    //         console.log(response.data);
+    //         setFlight_1(response.data.ReservedFlights[0]);
+    //         console.log(response.data.ReservedFlights[0], "w7da");
+    //         setFlight_2(response.data.ReservedFlights[1]);
+    //     })
+    // }, []);
 
     return (
         <div>
@@ -52,7 +72,7 @@ const SeeDets = () => {
                         </div>
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {/* <div>Departure Date : {flight_1.FlightDepDate}</div>
+                        <div>Departure Date : {flight_1.FlightDepDate}</div>
                         <div>Arrival Date : {flight_1.FlightArrDate}</div>
                         <div>Departure Time : {flight_1.FlightDepTime}</div>
                         <div>Arrival Time : {flight_1.FlightArrTime}</div>
@@ -60,7 +80,7 @@ const SeeDets = () => {
                         <div>Business Seats : {flight_1.BusinessSeats.availableSeatsNum}</div>
                         <div>Economy Seats : {flight_1.EconomySeats.availableSeatsNum}</div>
                         <div>Baggage Allowance : {flight_1.BaggageAllowance}</div>
-                        <div>Price : {flight_1.Price}</div> */}
+                        <div>Price : {flight_1.Price}</div>
                     </Typography>
                 </CardContent>
                 <Button className = "m-3" type = "default">Edit Flight</Button>
@@ -79,7 +99,7 @@ const SeeDets = () => {
                         </div>
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {/* <div>Departure Date : {flight_2.FlightDepDate}</div>
+                        <div>Departure Date : {flight_2.FlightDepDate}</div>
                         <div>Arrival Date : {flight_2.FlightArrDate}</div>
                         <div>Departure Time : {flight_2.FlightDepTime}</div>
                         <div>Arrival Time : {flight_2.FlightArrTime}</div>
@@ -87,7 +107,7 @@ const SeeDets = () => {
                         <div>Business Seats : {flight_2.BusinessSeats.availableSeatsNum}</div>
                         <div>Economy Seats : {flight_2.EconomySeats.availableSeatsNum}</div>
                         <div>Baggage Allowance : {flight_2.BaggageAllowance}</div>
-                        <div>Price : {flight_2.Price}</div> */}
+                        <div>Price : {flight_2.Price}</div>
                     </Typography>
                 </CardContent>
                 <Button className = "m-3" type = "default">Edit Flight</Button>

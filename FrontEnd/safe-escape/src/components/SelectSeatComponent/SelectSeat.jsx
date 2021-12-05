@@ -11,28 +11,36 @@ import Paper from '@mui/material/Paper'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useState, useEffect } from 'react'
-import { UserData } from '../UserContext'
+import { UserData } from '../../UserContext'
+import { useHistory } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import { SearchCriteriaContext, SearchCriteriaData } from "../../SearchCriteriaContext";
 import axios from 'axios'
 
 const SelectSeats = () => {
-    const [ depFirstSeats, setDepFirstSeats ] = useState({});
-    const [ depBusinessSeats, setDepBusinessSeats ] = useState({});
-    const [ depEconomySeats, setDepEconomySeats ] = useState({});
-    const [ retFirstSeats, setRetFirstSeats ] = useState({});
-    const [ retBusinessSeats, setRetBusinessSeats ] = useState({});
-    const [ retEconomySeats, setRetEconomySeats ] = useState({});
-    const [ fetched, setFetched ] = useState(false);
+    const scData = SearchCriteriaData();
+    const history = useHistory();
+    const location = useLocation();
+    const [ depFirstSeats, setDepFirstSeats ] = useState(location.state.departureFlight.FirstSeats);
+    const [ depBusinessSeats, setDepBusinessSeats ] = useState(location.state.departureFlight.BusinessSeats);
+    const [ depEconomySeats, setDepEconomySeats ] = useState(location.state.departureFlight.EconomySeats);
+    const [ retFirstSeats, setRetFirstSeats ] = useState(location.state.returnFlight.FirstSeats);
+    const [ retBusinessSeats, setRetBusinessSeats ] = useState(location.state.returnFlight.BusinessSeats);
+    const [ retEconomySeats, setRetEconomySeats ] = useState(location.state.returnFlight.EconomySeats);
+    const [ fetched, setFetched ] = useState(true);
     const [ loading, setLoading ] = useState(false);
     const [ chosenDepartureSeats, setChosenDepartureSeats ] = useState([[],[],[]]);
     const [ chosenArrivalSeats, setChosenArrivalSeats ] = useState([[],[],[]]);
 
-    const [ numOfPass, setNumOfPass] = useState(4);
+    const [ numOfPass, setNumOfPass] = useState(scData.chosenSeats);
     const [ depSeatsOfPass, setDepSeatsOfPass] = useState([]);
     const [ depCabinOfPass, setDepCabinOfPass] = useState([]);
     const [ retSeatsOfPass, setRetSeatsOfPass] = useState([]);
     const [ retCabinOfPass, setRetCabinOfPass] = useState([]);
 
-    let cabin = 'Business';
+    console.log(scData, 'sdddd')
+
+    let cabin = scData.cabin;
 
     const user = UserData();
 
@@ -48,20 +56,20 @@ const SelectSeats = () => {
 
     useEffect(() => {
 
-      setLoading(true);
-      axios.get(`http://localhost:8000/flights/FlightDetails/61ab38be47a43061f70d0262`).then((response) => {
-        setDepFirstSeats(response.data.FirstSeats)
-        setDepBusinessSeats(response.data.BusinessSeats)
-        setDepEconomySeats(response.data.EconomySeats)
+      // setLoading(true);
+      // axios.get(`http://localhost:8000/flights/FlightDetails/61ab38be47a43061f70d0262`).then((response) => {
+      //   setDepFirstSeats(response.data.FirstSeats)
+      //   setDepBusinessSeats(response.data.BusinessSeats)
+      //   setDepEconomySeats(response.data.EconomySeats)
 
-        axios.get(`http://localhost:8000/flights/FlightDetails/61aabb22a6e8ee04242bcdbe`).then((response) => {
-          setRetFirstSeats(response.data.FirstSeats)
-          setRetBusinessSeats(response.data.BusinessSeats)
-          setRetEconomySeats(response.data.EconomySeats)
-          setFetched(true)
-          setLoading(false)
-        })
-      })
+      //   axios.get(`http://localhost:8000/flights/FlightDetails/61aabb22a6e8ee04242bcdbe`).then((response) => {
+      //     setRetFirstSeats(response.data.FirstSeats)
+      //     setRetBusinessSeats(response.data.BusinessSeats)
+      //     setRetEconomySeats(response.data.EconomySeats)
+      //     setFetched(true)
+      //     setLoading(false)
+      //   })
+      // })
     },[fetched])
 
     const addDepSeatCallback = ({ row, number, id, cabin }, addCb) => {
@@ -193,13 +201,16 @@ const SelectSeats = () => {
         console.log('heree in departure seats', depFirstSeats)
         axios.patch('http://localhost:8000/flights/61ab38be47a43061f70d0262', { updatedFlights: {FirstSeats: depFirstSeats, BusinessSeats: depBusinessSeats, 
         EconomySeats: depEconomySeats} })
-        .then((response) => { alert('updated'); console.log('dep updated: ', response); })
+        .then((response) => { console.log('dep updated: ', response); })
 
         console.log('heree in return seats', retFirstSeats)
         axios.patch('http://localhost:8000/flights/61aabb22a6e8ee04242bcdbe', { updatedFlights: {FirstSeats: retFirstSeats, BusinessSeats: retBusinessSeats, 
         EconomySeats: retEconomySeats} })
-        .then((response) => { alert('updated'); console.log('arr updated: ', response); })
+        .then((response) => {  console.log('arr updated: ', response); })
+
+        history.push(`/BookingTripInfo`,{dFlight: location.state.departureFlight, rFlight: location.state.returnFlight})
     }
+    ///BookingTripInfo
 
     //setTimeout(()=>myRef.current.scrollIntoView({behavior: 'smooth'}), 500)
     
@@ -235,7 +246,7 @@ const SelectSeats = () => {
                                     (styles, item) =>
                                     item && (
                                         <Transition style={styles} >
-                                          <Cabins title = {'Departure'} chosenCabin = {cabin} passengers = {3} state = {{loading: loading, firstSeats: depFirstSeats, businessSeats: depBusinessSeats, economySeats: depEconomySeats}} 
+                                          <Cabins title = {'Departure'} chosenCabin = {cabin} passengers = {numOfPass} state = {{loading: loading, firstSeats: depFirstSeats, businessSeats: depBusinessSeats, economySeats: depEconomySeats}} 
                                           addSeatCallback = {addDepSeatCallback} 
                                           removeSeatCallback = {removeDepSeatCallback} handleSubmit = {handleSubmit}/>
                                         </Transition>
@@ -245,7 +256,7 @@ const SelectSeats = () => {
                                     (styles, item) =>
                                     item && (
                                         <Transition style={styles} >
-                                          <Cabins title = {'Return'} chosenCabin = {cabin} passengers = {3} state = {{loading: loading, firstSeats: retFirstSeats, businessSeats: retBusinessSeats, economySeats: retEconomySeats}} 
+                                          <Cabins title = {'Return'} chosenCabin = {cabin} passengers = {numOfPass} state = {{loading: loading, firstSeats: retFirstSeats, businessSeats: retBusinessSeats, economySeats: retEconomySeats}} 
                                           addSeatCallback = {addRetSeatCallback} 
                                           removeSeatCallback = {removeRetSeatCallback} handleSubmit = {handleSubmit}/>
                                         </Transition>
@@ -272,12 +283,12 @@ const SelectSeats = () => {
                         </Typography>
                           <div>
                             <Typography variant="h6" component="div">
-                              Number Of Passengers: {'Num'}
+                              Number Of Passengers: {numOfPass}
                             </Typography>
                           </div>
                           <div>
                             <Typography variant="h6" component="div">
-                              Chosen Cabin: {'Cabin'}
+                              Chosen Cabin: {cabin}
                             </Typography>
                           </div>
                       </CardContent>

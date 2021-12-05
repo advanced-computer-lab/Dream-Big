@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import background from '../assets/background.jpeg';
 import "antd/dist/antd.css";
 
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route , Redirect} from 'react-router-dom'
 import NavBar from "./NavBar";
 import Search from './SearchComponent/Search';
 import ListAllFlight from './ListAllComponent/ListAllFlights';
@@ -13,8 +13,7 @@ import SelectSeats from './SelectSeatComponent/SelectSeat';
 import Login from './LogInComponent/LogIn';
 import Restriction from './RestrictionComponent/Restriction';
 
-import { React, useState } from 'react';
-import { UserContext } from './UserContext';
+import { React } from 'react';
 
 import ViewReservedFlight from "./ReservedFlights/ViewReservedFlights";
 import CancelPage from "./ReservedFlights/CancelPage";
@@ -22,7 +21,7 @@ import { useState, useEffect } from 'react';
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
 import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaContext";
-import { UserContext, UserData } from "../UserContext";
+import { UserData, UserContext } from "../UserContext";
 import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
 import MediaCard from './ConfirmReservationComponent/ConfirmMessage';
 import { Steps } from 'antd';
@@ -54,15 +53,14 @@ const App = () => {
         <SearchCriteriaContext.Provider value={searchCriteria}>
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
-
               <NavBar />
-              <div className="d-flex justify-content-center align-items-center " style={{ overflow: 'true', backgroundImage: `url(${background})`, backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%' }}>
+              <div >
                 {
                   loggedIn === false
                     ?
                     <Switch>
                       <Route exact path='/login'>
-                        <div style={{ marginTop: '4vh', height: '80vh', width: '100%' }}>
+                        <div style={{ marginTop: '4vh', height: '90vh', width: '100%' }}>
                           <Login setLoggedIn={setLoggedIn} setUser={setUser} />
                         </div>
                       </Route>
@@ -103,6 +101,10 @@ const App = () => {
 
                       <Route exact path='/ReturnFlightDetails'>
                         <MediaCard />
+                      </Route>
+
+                      <Route path='/'>
+                      <Redirect to="login" />
                       </Route>
 
                     </Switch>
