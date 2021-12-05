@@ -12,8 +12,7 @@ import logoFinal from '../assets/LogoFinal.png'
 const NavBar = () => {
     return (
         <Navbar bg="dark" variant="dark">
-        <Image src={logoFinal} rounded style = {{height : '200px 200px', marginLeft : '2vw'}}/>
-        {/* <h2 style={{color:'#f99965', marginLeft : '5px'}}>Safe Escape</h2> */}
+        <Image src={logoFinal}/>
         <Container>
         <Nav className="me-auto">
           <Nav.Link href="/" style={{color:'white'}}>List All</Nav.Link>
