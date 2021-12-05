@@ -50,7 +50,7 @@ const SideBar = props => {
         </Row>
         <Row>
             <Form.Group>
-                <Form.Label>Enter From Date</Form.Label>
+                <Form.Label>Enter Destination Date</Form.Label>
                 <Form.Control placeholder="From" 
                     input = "date"
                     type = "date"
@@ -60,7 +60,7 @@ const SideBar = props => {
         </Row>
         <Row>
             <Form.Group>
-                <Form.Label>Enter From Time</Form.Label>
+                <Form.Label>Enter Destination Time</Form.Label>
                 <Form.Control placeholder="From" 
                     input = "time"
                     type = "time"
@@ -70,7 +70,7 @@ const SideBar = props => {
         </Row>
         <Row>
             <Form.Group>
-                <Form.Label>Enter To Date</Form.Label>
+                <Form.Label>Enter Arrival Date</Form.Label>
                 <Form.Control placeholder="From" 
                     input = "date"
                     type = "date"
@@ -80,7 +80,7 @@ const SideBar = props => {
         </Row>
         <Row>
             <Form.Group>
-                <Form.Label>Enter To Time</Form.Label>
+                <Form.Label>Enter Arrival Time</Form.Label>
                 <Form.Control placeholder="From" 
                     input = "time"
                     type = "time"
@@ -88,7 +88,7 @@ const SideBar = props => {
                 />
             </Form.Group>
         </Row>
-        <Row className ="mt-1">
+        <Row className ="mt-2">
             <Form.Group className ="d-flex flex-column">
                 <Button variant="success" id="button-1" 
                     disabled = {Object.keys(props.search).length === 0} onClick = {props.handleSubmit} style={{zIndex:'0'}}>
