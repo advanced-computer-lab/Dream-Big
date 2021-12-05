@@ -10,7 +10,7 @@ const MongoURI = process.env.Mongo_URI
 const port = process.env.PORT || "8000";
 
 const flightCont = require('./Controllers/flightController');
-const userCont = require('./Controllers/userController');
+const userCont = require('./Controllers/UserController');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
