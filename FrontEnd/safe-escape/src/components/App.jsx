@@ -70,7 +70,7 @@ const App = () => {
                       </Route>
 
                       <Route exact path='/ViewOutBoundFlight'>
-                        <div className="d-flex flex-column align-items-center mt-2">
+                        <div className="d-flex flex-column align-items-center ">
                           <div className="d-flex flex-column align-items-center mt-3">
                             <Steps direction="horizontal" current={0}>
                               <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />
@@ -87,7 +87,7 @@ const App = () => {
                       </Route>
 
                       <Route exact path='/ViewReturnFlight'>
-                        <div className="d-flex flex-column align-items-center mt-2">
+                        <div className="d-flex flex-column align-items-center ">
                           <div className="d-flex flex-column align-items-center mt-3">
                             <Steps direction="horizontal" current={0}>
                               <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />

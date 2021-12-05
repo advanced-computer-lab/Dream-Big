@@ -77,19 +77,6 @@ router.post('/getUserSearch', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res, next) => {
-  try {
-    const toUpdate = req.body.toBeUpdatedInUser;
-    const result = await Users.findByIdAndUpdate(req.params.id, toUpdate, { new: true });
-    await Users.save;
-    console.log(result)
-  }
-  catch (err) {
-    console.log("ERRORR");
-    res.status(500).send(err)
-  }
-});
-
 router.get('/UserDetails/:id', async (req, res) => {
   console.log('id', req.params.id)
   try {
@@ -103,16 +90,30 @@ router.get('/UserDetails/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res, next) => {
+router.put('/users/:id', async (req, res, next) => {
+  console.log('updatteeeeeee')
   try {
     const toUpdate = req.body.updateReservedFlights;
-    console.log(toUpdate)
+    console.log('upddd',toUpdate)
     const result = await Users.findByIdAndUpdate(req.params.id, { ReservedFlights: toUpdate }, { new: true });
     await Users.save;
     res.send(result);
   }
   catch (err) {
     console.log(err.message);
+  }
+});
+
+router.put('/:id', async (req, res, next) => {
+  try {
+    const toUpdate = req.body.toBeUpdatedInUser;
+    const result = await Users.findByIdAndUpdate(req.params.id, toUpdate, { new: true });
+    await Users.save;
+    console.log(result)
+  }
+  catch (err) {
+    console.log("ERRORR");
+    res.status(500).send(err)
   }
 });
 

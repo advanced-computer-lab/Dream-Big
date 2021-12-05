@@ -14,9 +14,17 @@ export default function GreenConfirmation() {
   const history = useHistory();
   const location = useLocation();
 
+  const first = location.state.dflight;
+  const second = location.state.rflight;
+  
+  const cabins2 = location.state.cabins;
+  const depSeats2 = location.state.depSeats;
+  
+  const retSeats2 = location.state.retSeats;
+
   const routeChange2 = () => {
     let path = `/BookingConfirmation`;
-    history.push(path);
+    history.push(path, {first, second, cabins2, depSeats2, retSeats2});
   }
 
   const [DepDate, setDD] = useState();
