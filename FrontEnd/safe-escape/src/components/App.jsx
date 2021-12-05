@@ -12,18 +12,15 @@ import FlightDetails from './ViewComponent/FlightDetails';
 import SelectSeats from './SelectSeatComponent/SelectSeat';
 import Login from './LogInComponent/LogIn';
 import Restriction from './RestrictionComponent/Restriction';
-
-import { React, useState } from 'react';
-import { UserContext } from './UserContext';
+import { UserContext } from '../UserContext';
 
 import ViewReservedFlight from "./ReservedFlights/ViewReservedFlights";
 import CancelPage from "./ReservedFlights/CancelPage";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
-import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaContext";
-import { UserContext, UserData } from "../UserContext";
-import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
+import { SearchCriteriaContext } from "../SearchCriteriaContext";
+import { RetFlightContext, DepFlightContext } from "../FlightContext";
 import MediaCard from './ConfirmReservationComponent/ConfirmMessage';
 import { Steps } from 'antd';
 import ReservedSuccessfully from './ConfirmReservationComponent/LoadingSystem';
@@ -80,8 +77,8 @@ const App = () => {
                               <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                             </Steps>
                           </div>
+                          <ViewReturn2 depFlights={depFlights} />
                         </div>
-                        <ViewReturn2 depFlights={depFlights} />
                       </Route>
 
                       <Route exact path='/ArrivalFlightDetails'>
@@ -97,8 +94,8 @@ const App = () => {
                               <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                             </Steps>
                           </div>
+                          <ViewReturn retFlights={retFlights} />
                         </div>
-                        <ViewReturn retFlights={retFlights} />
                       </Route>
 
                       <Route exact path='/ReturnFlightDetails'>
@@ -140,7 +137,7 @@ const App = () => {
                               <Restriction />
                             </Route>
                             <Route exact path='/search'>
-                              <Search />
+                              <UserSearch setSearchCriteria={setSearchCriteria} setDepFlights={setDepFlights} setRetFlights={setRetFlights} />
                             </Route>
                             <Route exact path='/seats'>
                               <SelectSeats />
@@ -190,9 +187,9 @@ const App = () => {
                                     <Step className="ml-2 mr-2" title="Waiting" description="Confirm Flight Reservation" />
                                     <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                                   </Steps>
-                                </div>
+                                </div><ViewReturn2 depFlights={depFlights} />
                               </div>
-                              <ViewReturn2 depFlights={depFlights} />
+                              
                             </Route>
 
                             <Route exact path='/ArrivalFlightDetails'>
@@ -207,9 +204,9 @@ const App = () => {
                                     <Step className="ml-2 mr-2" title="Waiting" description="Confirm Flight Reservation" />
                                     <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                                   </Steps>
-                                </div>
+                                </div> <ViewReturn retFlights={retFlights} />
                               </div>
-                              <ViewReturn retFlights={retFlights} />
+                             
                             </Route>
 
                             <Route exact path='/ReturnFlightDetails'>

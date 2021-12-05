@@ -108,7 +108,7 @@ const UserSearch = (props) => {
   return (
 
     <div style={{ alignItems: 'center' }}>
-      <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }} className="d-flex flex-column justify-content-center align-items-center" >
+      <div style={{ marginTop: '4vh', height: '80vh', width: '100%' }} className="d-flex flex-column justify-content-center align-items-center" >
         <Card className="text-center m-auto w-75 mt-auto" style={{ backgroundColor: "white", opacity: '0.85' }}>
           {/* <Card.Header>Flights</Card.Header> */}
           <Card.Body>
