@@ -106,6 +106,7 @@ router.get('/UserDetails/:id', async (req, res) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const toUpdate = req.body.updateReservedFlights;
+    console.log(toUpdate)
     const result = await Users.findByIdAndUpdate(req.params.id, { ReservedFlights: toUpdate }, { new: true });
     await Users.save;
     res.send(result);

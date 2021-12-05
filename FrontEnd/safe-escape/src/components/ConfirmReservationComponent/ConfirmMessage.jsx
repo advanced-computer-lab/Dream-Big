@@ -115,8 +115,10 @@ export default function MediaCard() {
 
     const handleSubmit = (hello) => {
         setUR(updateReservedFlights.push(ayhaga));
-        let path = `/`;
+        let path = `/login`;
         history.push(path,{hello, myFlight});
+        console.log(hello, "Hello");
+        console.log(myFlight, "Flightt");
         axios.put(baseUrl2, { updateReservedFlights }).then((response) => { console.log('updateddd', updateReservedFlights); })
     };
 

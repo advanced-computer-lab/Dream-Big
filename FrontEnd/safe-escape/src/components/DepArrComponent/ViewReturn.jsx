@@ -70,7 +70,7 @@ const ViewReturn2 = (props) => {
       ...slide, content:
         (
           <div>
-            <Card sx={{ maxWidth: 400 }} >
+            <Card sx={{ maxWidth: 500 }} >
 
               <CardMedia
                 component="img"
@@ -101,56 +101,13 @@ const ViewReturn2 = (props) => {
                     Select Flight</Button>
                 </CardActions>
               </CardContent>
-            </Card></div>
+            </Card>
+          </div>
 
         )
       , onClick: () => setState({ goToSlide: index })
     };
-
   });
-
-  //  slides= [
-  //   {
-  //     flightNumber: "A102",
-  //        Seats: 5,
-  //   },
-  //   {
-  //     flightNumber: "B202",
-  //     Seats: 15}
-
-
-  // ]
-  // slides=({...slides,content:<Card sx={{ maxWidth: 200}} >
-  // <CardMedia
-  //     component="img"
-  //     height="90"
-  //     src={download}
-  //     alt="Flight Picture"
-  // />
-  // <CardContent>
-  //     <Typography gutterBottom variant="h5" component="div">
-  //     <div className="d-flex flex-column align-items-center">
-  //     {slides.flightNumber}
-  //     </div>
-  //     </Typography>
-  //     <Typography variant="body2" color="text.secondary">
-  // <div> Departure time: {slides.FlightDepTime} </div>
-  // <div>  Arrival time: {slides.FlightArrTime}</div>
-  // <div> Trip duration: {slides.TDuration} </div>
-  // <div>  First class :{slides.Seats} </div>
-  // <div> Economy class : {slides.EconomySeats} </div>
-  // <div> Business class:{slides.BusinessSeats} </div>
-  // <div> Price : {slides.Price} </div>
-
-
-  //     </Typography>
-  // </CardContent>
-
-  //   </Card>})
-  // //   slides.map((slide, index) => {
-  //   return { ...slide, onClick: () => setState({ goToSlide: index ,...state}) };
-  // });
-
 
   const onChangeInput = (e) => {
     setState({

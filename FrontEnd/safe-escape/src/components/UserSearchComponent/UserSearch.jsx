@@ -108,7 +108,7 @@ const UserSearch = (props) => {
   return (
 
     <div style={{ alignItems: 'center' }}>
-      <div style={{ marginTop: '4vh', height: '80vh', width: '100%' }} className="d-flex flex-column justify-content-center align-items-center" >
+      <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }} className="d-flex flex-column justify-content-center align-items-center"  className="d-flex flex-column justify-content-center align-items-center" >
         <Card className="text-center m-auto w-75 mt-auto" style={{ backgroundColor: "white", opacity: '0.85' }}>
           {/* <Card.Header>Flights</Card.Header> */}
           <Card.Body>
@@ -260,8 +260,8 @@ const UserSearch = (props) => {
                   }
                   setNumberOfPassengers(adultsNumber + childrenNumber);
                   //  setUserSearchDeptInput({...userSearchDeptInput,[cabin]:{"availableSeatsNum": {"$gte":parseInt(adultsNumber)+parseInt(childrenNumber)}}});
-                  setUserSearchDeptInput({ ...userSearchDeptInput, [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
-                  setUserRetSearchInput({ ...userSearchRetInput, [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
+                  setUserSearchDeptInput({ ...userSearchDeptInput, cabin: cabin, chosenSeats: (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
+                  setUserRetSearchInput({ ...userSearchRetInput, cabin: cabin, chosenSeats: (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
                   setOpen(false);
                   // { [req.body.Cabin] :{availableSeatsNum:{$gte : req.body.numberOfPassengers}}, ...req.body}
 

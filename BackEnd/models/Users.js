@@ -41,17 +41,21 @@ const userSchema = new Schema({
     Return: { type: Schema.Types.ObjectId, ref: 'Flight' },
     ChosenDepSeats: {
       type: Map,
-      of: String
+      of: String,
+      required: false
     },
     ChosenDepCabin: {
-      type: String
+      type: String,
+      required: false
     },
     ChosenRetSeats: {
       type: Map,
-      of: String
+      of: String,
+      required: false
     },
     ChosenRetCabin: {
-      type: String
+      type: String,
+      required: false
     }
   }
 }, { timestamps: true });
