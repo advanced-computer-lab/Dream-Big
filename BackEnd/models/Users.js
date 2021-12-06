@@ -36,12 +36,11 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  ReservedFlights: {
+  ReservedFlights: [{
     Departure: { type: Schema.Types.ObjectId, ref: 'Flight' },
     Return: { type: Schema.Types.ObjectId, ref: 'Flight' },
     ChosenDepSeats: {
-      type: Map,
-      of: String,
+      type: Array,
       required: false
     },
     ChosenDepCabin: {
@@ -49,15 +48,14 @@ const userSchema = new Schema({
       required: false
     },
     ChosenRetSeats: {
-      type: Map,
-      of: String,
+      type: Array,
       required: false
     },
     ChosenRetCabin: {
       type: String,
       required: false
     }
-  }
+  }]
 }, { timestamps: true });
 
 // plugin for passport-local-mongoose

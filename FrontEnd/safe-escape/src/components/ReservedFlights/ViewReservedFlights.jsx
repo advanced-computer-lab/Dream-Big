@@ -60,15 +60,15 @@ const ViewReservedFlight = (props) => {
 
     function confirmCancel(_id) {
 
-        setNewList(bookings.filter((booking) => booking._id !== _id));
+        //setNewList(bookings.filter((booking) => booking._id !== _id));
 
-        setBookings(newList);
-        console.log(newList)
+        setBookings(bookings.filter((booking) => booking._id !== _id));
+        console.log(bookings.filter((booking) => booking._id !== _id), 'newlisttttt')
         setLoadingCancel(true);
         // await props.cancelBookingView(state.booking._id);
 
 
-        axios.put('http://localhost:8000/users/61a49102b62a597189c517f0', { newList }).then(res => {
+        axios.put('http://localhost:8000/users/61a49102b62a597189c517f0', { newList: bookings.filter((booking) => booking._id !== _id) }).then(res => {
             setLoadingCancel(false);
             props.setCancellation(true);
             let path = `/CancelPage`;
@@ -119,14 +119,14 @@ const ViewReservedFlight = (props) => {
             </Backdrop>
             {bookings.length > 0 ? (
                 <>
-                    {bookings.map((booking) => (
+                    {bookings.map((booking, i) => (
                         <>
                             <Card>
                                 <Card.Header>{booking._id}</Card.Header>
                                 <Card.Body>
                                     <Card.Title>
                                         {/* <h1> {booking.User.FirstName + " " + booking.User.LastName}</h1> */}
-                                        <h1>houguuigiu</h1>
+                                        <h1>Trip {i + 1}</h1>
                                     </Card.Title>
                                     <Card.Text>
                                         <table style={{ width: "100%", tableLayout: "fixed" }}>
@@ -234,7 +234,8 @@ const ViewReservedFlight = (props) => {
                                             })
                                             .catch((err) => {
                                                 console.log('FAILED...', err);
-                                            }); confirmCancel(booking._id)
+                                            }); 
+                                            confirmCancel(booking._id)
                                     }}>
                                         {loadingCancel ? (
                                             <Spinner animation="border" size="sm" />

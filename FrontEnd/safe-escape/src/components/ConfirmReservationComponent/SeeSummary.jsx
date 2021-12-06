@@ -93,7 +93,7 @@ export default function SeeSum() {
 
 
     return (
-        <div>
+        <div style = {{backgroundColor: 'white'}} >
             <div className=" d-flex mt-2 ml-5">
                 <div>
                     <Avatar size={84} icon={<UserOutlined />} />

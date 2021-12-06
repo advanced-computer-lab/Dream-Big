@@ -26,18 +26,27 @@ const SeeDets = () => {
     
     const retSeats = location.state.rSeats;
 
+    const depPassInfo = location.state.depPassInfo
+    const retPassInfo = location.state.retPassInfo
+
     console.log(dflight, 'fwofo')
     console.log(rflight, 'kokokoo')
     console.log(user, 'userrr')
 
-    const baseUrl = `http://localhost:8000/users/${user._id}`;
+    console.log('dseats', depSeats)
+    console.log('rseats', retSeats)
+
+    const baseUrl = `http://localhost:8000/users/users/${user._id}`;
 
     const routeChange = () => {
         axios.put(baseUrl,{
-            updateReservedFlights: {
+            updateReservedFlights: [...user.ReservedFlights, {
                 Departure: dflight,
                 Return: rflight,
-            }
+                ChosenDepSeats: depSeats,
+                ChosenCabin: cabins,
+                ChosenRetSeats: retSeats
+            }]
         }).then((response) => {
             let path = `/RoundTripReserved`;
             history.push(path,{dflight, rflight, cabins, depSeats, retSeats})
@@ -75,7 +84,7 @@ const SeeDets = () => {
 
     return (
         <div>
-        <div className="d-flex justify-content-center mt-2">
+        <div className="d-flex justify-content-center">
             <Card sx={{ maxWidth: 345 }} className = "m-2 text-center">
                 <CardMedia
                     component="img"

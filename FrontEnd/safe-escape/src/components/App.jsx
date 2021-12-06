@@ -158,14 +158,14 @@ const App = () => {
                             </Route>
 
                             <Route exact path='/BookingConfirmation'>
-                              <div style={{ backgroundColor: "transparent" }}>
+                              <div>
                                 <SeeSum />
                               </div>
                             </Route>
 
 
                             <Route exact path='/BookingTripInfo'>
-                              <SeeSum />
+                              <SeeDets />
                             </Route>
 
                             <Route exact path='/reserved'>

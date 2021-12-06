@@ -18,37 +18,48 @@ const NavBar = () => {
   const history = useHistory();
 
     return (
-        <Navbar bg="dark" variant="dark" className= 'd-flex justify-content-between'>
-          <Image src={logoFinal} rounded style = {{height : '150px', marginLeft : '2vw'}}/>
-          <Container>
-            <Nav className="me-auto">
-              <Nav.Link onClick = {() => history.push('/listAll') }>List All</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/search') }>Search</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/seats') }>Seats</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/CreateFlights') }>Create Flights</Nav.Link>
-            </Nav>
-            <Navbar.Collapse className="justify-content-end">
-              <Nav>
-                {
-                  (Object.keys(user).length === 0) 
-                  ?
-                  (
-                    <>
-                    <Nav.Link onClick = {() => history.push('/')}>Sign Up</Nav.Link>
-                    <Nav.Link onClick = {() => history.push('/login')}>Log In</Nav.Link>
-                    </>
-                  )
-                  :
-                  <>
-                  <Navbar.Text>
-                    Welcome : <a href="#login">{user.username}</a>
-                  </Navbar.Text>
-                  </>
-                }
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+      <Navbar bg="dark" variant="dark" className= 'd-flex justify-content-between'>
+      <Image src={logoFinal} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
+      <Container>
+        <Nav className="me-auto">
+          {
+            (user.isAdmin)
+            ?
+            <>
+            <Nav.Link href="/" style={{color:'white'}}>List All</Nav.Link>
+          <Nav.Link href="/search" style={{color:'white'}}>Search</Nav.Link>
+          <Nav.Link href="/CreateFlights" style={{color:'white'}}>Create Flights</Nav.Link>
+          </>
+          :
+          <>
+           <Nav.Link onClick = {() => history.push('/users/search') }>Search</Nav.Link>
+           <Nav.Link onClick = {() => history.push('/ReservedFlights') }>View Reserved Flights</Nav.Link>
+           </>
+          }
+         
+        </Nav>
+        <Navbar.Collapse className="justify-content-end">
+          <Nav>
+            {
+              (Object.keys(user).length === 0) 
+              ?
+              (
+                <>
+                <Nav.Link onClick = {() => history.push('/')}>Sign Up</Nav.Link>
+                <Nav.Link onClick = {() => history.push('/login')}>Log In</Nav.Link>
+                </>
+              )
+              :
+              <>
+              <Navbar.Text>
+                Welcome : <a href="#login">{user.username}</a>
+              </Navbar.Text>
+              </>
+            }
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
     );
 };
 
