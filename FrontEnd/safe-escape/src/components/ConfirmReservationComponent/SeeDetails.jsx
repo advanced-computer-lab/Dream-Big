@@ -21,6 +21,11 @@ const SeeDets = () => {
     const rflight =  location.state.rFlight;
     const user = UserData();
 
+    const cabins = location.state.cabin;
+    const depSeats = location.state.dSeats;
+    
+    const retSeats = location.state.rSeats;
+
     console.log(dflight, 'fwofo')
     console.log(rflight, 'kokokoo')
     console.log(user, 'userrr')
@@ -35,14 +40,27 @@ const SeeDets = () => {
             }
         }).then((response) => {
             let path = `/RoundTripReserved`;
-            history.push(path);
+            history.push(path,{dflight, rflight, cabins, depSeats, retSeats})
             console.log('respp', response)
         })
         
     }
 
+    const routeChange2 = () => {
+        let path = `/ViewOutBoundFlight`;
+        history.push(path);
+    }
+
+    const routeChange3 = () => {
+        let path = `/ViewReturnFlight`;
+        history.push(path);
+    }
+
     const [flight_1, setFlight_1] = useState(location.state.dFlight);
     const [flight_2, setFlight_2] = useState(location.state.rFlight);
+
+    console.log(location.state.dFlight, "1111");
+    console.log(location.state.rFlight, "2222");
 
     let { id } = useParams();
 
@@ -83,7 +101,7 @@ const SeeDets = () => {
                         <div>Price : {flight_1.Price}</div>
                     </Typography>
                 </CardContent>
-                <Button className = "m-3" type = "default">Edit Flight</Button>
+                <Button className = "m-3" type = "default" onClick = {routeChange2} >Edit Flight</Button>
             </Card>
             <Card sx={{ maxWidth: 345 }} className = "m-2 text-center" >
                 <CardMedia
@@ -110,7 +128,7 @@ const SeeDets = () => {
                         <div>Price : {flight_2.Price}</div>
                     </Typography>
                 </CardContent>
-                <Button className = "m-3" type = "default">Edit Flight</Button>
+                <Button className = "m-3" type = "default" onClick = {routeChange2} >Edit Flight</Button>
             </Card>
         </div>
         <div className="d-flex justify-content-center mt-2">

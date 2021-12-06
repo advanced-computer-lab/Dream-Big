@@ -32,15 +32,20 @@ const SelectSeats = () => {
     const [ chosenDepartureSeats, setChosenDepartureSeats ] = useState([[],[],[]]);
     const [ chosenArrivalSeats, setChosenArrivalSeats ] = useState([[],[],[]]);
 
-    const [ numOfPass, setNumOfPass] = useState(scData.chosenSeats);
+    const [ numOfPass, setNumOfPass] = useState(scData.depCriteria.chosenSeats);
+    const [ cabin, setCabin] = useState(scData.depCriteria.cabin);
     const [ depSeatsOfPass, setDepSeatsOfPass] = useState([]);
     const [ depCabinOfPass, setDepCabinOfPass] = useState([]);
     const [ retSeatsOfPass, setRetSeatsOfPass] = useState([]);
     const [ retCabinOfPass, setRetCabinOfPass] = useState([]);
 
-    console.log(scData, 'sdddd')
+    const [ passInfo ,setPassInfo] = useState({});
 
-    let cabin = scData.cabin;
+    console.log('passinfoo', passInfo);
+    console.log('deparrayy', depSeatsOfPass);
+    console.log('retarrayyy', retSeatsOfPass);
+
+    console.log(scData, 'sdddd')
 
     const user = UserData();
 
@@ -54,24 +59,6 @@ const SelectSeats = () => {
         );
     }
 
-    useEffect(() => {
-
-      // setLoading(true);
-      // axios.get(`http://localhost:8000/flights/FlightDetails/61ab38be47a43061f70d0262`).then((response) => {
-      //   setDepFirstSeats(response.data.FirstSeats)
-      //   setDepBusinessSeats(response.data.BusinessSeats)
-      //   setDepEconomySeats(response.data.EconomySeats)
-
-      //   axios.get(`http://localhost:8000/flights/FlightDetails/61aabb22a6e8ee04242bcdbe`).then((response) => {
-      //     setRetFirstSeats(response.data.FirstSeats)
-      //     setRetBusinessSeats(response.data.BusinessSeats)
-      //     setRetEconomySeats(response.data.EconomySeats)
-      //     setFetched(true)
-      //     setLoading(false)
-      //   })
-      // })
-    },[fetched])
-
     const addDepSeatCallback = ({ row, number, id, cabin }, addCb) => {
         const sId = id;
         addCb(row, number, id, '')
@@ -79,6 +66,7 @@ const SelectSeats = () => {
         if(cabin === 'First'){
           setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
           setDepCabinOfPass([...depCabinOfPass, 'First'])
+          setPassInfo({...passInfo,[`Passenger ${ depSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Economy'}})
           setChosenDepartureSeats([[...chosenDepartureSeats[0],`${row}${number}`],chosenDepartureSeats[1], chosenDepartureSeats[2]])
           setDepFirstSeats({availableSeatsNum: depFirstSeats.availableSeatsNum - 1 , allSeats: [...depFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
           depFirstSeats.allSeats[row.charCodeAt(0) - 65].map(
@@ -88,6 +76,7 @@ const SelectSeats = () => {
         else if(cabin === 'Business'){
           setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
           setDepCabinOfPass([...depCabinOfPass, 'Business'])
+          setPassInfo({...passInfo,[`Passenger ${ depSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Economy'}})
           setChosenDepartureSeats([chosenDepartureSeats[0],[...chosenDepartureSeats[1],`${row}${number}`], chosenDepartureSeats[2]])
           setDepBusinessSeats({availableSeatsNum: depBusinessSeats.availableSeatsNum - 1 , allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),depBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
             (seat, i) => i === (sId - 1) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
@@ -96,6 +85,7 @@ const SelectSeats = () => {
         else{
           setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
           setDepCabinOfPass([...depCabinOfPass, 'Economy'])
+          setPassInfo({...passInfo,[`Passenger ${ depSeatsOfPass.length + 1}`]: {seat: `${row}${number}`, cabin: 'Economy'}})
           setChosenDepartureSeats([chosenDepartureSeats[0],chosenDepartureSeats[1],[...chosenDepartureSeats[2],`${row}${number}`]])
           setDepEconomySeats({availableSeatsNum: depEconomySeats.availableSeatsNum - 1 , allSeats: [...depEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65),depEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
             (seat, i) => i === (sId - 1) ? {id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you'} : seat), 
@@ -208,10 +198,13 @@ const SelectSeats = () => {
         EconomySeats: retEconomySeats} })
         .then((response) => {  console.log('arr updated: ', response); })
 
-        history.push(`/BookingTripInfo`,{dFlight: location.state.departureFlight, rFlight: location.state.returnFlight})
+        history.push(`/BookingTripInfo`,{dFlight: location.state.departureFlight, rFlight: location.state.returnFlight, dSeats: depSeatsOfPass, rSeats:retSeatsOfPass,
+          cabin: scData.depCriteria.cabin })
     }
     ///BookingTripInfo
 
+    console.log('deparrayy', depSeatsOfPass);
+    console.log('retarrayyy', retSeatsOfPass);
     //setTimeout(()=>myRef.current.scrollIntoView({behavior: 'smooth'}), 500)
     
     const [depVisible, setDepVisible] = useState(true);
@@ -234,7 +227,7 @@ const SelectSeats = () => {
       <>
         <Card className ="m-auto w-100" style = {{backgroundColor: 'transparent'}}>
             <Card.Body className ="d-flex">
-                <Col lg ={4}>
+                <Col lg ={6}>
 
                     <Paper elevation={3} style = {{backgroundColor: 'rgba(255, 255, 255, 0.2)', height: '120vh'}}>
                       <div className = 'd-flex justify-content-center align-items-center w-100'style = {{marginBottom: '4vh'}} >
@@ -274,7 +267,7 @@ const SelectSeats = () => {
 
                 </Col>
 
-                <Col lg ={8} className = 'd-flex flex-column justify-content-center align-items-center' 
+                <Col lg ={6} className = 'd-flex flex-column justify-content-center align-items-center' 
                 style = {{ backgroundColor: 'rgba(255, 255, 255, 0.2)', height: '120vh'}}>
                     <Paper elevation={3} className = 'w-75 text-center d-flex justify-content-center'>
                       <CardContent>
@@ -309,7 +302,7 @@ const SelectSeats = () => {
                       </CardContent> */}
                     </Paper>
 
-                    <div className = 'mt-3'>
+                    <div className = 'mt-3 mb-3'>
                       <Button className = 'm-2' variant = 'warning' onClick={() => { setRetVisible(false); setTimeout(()=>setDepVisible(true), 1000) }}  >
                         Show Departure Plane
                       </Button>
@@ -415,7 +408,7 @@ const SelectSeats = () => {
                       )}
                     </div>
 
-                    <Button className = 'w-25 mt-2' variant="success" id="button-1" onClick = {handleSubmit} >
+                    <Button className = 'w-25 mt-3' variant="success" id="button-1" onClick = {handleSubmit} >
                           Submit
                     </Button>
                 </Col>
