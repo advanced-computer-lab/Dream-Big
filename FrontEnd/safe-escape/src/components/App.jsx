@@ -54,13 +54,13 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div >
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100% 100%', overflow: true, height: '100vh', zIndex: '0', backgroundRepeat: "no-repeat" }}  >
                 {
                   loggedIn === false
                     ?
                     <Switch>
                       <Route exact path='/login'>
-                        <div style={{ marginTop: '4vh', height: '90vh', width: '100%' }}>
+                        <div style={{ height: '90vh', width: '100%' }}>
                           <Login setLoggedIn={setLoggedIn} setUser={setUser} />
                         </div>
                       </Route>
