@@ -19,7 +19,7 @@ const NavBar = () => {
 
     return (
         <Navbar bg="dark" variant="dark" className= 'd-flex justify-content-between'>
-          <Image src={logoFinal} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
+          <Image src={logoFinal} rounded style = {{height : '150px', marginLeft : '2vw'}}/>
           <Container>
             <Nav className="me-auto">
               <Nav.Link onClick = {() => history.push('/listAll') }>List All</Nav.Link>

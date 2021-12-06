@@ -57,7 +57,7 @@ export default function GreenConfirmation() {
   }, [])
 
   return (
-    <div className="d-flex flex-column align-items-center mt-2">
+    <div className="d-flex flex-column align-items-center">
       <div className = "mt-3">
         <Steps direction="horizontal" current={2}>
           <Step className="ml-2 mr-2" title="Finished" description="Choose Suitable Flight" />

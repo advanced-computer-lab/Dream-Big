@@ -108,7 +108,7 @@ const ViewReservedFlight = (props) => {
 
 
     return (
-        <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }}><div>
+        <div><div>
             <h1>View all bookings</h1>
             <Backdrop
                 // className={classes.backdrop}

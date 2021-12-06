@@ -38,40 +38,40 @@ const Login = props => {
     const handleLogIn = () => {
         setMessage('Signing You In ...')
         setShowMessage(true)
-        axios.post('http://localhost:8000/user/login', { 
+        axios.post('http://localhost:8000/user/login', {
             username: username,
             password: password
         }).then(res => {
-            if(Object.keys(res.data).length === 0){
+            if (Object.keys(res.data).length === 0) {
                 setMessage('Wrong Username or Password')
                 props.setLoggedIn(false);
             }
-            else{
+            else {
                 props.setLoggedIn(true);
                 props.setUser(res.data);
                 //let path = `/seats`;
-                if(location.state.hello && location.state.myFlight)
-                {
+                if (location.state.hello && location.state.myFlight) {
                     const returnFlight = location.state.hello;
                     const departureFlight = location.state.myFlight;
-                    setTimeout(()=>history.push(`/seats`,{departureFlight, returnFlight}), 1000)
+                    setTimeout(() => history.push(`/seats`, { departureFlight, returnFlight }), 1000)
                 }
                 else
-                setTimeout(()=>history.push(window.location.pathname), 1000)
+                    setTimeout(() => history.push(window.location.pathname), 1000)
             }
         });
     }
-    return(
+    return (
         <>
-            <Card className ="m-auto mt-5 w-25 text-center" style = {{height: '50vh'}}>
-                <Card.Title className = 'mt-3'>Log In</Card.Title>
-                <Card.Body className = 'd-flex flex-column justify-content-center align-items-center justify-content-around'>
-                    <TextField 
-                        id="standard-basic" 
-                        label="Username" 
+            <Card className="m-auto w-25 text-center d-flex flex-column justify-content-center align-items-center"
+                style={{ height: '50vh', backgroundColor: "white", opacity: '0.85'}}>
+                <Card.Title className='mt-3'>Log In</Card.Title>
+                <Card.Body className='d-flex flex-column justify-content-center align-items-center justify-content-around'>
+                    <TextField
+                        id="standard-basic"
+                        label="Username"
                         type="text"
-                        variant="standard" 
-                        onChange = {(e) => handleUserNameChange(e)}
+                        variant="standard"
+                        onChange={(e) => handleUserNameChange(e)}
                     />
 
                     <TextField
@@ -80,20 +80,20 @@ const Login = props => {
                         type="password"
                         autoComplete="current-password"
                         variant="standard"
-                        onChange = {(e) => handlePassWordChange(e)}
+                        onChange={(e) => handlePassWordChange(e)}
                     />
-                    <div style = {{height: '3vh'}}>
-                    {
-                        (showMessage) && (
-                            <FlashMessage duration={5000}>
-                                <strong>{message}</strong>
-                            </FlashMessage>
+                    <div style={{ height: '3vh' }}>
+                        {
+                            (showMessage) && (
+                                <FlashMessage duration={5000}>
+                                    <strong>{message}</strong>
+                                </FlashMessage>
                             )
-                    }
+                        }
                     </div>
-                    <Button variant="warning" 
-                    disabled = {username === '' || password === ''}
-                    onClick =  {handleLogIn}>
+                    <Button variant="warning"
+                        disabled={username === '' || password === ''}
+                        onClick={handleLogIn}>
                         Log In
                     </Button>
                 </Card.Body>
