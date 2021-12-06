@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 
@@ -84,9 +83,14 @@ const ViewReservedFlight = (props) => {
 
     }
 
-    const routeChange = () => {
+    const routeChange = (booking) => {
+        console.log('boookinnngg', booking)
         let path = `/BookingConfirmation`;
-        history.push(path, {});
+        history.push(path, {
+            first: { ...booking.Departure }, second: { ...booking.Return }
+            , cabins2: booking.ChosenCabin, depSeats2: booking.ChosenDepSeats,
+            retSeats2: booking.ChosenRetSeats
+        });
     }
 
     console.log(user._id, "ID");
@@ -95,11 +99,10 @@ const ViewReservedFlight = (props) => {
         setOpen(true)
         axios.get(`http://localhost:8000/users/${user._id}/getReservedFlights`).then(res => {
             console.log()
-            setBookings(res.data)
+            setBookings(res.data.ReservedFlights)
             setOpen(false)
             console.log("result", res.data)
         });
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -122,7 +125,6 @@ const ViewReservedFlight = (props) => {
                     {bookings.map((booking, i) => (
                         <>
                             <Card>
-                                <Card.Header>{booking._id}</Card.Header>
                                 <Card.Body>
                                     <Card.Title>
                                         {/* <h1> {booking.User.FirstName + " " + booking.User.LastName}</h1> */}
@@ -133,12 +135,12 @@ const ViewReservedFlight = (props) => {
                                             <tbody>
                                                 <tr>
                                                     <td style={{ fontSize: "1.2rem" }}>
-                                                        {booking.Airport}
+                                                        {booking.Departure.Airport}
                                                         <br />
-                                                        {booking.Terminal}
+                                                        {booking.Departure.Terminal}
                                                     </td>
                                                     <td style={{ fontSize: "1.2rem" }}>
-                                                        {booking.From}
+                                                        {booking.Departure.From}
                                                     </td>
                                                     <td>
                                                         <span class="plane">
@@ -174,14 +176,67 @@ const ViewReservedFlight = (props) => {
                                                         </span>
                                                     </td>
                                                     <td style={{ fontSize: "1.2rem" }}>
-                                                        {booking.To}
+                                                        {booking.Departure.To}
                                                     </td>
                                                     <td style={{ fontSize: "1.2rem" }}>
-                                                        {booking.FlightDepDate}
+                                                        {booking.Departure.FlightDepDate}
                                                     </td>
                                                     <td style={{ fontSize: "1.2rem" }}>
                                                         {/* <span style={{ float: "right" }}> */}
-                                                        {booking.FlightDepTime}
+                                                        {booking.Departure.FlightDepTime}
+                                                        {/* </span> */}
+                                                    </td>
+                                                </tr><tr>
+                                                    <td style={{ fontSize: "1.2rem" }}>
+                                                        {booking.Return.Airport}
+                                                        <br />
+                                                        {booking.Return.Terminal}
+                                                    </td>
+                                                    <td style={{ fontSize: "1.2rem" }}>
+                                                        {booking.Return.From}
+                                                    </td>
+                                                    <td>
+                                                        <span class="plane">
+                                                            <svg
+                                                                clip-rule="evenodd"
+                                                                fill-rule="evenodd"
+                                                                height="30"
+                                                                width="30"
+                                                                image-rendering="optimizeQuality"
+                                                                shape-rendering="geometricPrecision"
+                                                                text-rendering="geometricPrecision"
+                                                                viewBox="0 0 500 500"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <g stroke="#222">
+                                                                    <line
+                                                                        fill="none"
+                                                                        stroke-linecap="round"
+                                                                        stroke-width="30"
+                                                                        x1="300"
+                                                                        x2="55"
+                                                                        y1="390"
+                                                                        y2="390"
+                                                                    />
+                                                                    <path
+                                                                        d="M98 325c-9 10 10 16 25 6l311-156c24-17 35-25 42-50 2-15-46-11-78-7-15 1-34 10-42 16l-56 35 1-1-169-31c-14-3-24-5-37-1-10 5-18 10-27 18l122 72c4 3 5 7 1 9l-44 27-75-15c-10-2-18-4-28 0-8 4-14 9-20 15l74 63z"
+                                                                        fill="#222"
+                                                                        stroke-linejoin="round"
+                                                                        stroke-width="10"
+                                                                    />
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                    </td>
+                                                    <td style={{ fontSize: "1.2rem" }}>
+                                                        {booking.Return.To}
+                                                    </td>
+                                                    <td style={{ fontSize: "1.2rem" }}>
+                                                        {booking.Return.FlightDepDate}
+                                                    </td>
+                                                    <td style={{ fontSize: "1.2rem" }}>
+                                                        {/* <span style={{ float: "right" }}> */}
+                                                        {booking.Return.FlightDepTime}
                                                         {/* </span> */}
                                                     </td>
                                                 </tr>
@@ -199,12 +254,12 @@ const ViewReservedFlight = (props) => {
                                     </Button>
                                     <Button
                                         variant="primary"
-                                        // onClick = {routeChange}
+                                        onClick={() => routeChange(booking)}
                                     >
                                         {loadingCheckIn ? (
                                             <Spinner animation="border" size="sm" />
                                         ) : null}
-                                        Check in
+                                        View Itinerary
                                     </Button>
                                 </Card.Body>
                             </Card>
@@ -234,14 +289,12 @@ const ViewReservedFlight = (props) => {
                                             })
                                             .catch((err) => {
                                                 console.log('FAILED...', err);
-                                            }); 
-                                            confirmCancel(booking._id)
+                                            });
+                                        confirmCancel(booking._id)
                                     }}>
                                         {loadingCancel ? (
                                             <Spinner animation="border" size="sm" />
                                         ) : null}
-
-
                                         Confirm
                                     </Button>
                                 </Modal.Footer>

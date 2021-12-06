@@ -50,13 +50,13 @@ const Login = props => {
                 props.setLoggedIn(true);
                 props.setUser(res.data);
                 //let path = `/seats`;
-                if (location.state.hello && location.state.myFlight) {
+                if (location.state) {
                     const returnFlight = location.state.hello;
                     const departureFlight = location.state.myFlight;
                     setTimeout(() => history.push(`/seats`, { departureFlight, returnFlight }), 1000)
                 }
                 else
-                    setTimeout(() => history.push(window.location.pathname), 1000)
+                    history.push('/users/search')
             }
         });
     }

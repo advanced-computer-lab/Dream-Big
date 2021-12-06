@@ -35,6 +35,7 @@ const SeeDets = () => {
 
     console.log('dseats', depSeats)
     console.log('rseats', retSeats)
+    console.log('cabinsss', cabins)
 
     const baseUrl = `http://localhost:8000/users/users/${user._id}`;
 

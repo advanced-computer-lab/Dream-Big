@@ -50,11 +50,7 @@ router.get('/:id/getReservedFlights', async (req, res, next) => {
     console.log(req.params.id)
     const result = await Users.findById(req.params.id);
 
-    const values = await result.populate("ReservedFlights");
-    console.log(values);
-    console.log(values.ReservedFlights)
-
-    res.send(values.ReservedFlights);
+    res.send(result);
 
   }
   catch (err) {

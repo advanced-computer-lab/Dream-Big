@@ -10,11 +10,11 @@ import { useTransition } from "react-spring"
 import Paper from '@mui/material/Paper'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { UserData } from '../../UserContext'
 import { useHistory } from "react-router-dom"
 import { useLocation } from "react-router-dom"
-import { SearchCriteriaContext, SearchCriteriaData } from "../../SearchCriteriaContext";
+import { SearchCriteriaData } from "../../SearchCriteriaContext";
 import axios from 'axios'
 
 const SelectSeats = () => {
@@ -246,7 +246,6 @@ const SelectSeats = () => {
     })
   }
   ///BookingTripInfo
-
   console.log('deparrayy', depSeatsOfPass);
   console.log('retarrayyy', retSeatsOfPass);
   //setTimeout(()=>myRef.current.scrollIntoView({behavior: 'smooth'}), 500)

@@ -18,14 +18,13 @@ import { border } from '@mui/system';
 import ReactDOM from 'react-dom';
 import { useSpring, animated } from 'react-spring';
 import { Steps } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlane } from '@fortawesome/free-solid-svg-icons'
-import backgrnd from './bground.jpeg';
 import { useLocation } from "react-router-dom";
+import { UserData } from '../../UserContext';
 
 export default function MediaCard() {
 
     const location = useLocation();
+    const user = UserData();
 
     const myParams = location.state.slide;
     const myFlight = location.state.flight
@@ -52,13 +51,11 @@ export default function MediaCard() {
     const [To, setTo] = useState();
     const [Fname, setFname] = useState();
 
-    let { id } = useParams();
     const baseUrl = `http://localhost:8000/flights/FlightDetails/6186c408f38e49ec1e0d3011`;
     const baseUrl2 = `http://localhost:8000/users/61a49102b62a597189c517f0`
 
     const [updateReservedFlights, setUR] = useState([]);
 
-    let users = { Fname: "Engy", Lname: "Khaled" }
 
     const history = useHistory();
 
@@ -70,7 +67,7 @@ export default function MediaCard() {
 
             function toDate(dStr, format) {
                 var now = new Date(myParams.FlightDepDate);
-                if (format == "h:m") {
+                if (format === "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
                     now.setSeconds(0);
@@ -81,7 +78,7 @@ export default function MediaCard() {
 
             function toDate2(dStr, format) {
                 var now = new Date(myParams.FlightArrDate);
-                if (format == "h:m") {
+                if (format === "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
                     now.setSeconds(0);
@@ -115,25 +112,17 @@ export default function MediaCard() {
 
     const handleSubmit = (hello) => {
         setUR(updateReservedFlights.push(ayhaga));
-        let path = `/login`;
-        history.push(path,{hello, myFlight});
+        if (Object.keys(user).length === 0){
+            let path = `/login`;
+            history.push(path,{hello, myFlight});
+        }
+        else{
+            let path = `/seats`;
+            history.push(path,{ departureFlight: {...myFlight}, returnFlight: {...hello}});
+        }
         console.log(hello, "Hello");
         console.log(myFlight, "Flightt");
         axios.put(baseUrl2, { updateReservedFlights }).then((response) => { console.log('updateddd', updateReservedFlights); })
-    };
-
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
     };
 
     return (
