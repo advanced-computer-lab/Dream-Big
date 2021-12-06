@@ -26,17 +26,26 @@ const SeeDets = () => {
     
     const retSeats = location.state.rSeats;
 
+    const depPassInfo = location.state.depPassInfo
+    const retPassInfo = location.state.retPassInfo
+
     console.log(dflight, 'fwofo')
     console.log(rflight, 'kokokoo')
     console.log(user, 'userrr')
 
-    const baseUrl = `http://localhost:8000/users/${user._id}`;
+    console.log('dseats', depSeats)
+    console.log('rseats', retSeats)
+
+    const baseUrl = `http://localhost:8000/users/users/${user._id}`;
 
     const routeChange = () => {
         axios.put(baseUrl,{
             updateReservedFlights: {
                 Departure: dflight,
                 Return: rflight,
+                ChosenDepSeats: depSeats,
+                ChosenCabin: cabins,
+                ChosenRetSeats: retSeats
             }
         }).then((response) => {
             let path = `/RoundTripReserved`;

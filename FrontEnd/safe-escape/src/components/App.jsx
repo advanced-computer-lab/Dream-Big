@@ -17,7 +17,7 @@ import { React } from 'react';
 
 import ViewReservedFlight from "./ReservedFlights/ViewReservedFlights";
 import CancelPage from "./ReservedFlights/CancelPage";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
 import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaContext";
@@ -54,13 +54,13 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div >
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100% 100%', overflow: true, height: '100vh', zIndex: '0', backgroundRepeat: "no-repeat" }}  >
                 {
                   loggedIn === false
                     ?
                     <Switch>
                       <Route exact path='/login'>
-                        <div style={{ marginTop: '4vh', height: '90vh', width: '100%' }}>
+                        <div style={{ height: '90vh', width: '100%' }}>
                           <Login setLoggedIn={setLoggedIn} setUser={setUser} />
                         </div>
                       </Route>
@@ -70,7 +70,7 @@ const App = () => {
                       </Route>
 
                       <Route exact path='/ViewOutBoundFlight'>
-                        <div className="d-flex flex-column align-items-center mt-2">
+                        <div className="d-flex flex-column align-items-center ">
                           <div className="d-flex flex-column align-items-center mt-3">
                             <Steps direction="horizontal" current={0}>
                               <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />
@@ -78,8 +78,8 @@ const App = () => {
                               <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                             </Steps>
                           </div>
+                          <ViewReturn2 depFlights={depFlights} />
                         </div>
-                        <ViewReturn2 depFlights={depFlights} />
                       </Route>
 
                       <Route exact path='/ArrivalFlightDetails'>
@@ -87,7 +87,7 @@ const App = () => {
                       </Route>
 
                       <Route exact path='/ViewReturnFlight'>
-                        <div className="d-flex flex-column align-items-center mt-2">
+                        <div className="d-flex flex-column align-items-center ">
                           <div className="d-flex flex-column align-items-center mt-3">
                             <Steps direction="horizontal" current={0}>
                               <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />
@@ -95,8 +95,8 @@ const App = () => {
                               <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                             </Steps>
                           </div>
+                          <ViewReturn retFlights={retFlights} />
                         </div>
-                        <ViewReturn retFlights={retFlights} />
                       </Route>
 
                       <Route exact path='/ReturnFlightDetails'>
@@ -142,7 +142,7 @@ const App = () => {
                               <Restriction />
                             </Route>
                             <Route exact path='/search'>
-                              <Search />
+                              <UserSearch setSearchCriteria={setSearchCriteria} setDepFlights={setDepFlights} setRetFlights={setRetFlights} />
                             </Route>
                             <Route exact path='/seats'>
                               <SelectSeats />
@@ -192,9 +192,9 @@ const App = () => {
                                     <Step className="ml-2 mr-2" title="Waiting" description="Confirm Flight Reservation" />
                                     <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                                   </Steps>
-                                </div>
+                                </div><ViewReturn2 depFlights={depFlights} />
                               </div>
-                              <ViewReturn2 depFlights={depFlights} />
+                              
                             </Route>
 
                             <Route exact path='/ArrivalFlightDetails'>
@@ -209,9 +209,9 @@ const App = () => {
                                     <Step className="ml-2 mr-2" title="Waiting" description="Confirm Flight Reservation" />
                                     <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                                   </Steps>
-                                </div>
+                                </div> <ViewReturn retFlights={retFlights} />
                               </div>
-                              <ViewReturn retFlights={retFlights} />
+                             
                             </Route>
 
                             <Route exact path='/ReturnFlightDetails'>

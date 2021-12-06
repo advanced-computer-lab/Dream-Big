@@ -11,7 +11,7 @@ import logoFinal from '../assets/LogoFinal.png'
 
 import { React } from 'react'
 import { useHistory } from "react-router-dom"
-import { UserData } from './UserContext'
+import { UserData } from '../UserContext'
 
 const NavBar = () => {
   const user = UserData();
@@ -22,10 +22,7 @@ const NavBar = () => {
           <Image src={logoFinal} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
           <Container>
             <Nav className="me-auto">
-              <Nav.Link onClick = {() => history.push('/listAll') }>List All</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/search') }>Search</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/seats') }>Seats</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/CreateFlights') }>Create Flights</Nav.Link>
+              <Nav.Link onClick = {() => history.push('/users/search') }>Search</Nav.Link>
             </Nav>
             <Navbar.Collapse className="justify-content-end">
               <Nav>
