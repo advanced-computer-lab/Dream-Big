@@ -77,14 +77,14 @@ const UserSearch = (props) => {
       setDepartureFlightsOutput(res.data);
       console.log(res.data);
       props.setDepFlights(res.data);
-      if (res.data.length == 0)
+      if (res.data.length === 0)
         setDepLengthZero(true);
     });
     axios.post(baseURL, userSearchRetInput).then(res => {
       setReturnFlightsOutput(res.data);
       console.log(res.data);
       props.setRetFlights(res.data);
-      if (res.data.length == 0)
+      if (res.data.length === 0)
         setRetLengthZero(true);
 
     });
@@ -98,17 +98,10 @@ const UserSearch = (props) => {
 
   }
 
-  // const [age,setAge]=useState({age:{$gte: 25}});
-  //className='image-wrapper'
-  // console.log(userSearchDeptInput);
-  //console.log(userSearchRetInput);
-
-  //   { [req.body.Cabin] :{availableSeatsNum:{$gte : req.body.numberOfPassengers}}, ...req.body}
-
   return (
 
     <div style={{ alignItems: 'center' }}>
-      <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat: "no-repeat" }} className="d-flex flex-column justify-content-center align-items-center" >
+      <div style={{height: '100vh', width: '100%' }} className="d-flex flex-column justify-content-center align-items-center" >
         <Card className="text-center m-auto w-75 mt-auto" style={{ backgroundColor: "white", opacity: '0.85' }}>
           {/* <Card.Header>Flights</Card.Header> */}
           <Card.Body>

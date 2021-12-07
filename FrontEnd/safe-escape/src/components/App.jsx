@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import background from '../assets/background.jpeg';
 import "antd/dist/antd.css";
 
-import { Switch, Route , Redirect} from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import NavBar from "./NavBar";
 import Search from './SearchComponent/Search';
 import ListAllFlight from './ListAllComponent/ListAllFlights';
@@ -24,7 +24,7 @@ import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaCont
 import { UserData, UserContext } from "../UserContext";
 import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
 import MediaCard from './ConfirmReservationComponent/ConfirmMessage';
-import { Steps } from 'antd';
+import { Card, Steps } from 'antd';
 import ReservedSuccessfully from './ConfirmReservationComponent/LoadingSystem';
 import SeeDets from './ConfirmReservationComponent/SeeDetails';
 import SeeSum from './ConfirmReservationComponent/SeeSummary';
@@ -54,13 +54,13 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100% 100%', overflow: true, height: '100vh', zIndex: '0', backgroundRepeat: "no-repeat" }}  >
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }} className="flex-column justify-content-center align-items-center">
                 {
                   loggedIn === false
                     ?
                     <Switch>
                       <Route exact path='/login'>
-                        <div style={{ height: '90vh', width: '100%' }}>
+                        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', width: '100%' }}>
                           <Login setLoggedIn={setLoggedIn} setUser={setUser} />
                         </div>
                       </Route>
@@ -70,7 +70,7 @@ const App = () => {
                       </Route>
 
                       <Route exact path='/ViewOutBoundFlight'>
-                        <div className="d-flex flex-column align-items-center ">
+                        <div className="d-flex flex-column align-items-center">
                           <div className="d-flex flex-column align-items-center mt-3">
                             <Steps direction="horizontal" current={0}>
                               <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />
@@ -87,7 +87,7 @@ const App = () => {
                       </Route>
 
                       <Route exact path='/ViewReturnFlight'>
-                        <div className="d-flex flex-column align-items-center ">
+                        <div className="d-flex flex-column align-items-center">
                           <div className="d-flex flex-column align-items-center mt-3">
                             <Steps direction="horizontal" current={0}>
                               <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />
@@ -104,7 +104,7 @@ const App = () => {
                       </Route>
 
                       <Route path='/'>
-                      <Redirect to="login" />
+                        <Redirect to="login" />
                       </Route>
 
                     </Switch>
@@ -147,13 +147,22 @@ const App = () => {
                             <Route exact path='/seats'>
                               <SelectSeats />
                             </Route>
+
                             <Route exact path='/ReservedFlights'>
-                              <ViewReservedFlight setCancellation={setCancellation} />
+                              <div className="d-flex flex-column justify-content-center align-items-center">
+                                <Card className="d-flex flex-column justify-content-center align-items-center"
+                                style = {{marginTop: '25vh', opacity: '85%'}}>
+                                  <ViewReservedFlight setCancellation={setCancellation} />
+                                </Card>
+                              </div>
                             </Route>
 
                             <Route exact path='/BookingConfirmation'>
-                              <SeeSum />
+                              <div>
+                                <SeeSum />
+                              </div>
                             </Route>
+
 
                             <Route exact path='/BookingTripInfo'>
                               <SeeDets />
@@ -185,7 +194,7 @@ const App = () => {
                             </Route>
 
                             <Route exact path='/ViewOutBoundFlight'>
-                              <div className="d-flex flex-column align-items-center mt-2">
+                              <div className="d-flex flex-column align-items-center">
                                 <div className="d-flex flex-column align-items-center mt-3">
                                   <Steps direction="horizontal" current={0}>
                                     <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />
@@ -202,7 +211,7 @@ const App = () => {
                             </Route>
 
                             <Route exact path='/ViewReturnFlight'>
-                              <div className="d-flex flex-column align-items-center mt-2">
+                              <div className="d-flex flex-column align-items-center">
                                 <div className="d-flex flex-column align-items-center mt-3">
                                   <Steps direction="horizontal" current={0}>
                                     <Step className="ml-2 mr-2" title="In Progress" description="Choose Suitable Flight" />

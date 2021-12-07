@@ -50,10 +50,7 @@ router.get('/:id/getReservedFlights', async (req, res, next) => {
     console.log(req.params.id)
     const result = await Users.findById(req.params.id);
 
-    const values = await result.populate("ReservedFlights");
-    console.log(values.ReservedFlights)
-
-    res.send(values.ReservedFlights);
+    res.send(result);
 
   }
   catch (err) {
@@ -65,6 +62,7 @@ router.post('/getUserSearch', async (req, res) => {
   //const flight =new Flights( req.body);
   try {
     //await flight.save();
+    console.log("Searchhh", req.body);
     const flights = await Flights.find(req.body);
 
     console.log("FLIGHTSSS", flights);

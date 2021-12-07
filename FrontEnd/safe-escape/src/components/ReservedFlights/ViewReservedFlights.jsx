@@ -60,15 +60,15 @@ const ViewReservedFlight = (props) => {
 
     function confirmCancel(_id) {
 
-        setNewList(bookings.filter((booking) => booking._id !== _id));
+        //setNewList(bookings.filter((booking) => booking._id !== _id));
 
-        setBookings(newList);
-        console.log(newList)
+        setBookings(bookings.filter((booking) => booking._id !== _id));
+        console.log(bookings.filter((booking) => booking._id !== _id), 'newlisttttt')
         setLoadingCancel(true);
         // await props.cancelBookingView(state.booking._id);
 
 
-        axios.put('http://localhost:8000/users/61a49102b62a597189c517f0', { newList }).then(res => {
+        axios.put('http://localhost:8000/users/61a49102b62a597189c517f0', { newList: bookings.filter((booking) => booking._id !== _id) }).then(res => {
             setLoadingCancel(false);
             props.setCancellation(true);
             let path = `/CancelPage`;
@@ -84,9 +84,12 @@ const ViewReservedFlight = (props) => {
 
     }
 
-    const routeChange = () => {
+    const routeChange = (booking) => {
+        console.log('boookinnngg',booking)
         let path = `/BookingConfirmation`;
-        history.push(path, {});
+        history.push(path, {first: {...booking.Departure}, second: {...booking.Return}
+            , cabins2: booking.ChosenCabin, depSeats2: booking.ChosenDepSeats, 
+            retSeats2: booking.ChosenRetSeats});
     }
 
     console.log(user._id, "ID");
@@ -95,11 +98,10 @@ const ViewReservedFlight = (props) => {
         setOpen(true)
         axios.get(`http://localhost:8000/users/${user._id}/getReservedFlights`).then(res => {
             console.log()
-            setBookings(res.data)
+            setBookings(res.data.ReservedFlights)
             setOpen(false)
             console.log("result", res.data)
         });
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -108,7 +110,7 @@ const ViewReservedFlight = (props) => {
 
 
     return (
-        <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }}><div>
+        <div><div>
             <h1>View all bookings</h1>
             <Backdrop
                 // className={classes.backdrop}
@@ -119,14 +121,14 @@ const ViewReservedFlight = (props) => {
             </Backdrop>
             {bookings.length > 0 ? (
                 <>
-                    {bookings.map((booking) => (
+                    {bookings.map((booking, i) => (
                         <>
                             <Card>
                                 <Card.Header>{booking._id}</Card.Header>
                                 <Card.Body>
                                     <Card.Title>
                                         {/* <h1> {booking.User.FirstName + " " + booking.User.LastName}</h1> */}
-                                        <h1>houguuigiu</h1>
+                                        <h1>Trip {i + 1}</h1>
                                     </Card.Title>
                                     <Card.Text>
                                         <table style={{ width: "100%", tableLayout: "fixed" }}>
@@ -199,12 +201,12 @@ const ViewReservedFlight = (props) => {
                                     </Button>
                                     <Button
                                         variant="primary"
-                                        // onClick = {routeChange}
+                                        onClick = {() => routeChange(booking)}
                                     >
                                         {loadingCheckIn ? (
                                             <Spinner animation="border" size="sm" />
                                         ) : null}
-                                        Check in
+                                        View Itinerary
                                     </Button>
                                 </Card.Body>
                             </Card>
@@ -234,7 +236,8 @@ const ViewReservedFlight = (props) => {
                                             })
                                             .catch((err) => {
                                                 console.log('FAILED...', err);
-                                            }); confirmCancel(booking._id)
+                                            }); 
+                                            confirmCancel(booking._id)
                                     }}>
                                         {loadingCancel ? (
                                             <Spinner animation="border" size="sm" />

@@ -37,8 +37,14 @@ const userSchema = new Schema({
     required: true
   },
   ReservedFlights: [{
-    Departure: { type: Schema.Types.ObjectId, ref: 'Flight' },
-    Return: { type: Schema.Types.ObjectId, ref: 'Flight' },
+    Departure: { 
+      type: mongoose.SchemaTypes.Mixed,
+      required: true 
+    },
+    Return: { 
+      type: mongoose.SchemaTypes.Mixed,
+      required: true 
+    },
     ChosenDepSeats: {
       type: Array,
       required: false

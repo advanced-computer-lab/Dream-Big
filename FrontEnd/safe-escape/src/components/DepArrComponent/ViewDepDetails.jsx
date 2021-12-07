@@ -134,16 +134,10 @@ export default function ViewDepDetails() {
 
     return (
         <div>
-            <div className=" d-flex mt-2 ml-5">
-                <div className = "ml-5">
-                    <Avatar size={84} icon={<UserOutlined />} />
-                    <h3 className=" mt-2">Welcome: {users.Fname} {users.Lname}</h3>
-                </div>
-            </div>
             <div className="d-flex align-items-center justify-content-center">
                 <div>
-                    <div className="">
-                        <div className="mt-5 ml-5">
+                    <div className="mt-5">
+                        <div className="ml-5">
                             <Steps direction="horizontal" current={1}>
                                 <Step className="ml-2 mr-2" title="Finished" description="Choose Suitable Flight" />
                                 <Step className="ml-2 mr-2" title="In Progress" description="Confirm Flight Reservation" />

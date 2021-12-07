@@ -57,8 +57,6 @@ export default function SeeSum() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState();
 
-
-    let { id } = useParams();
     const baseUrl = `http://localhost:8000/users/UserDetails/61a4708e8c20bdc40a534333`;
 
     useEffect(() => {
@@ -77,41 +75,8 @@ export default function SeeSum() {
         })
     }, []);
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
-
     return (
-        <div>
-            <div className=" d-flex mt-2 ml-5">
-                <div>
-                    <Avatar size={84} icon={<UserOutlined />} />
-                    <div className = "ml-3">
-                        <Button className = "mt-2 ml-5" type="primary" onClick={showModal}>
-                            Show My Details
-                        </Button>
-                        <Modal title="User Details" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                            <p>Age: {Age}</p>
-                            <p>Email: {email}</p>
-                            <p>Lives In: {LivesIn}</p>
-                            <p>Passport Number: {passportNumber}</p>
-                            <p>Phone Number: {phone}</p>
-                        </Modal>
-                    </div>
-                    <h3 className=" mt-2">Welcome: {Fname} {Mname} {Lname}</h3>
-                </div>
-            </div>
+        <div style = {{backgroundColor: 'white'}} >
             <div>
                 <Result
                     icon={<SmileOutlined />}
