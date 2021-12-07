@@ -111,7 +111,7 @@ const ViewReservedFlight = (props) => {
 
 
     return (
-        <div><div>
+        <div style = {{height : '100%'}}><div>
             <h1 className = "d-flex justify-content-center align-items-center">View all bookings</h1>
             <Backdrop
                 // className={classes.backdrop}

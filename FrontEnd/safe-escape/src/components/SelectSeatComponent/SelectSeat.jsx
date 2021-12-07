@@ -10,7 +10,7 @@ import { useTransition } from "react-spring"
 import Paper from '@mui/material/Paper'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { UserData } from '../../UserContext'
 import { useHistory } from "react-router-dom"
 import { useLocation } from "react-router-dom"
@@ -21,19 +21,19 @@ const SelectSeats = () => {
   const scData = SearchCriteriaData();
   const history = useHistory();
   const location = useLocation();
-  const [depFirstSeats, setDepFirstSeats] = useState(location.state.departureFlight.FirstSeats);
-  const [depBusinessSeats, setDepBusinessSeats] = useState(location.state.departureFlight.BusinessSeats);
-  const [depEconomySeats, setDepEconomySeats] = useState(location.state.departureFlight.EconomySeats);
-  const [retFirstSeats, setRetFirstSeats] = useState(location.state.returnFlight.FirstSeats);
-  const [retBusinessSeats, setRetBusinessSeats] = useState(location.state.returnFlight.BusinessSeats);
-  const [retEconomySeats, setRetEconomySeats] = useState(location.state.returnFlight.EconomySeats);
-  const [fetched, setFetched] = useState(true);
+  const [depFirstSeats, setDepFirstSeats] = useState([]);
+  const [depBusinessSeats, setDepBusinessSeats] = useState([]);
+  const [depEconomySeats, setDepEconomySeats] = useState([]);
+  const [retFirstSeats, setRetFirstSeats] = useState([]);
+  const [retBusinessSeats, setRetBusinessSeats] = useState([]);
+  const [retEconomySeats, setRetEconomySeats] = useState([]);
+  const [fetched, setFetched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [chosenDepartureSeats, setChosenDepartureSeats] = useState([[], [], []]);
   const [chosenArrivalSeats, setChosenArrivalSeats] = useState([[], [], []]);
 
-  const [numOfPass, setNumOfPass] = useState(scData.depCriteria.chosenSeats);
-  const [cabin, setCabin] = useState(scData.depCriteria.cabin);
+  const [numOfPass, setNumOfPass] = useState();
+  const [cabin, setCabin] = useState();
   const [depSeatsOfPass, setDepSeatsOfPass] = useState([]);
   const [depCabinOfPass, setDepCabinOfPass] = useState([]);
   const [retSeatsOfPass, setRetSeatsOfPass] = useState([]);
@@ -45,11 +45,10 @@ const SelectSeats = () => {
   console.log('passinfoo', passInfo);
   console.log('deparrayy', depSeatsOfPass);
   console.log('retarrayyy', retSeatsOfPass);
-
   console.log('deparrayy333', depBusinessSeats);
   console.log('retarrayyy444', retBusinessSeats);
-
   console.log(scData, 'sdddd')
+  console.log('locationnn', location.state)
 
   const user = UserData();
 
@@ -63,17 +62,28 @@ const SelectSeats = () => {
     );
   }
 
-  const addDepSeatCallback = ({ row, number, id, cabin }, addCb) => {
-    const sId = id;
-    addCb(row, number, id, '')
-    setLoading(true)
-    console.log('idd', id)
-    console.log(row, 'rowww')
-    console.log('user', user._id)
-    depBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
-      (seat, i) => console.log(seat, 'seatttt'))
+  useEffect(() => {
 
-    if (cabin === 'First') {
+    setLoading(true);
+    setDepFirstSeats(location.state.departureFlight.FirstSeats)
+    setDepBusinessSeats(location.state.departureFlight.BusinessSeats)
+    setDepEconomySeats(location.state.departureFlight.EconomySeats)
+    setRetFirstSeats(location.state.returnFlight.FirstSeats)
+    setRetBusinessSeats(location.state.returnFlight.BusinessSeats)
+    setRetEconomySeats(location.state.returnFlight.EconomySeats)
+    setNumOfPass(scData.depCriteria.chosenSeats);
+    setCabin(scData.depCriteria.cabin);
+    setFetched(true)
+    setLoading(false)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[fetched])
+
+  const addDepSeatCallback = ({ row, number, id, cCabin }, addCb) => {
+    const sId = id - 1;
+    addCb(row, number, id)
+    setLoading(true)
+    if (cCabin === 'FirstSeats') {
       setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
       setDepCabinOfPass([...depCabinOfPass, 'First'])
       setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
@@ -81,18 +91,19 @@ const SelectSeats = () => {
       setDepFirstSeats({
         availableSeatsNum: depFirstSeats.availableSeatsNum - 1, allSeats: [...depFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
         depFirstSeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => (i === (sId)) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you' } : seat),
+          (seat, i) => (i === (sId))  ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you' } : seat),
         ...depFirstSeats.allSeats.slice((row.charCodeAt(0) - 65) + 1, depFirstSeats.allSeats.length)]
       })
     }
-    else if (cabin === 'Business') {
+    else if (cCabin === 'BusinessSeats') {
       setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
       setDepCabinOfPass([...depCabinOfPass, 'Business'])
       setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
       setChosenDepartureSeats([chosenDepartureSeats[0], [...chosenDepartureSeats[1], `${row}${number}`], chosenDepartureSeats[2]])
       setDepBusinessSeats({
-        availableSeatsNum: depBusinessSeats.availableSeatsNum - 1, allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65), depBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => (i === (sId)) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you' } : seat),
+        availableSeatsNum: depBusinessSeats.availableSeatsNum - 1, allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65), 
+          depBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
+          (seat, i) => (i === (sId) ) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you' } : seat),
         ...depBusinessSeats.allSeats.slice((row.charCodeAt(0) - 65) + 1, depBusinessSeats.allSeats.length)]
       })
     }
@@ -102,19 +113,20 @@ const SelectSeats = () => {
       setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
       setChosenDepartureSeats([chosenDepartureSeats[0], chosenDepartureSeats[1], [...chosenDepartureSeats[2], `${row}${number}`]])
       setDepEconomySeats({
-        availableSeatsNum: depEconomySeats.availableSeatsNum - 1, allSeats: [...depEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65), depEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => (i === (sId)) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you' } : seat),
+        availableSeatsNum: depEconomySeats.availableSeatsNum - 1, allSeats: [...depEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65), 
+          depEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
+          (seat, i) => (i === (sId) ) ? { id: user._id, number, row: row, isSelected: true, tooltip: 'Reserved by you' } : seat),
         ...depEconomySeats.allSeats.slice((row.charCodeAt(0) - 65) + 1, depEconomySeats.allSeats.length)]
       })
     }
     setLoading(false)
   }
 
-  const removeDepSeatCallback = ({ row, number, id, cabin }, removeCb) => {
+  const removeDepSeatCallback = ({ row, number, id, cCabin }, removeCb) => {
     const newTooltip = ['A', 'B', 'C'].includes(row) ? null : ''
     removeCb(row, number, newTooltip)
     setLoading(true)
-    if (cabin === 'First') {
+    if (cCabin === 'FirstSeats') {
       setChosenDepartureSeats([[...(chosenDepartureSeats[0].filter(seat => seat !== `${row}${number}`))], chosenDepartureSeats[1], chosenDepartureSeats[2]])
       setDepFirstSeats({
         availableSeatsNum: depFirstSeats.availableSeatsNum + 1, allSeats: [...depFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -123,7 +135,7 @@ const SelectSeats = () => {
             depFirstSeats.allSeats.length)]
       })
     }
-    else if (cabin === 'Business') {
+    else if (cCabin === 'BusinessSeats') {
       setChosenDepartureSeats([chosenDepartureSeats[0], [...(chosenDepartureSeats[1].filter(seat => seat !== `${row}${number}`))], chosenDepartureSeats[2]])
       setDepBusinessSeats({
         availableSeatsNum: depBusinessSeats.availableSeatsNum + 1, allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -145,12 +157,12 @@ const SelectSeats = () => {
     setLoading(false)
   }
 
-  const addRetSeatCallback = ({ row, number, id, cabin }, addCb) => {
-    const sId = id;
-    addCb(row, number, id, '')
+  const addRetSeatCallback = ({ row, number, id, cCabin }, addCb) => {
+    const sId = id - 1;
+    addCb(row, number, id)
     setLoading(true)
     console.log()
-    if (cabin === 'First') {
+    if (cCabin === 'FirstSeats') {
       setRetSeatsOfPass([...retSeatsOfPass, `${row}${number}`])
       setRetCabinOfPass([...retCabinOfPass, 'First'])
       setPassInfo1({ ...passInfo1, [`Passenger ${retSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'First' } })
@@ -162,14 +174,14 @@ const SelectSeats = () => {
         ...retFirstSeats.allSeats.slice((row.charCodeAt(0) - 65) + 1, retFirstSeats.allSeats.length)]
       })
     }
-    else if (cabin === 'Business') {
+    else if (cCabin === 'BusinessSeats') {
       setRetSeatsOfPass([...retSeatsOfPass, `${row}${number}`])
       setRetCabinOfPass([...retCabinOfPass, 'Business'])
       setPassInfo1({ ...passInfo1, [`Passenger ${retSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Business' } })
       setChosenArrivalSeats([chosenArrivalSeats[0], [...chosenArrivalSeats[1], `${row}${number}`], chosenArrivalSeats[2]])
       setRetBusinessSeats({
         availableSeatsNum: retBusinessSeats.availableSeatsNum - 1, allSeats: [...retBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65), retBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => (i === (sId)) ? { id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you' } : seat),
+          (seat, i) => (i === (sId) )? { id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you' } : seat),
         ...retBusinessSeats.allSeats.slice((row.charCodeAt(0) - 65) + 1, retBusinessSeats.allSeats.length)]
       })
     }
@@ -180,18 +192,18 @@ const SelectSeats = () => {
       setChosenArrivalSeats([chosenArrivalSeats[0], chosenArrivalSeats[1], [...chosenArrivalSeats[2], `${row}${number}`]])
       setRetEconomySeats({
         availableSeatsNum: retEconomySeats.availableSeatsNum - 1, allSeats: [...retEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65), retEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
-          (seat, i) => (i === (sId)) ? { id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you' } : seat),
+          (seat, i) => (i === (sId) ) ? { id: user._id, number, isSelected: true, row: row, tooltip: 'Reserved by you' } : seat),
         ...retEconomySeats.allSeats.slice((row.charCodeAt(0) - 65) + 1, retEconomySeats.allSeats.length)]
       })
     }
     setLoading(false)
   }
 
-  const removeRetSeatCallback = ({ row, number, id, cabin }, removeCb) => {
+  const removeRetSeatCallback = ({ row, number, id, cCabin }, removeCb) => {
     const newTooltip = ['A', 'B', 'C'].includes(row) ? null : ''
     removeCb(row, number, newTooltip)
     setLoading(true)
-    if (cabin === 'First') {
+    if (cCabin === 'FirstSeats') {
       setChosenArrivalSeats([[...(chosenArrivalSeats[0].filter(seat => seat !== `${row}${number}`))], chosenArrivalSeats[1], chosenArrivalSeats[2]])
       setRetFirstSeats({
         availableSeatsNum: retFirstSeats.availableSeatsNum + 1, allSeats: [...retFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -200,7 +212,7 @@ const SelectSeats = () => {
             retFirstSeats.allSeats.length)]
       })
     }
-    else if (cabin === 'Business') {
+    else if (cCabin === 'BusinessSeats') {
       setChosenArrivalSeats([chosenArrivalSeats[0], [...(chosenArrivalSeats[1].filter(seat => seat !== `${row}${number}`))], chosenArrivalSeats[2]])
       setRetBusinessSeats({
         availableSeatsNum: retBusinessSeats.availableSeatsNum + 1, allSeats: [...retBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -329,21 +341,6 @@ const SelectSeats = () => {
                   </Typography>
                 </div>
               </CardContent>
-              {/* <CardContent>
-                        <Typography variant="h5" color="text.secondary" gutterBottom>
-                          Color Schema Of Seats
-                        </Typography>
-                          <div>
-                            <Typography variant="h6" component="div">
-                              Number Of Passengers: {'Num'}
-                            </Typography>
-                          </div>
-                          <div>
-                          <Typography variant="h6" component="div">
-                              Chosen Cabin: {'Cabin'}
-                          </Typography>
-                        </div>
-                      </CardContent> */}
             </Paper>
 
             <div className='mt-3 mb-3'>
@@ -355,7 +352,7 @@ const SelectSeats = () => {
               </Button>
             </div>
 
-            <div className='w-100 d-flex justify-content-center align-items-center' style={{ height: '50vh', marginRight: '2vh' }}>
+            <div className='w-100 d-flex justify-content-center align-items-center' style={{ height: '40vh', marginRight: '2vh' }}>
               {depTransitions(
                 (styles, item) =>
                   item && (
@@ -425,10 +422,10 @@ const SelectSeats = () => {
 
                             <div>
                               <Typography className='m-3' variant="h6" component="div">
-                                Passengers Seats
+                                Chosen Seats
                               </Typography>
                               {retSeatsOfPass.map(seat => (
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                <Typography className = 'mt-5' sx={{ mb: 1.5 }} color="text.secondary">
                                   {seat}
                                 </Typography>
                               ))}
@@ -436,10 +433,10 @@ const SelectSeats = () => {
 
                             <div>
                               <Typography className='m-3' variant="h6" component="div">
-                                Passengers Class
+                                Chosen Class
                               </Typography>
                               {retCabinOfPass.map(cabin => (
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                <Typography className = 'mt-5' sx={{ mb: 1.5 }} color="text.secondary">
                                   {cabin}
                                 </Typography>
                               ))}

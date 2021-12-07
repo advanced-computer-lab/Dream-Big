@@ -39,19 +39,25 @@ const NavBar = () => {
       <Container>
         <Nav className="me-auto">
           {
-            (user.isAdmin)
+            (Object.keys(user).length === 0)
               ?
-              <>
-                <div style={{ marginRight: '4vw' }}>
+              (
+                <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
+              )
+              :
+              ((user.isAdmin)
+                ?
+                <>
                   <Nav.Link href="/" style={{ color: 'white' }}>List All</Nav.Link>
                   <Nav.Link href="/search" style={{ color: 'white' }}>Search</Nav.Link>
-                  <Nav.Link href="/CreateFlights" style={{ color: 'white' }}>Create Flights</Nav.Link></div>
-              </>
-              :
-              <>
-                <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
-                <Nav.Link onClick={() => history.push('/ReservedFlights')}>View Reserved Flights</Nav.Link>
-              </>
+                  <Nav.Link href="/CreateFlights" style={{ color: 'white' }}>Create Flights</Nav.Link>
+                </>
+                :
+                <>
+                  <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/ReservedFlights')}>View Reserved Flights</Nav.Link>
+                  <Nav.Link onClick={() => history.push(`/users/update/${user._id}`)}>Update Profile</Nav.Link>
+                </>)
           }
 
         </Nav>
@@ -75,7 +81,7 @@ const NavBar = () => {
                         <div className=" d-flex flex-column justify-content-center align-items-center">
                           <Avatar size={30} icon={<UserOutlined />} />
                           <div className="ml-3">
-                            <Button className="mt-2 ml-5" variant="warning" type = "primary" onClick={showModal} style = {{backgroundColor : '#f99965'}}>
+                            <Button className="mt-2 ml-5" variant="warning" type="primary" onClick={showModal} style={{ backgroundColor: '#f99965' }}>
                               Show My Details
                             </Button>
                             <Modal title="User Details" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
