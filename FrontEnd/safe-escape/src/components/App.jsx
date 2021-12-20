@@ -53,7 +53,7 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0' }} className="flex-column justify-content-center align-items-center">
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat : 'no-repeat'}} className="flex-column justify-content-center align-items-center">
                 {
                   loggedIn === false
                     ?
@@ -149,8 +149,8 @@ const App = () => {
 
                             <Route exact path='/ReservedFlights'>
                               <div className="d-flex flex-column justify-content-center align-items-center">
-                                <Card className="d-flex flex-column justify-content-center align-items-center"
-                                style = {{marginTop: '25vh', opacity: '85%'}}>
+                                <Card
+                                style = {{marginTop: '5vh', marginLeft: '5vh', marginRight: '5vh', opacity: '85%', marginBottom : '5vh', backgroundSize : '100%'}}>
                                   <ViewReservedFlight setCancellation={setCancellation} />
                                 </Card>
                               </div>

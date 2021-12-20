@@ -77,11 +77,11 @@ const ViewReturn = (props) => {
     return {
       ...slide, content:
         (
-          <Card sx={{ maxWidth: 200 }} >
+          <Card sx={{ maxWidth: 400 }} >
 
             <CardMedia
               component="img"
-              height="90"
+              height="100"
               src={download}
               alt="Flight Picture"
             />

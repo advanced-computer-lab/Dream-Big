@@ -76,7 +76,7 @@ export default function SeeSum() {
     }, []);
 
     return (
-        <div style = {{backgroundColor: 'white'}} >
+        <div style = {{backgroundColor: 'white', opacity: '85%', height : '100%'}} >
             <div>
                 <Result
                     icon={<SmileOutlined />}
@@ -114,4 +114,3 @@ export default function SeeSum() {
         </div >
     );
 }
-
