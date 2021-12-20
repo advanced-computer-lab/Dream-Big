@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import background from '../assets/background.jpeg';
 import "antd/dist/antd.css";
 
 import { Switch, Route, Redirect } from 'react-router-dom'
@@ -20,9 +19,9 @@ import CancelPage from "./ReservedFlights/CancelPage";
 import { useState } from 'react';
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
-import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaContext";
-import { UserData, UserContext } from "../UserContext";
-import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
+import { SearchCriteriaContext } from "../SearchCriteriaContext";
+import { UserContext } from "../UserContext";
+import { RetFlightContext, DepFlightContext } from "../FlightContext";
 import MediaCard from './ConfirmReservationComponent/ConfirmMessage';
 import { Card, Steps } from 'antd';
 import ReservedSuccessfully from './ConfirmReservationComponent/LoadingSystem';

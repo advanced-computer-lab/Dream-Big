@@ -89,12 +89,15 @@ const UserSearch = (props) => {
 
     });
 
-    routeChange();
 
-    props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
 
     if (depLengthZero && retLengthZero)
       setNoMatchingFlights(true);
+
+    else{
+      routeChange();
+      props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
+    }
 
   }
 

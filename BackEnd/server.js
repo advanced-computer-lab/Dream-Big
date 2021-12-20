@@ -1,4 +1,7 @@
 const express = require("express");
+//Engy
+const jwt = require('jsonwebtoken');
+//
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -12,6 +15,10 @@ dotenv.config()
 const MongoURI = process.env.Mongo_URI
 
 const port = process.env.PORT || "8000";
+//Engy
+const key =process.env.key;
+
+//
 
 const flightCont = require('./Controllers/flightController');
 const userCont = require('./Controllers/UserController');
@@ -48,6 +55,31 @@ app.use('/users',userCont);
 app.get('/', (req, res) => {
   res.send('Welcome');
 })
+//Engy's ACL Authentication Task
+app.get('/test',(req,res)=>{
+  const token = req.body.token;
+  
+  // If the token is present
+  if(token){
+
+      // Verify the token using jwt.verify method
+      const decode = jwt.verify(token, 'secret');
+      if(decode.type != null)
+        res.send('PASSED');
+      else
+        res.send(err);
+      
+};
+
+jwt.sign(
+  {type:"admin"},
+  "key",
+  {expiresIn:"1h"}
+)
+});
+
+//jwt.verify()
+//
 
 app.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);

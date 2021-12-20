@@ -39,7 +39,13 @@ const NavBar = () => {
       <Container>
         <Nav className="me-auto">
           {
-            (user.isAdmin)
+            (Object.keys(user).length === 0)
+            ?
+            (
+              <Nav.Link onClick = {() => history.push('/users/search') }>Search</Nav.Link>
+            )
+            :
+            ((user.isAdmin)
             ?
             <>
             <Nav.Link href="/" style={{color:'white'}}>List All</Nav.Link>
@@ -50,7 +56,8 @@ const NavBar = () => {
           <>
            <Nav.Link onClick = {() => history.push('/users/search') }>Search</Nav.Link>
            <Nav.Link onClick = {() => history.push('/ReservedFlights') }>View Reserved Flights</Nav.Link>
-           </>
+           <Nav.Link onClick = {() => history.push(`/users/update/${user._id}`) }>Update Profile</Nav.Link>
+           </>)
           }
          
         </Nav>
