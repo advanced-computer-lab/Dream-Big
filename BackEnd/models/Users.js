@@ -56,7 +56,15 @@ const userSchema = new Schema({
     ChosenRetSeats: {
       type: Array,
       required: false
-    }
+    },
+    depPassengerInfo: {
+      type: mongoose.SchemaTypes.Mixed,
+      required: false
+    },
+    retPassengerInfo: {
+      type: mongoose.SchemaTypes.Mixed,
+      required: false
+    },
   }]
 }, { timestamps: true });
 

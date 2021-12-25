@@ -169,11 +169,24 @@ const CreateFlight= () =>
                             </Row>
                             <Row>
                                 <Form.Group controlId="validationCustom10">
+                                    <Form.Label> Flight Price</Form.Label>
+                                    <Form.Control placeholder="Enter Flight Price" 
+                                        input = "number"
+                                        type = "number"
+                                        id="validationCustomUsername"
+                                       
+                                        aria-describedby="inputGroupPrepend"
+                                        className="form-control"
+                                        onChange = {e => {setFlight(Object.assign(flight,{"Price":e.target.value}))}}
+                                    />
+                                </Form.Group>
+                            </Row>
+                            <Row>
+                                <Form.Group controlId="validationCustom10">
                                     <Form.Label> Number of First Class Seats:</Form.Label>
                                     <Form.Control placeholder="Enter  Number of First Class Seats:" 
                                         input = "number"
                                         type = "number"
-                                        
                                         id="validationCustomUsername"
                                        
                                         aria-describedby="inputGroupPrepend"
@@ -188,7 +201,6 @@ const CreateFlight= () =>
                                     <Form.Control placeholder="Enter Number of Business Seats" 
                                         input = "number"
                                         type = "number"
-                                        
                                         id="validationCustomUsername"
                                        
                                         aria-describedby="inputGroupPrepend"
@@ -203,7 +215,6 @@ const CreateFlight= () =>
                                     <Form.Control placeholder="Enter Number of Economy Seats" 
                                         input = "number"
                                         type = "number"
-                                        
                                         id="validationCustomUsername"
                                         
                                         aria-describedby="inputGroupPrepend"

@@ -1,48 +1,32 @@
 import { useState, useEffect } from 'react';
-
-
 import { init } from 'emailjs-com';
-
 import { send } from 'emailjs-com';
-
-import React, { Component } from "react";
+import React from "react";
 import { Button, Modal, Spinner } from "react-bootstrap";
 import { Card } from 'react-bootstrap';
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import CancelPage from './CancelPage';
 import { UserData } from '../../UserContext'
 
 import { useHistory } from "react-router-dom"
 
 init("user_ExRC07sKMOuwyw6rSr9R9");
 const ViewReservedFlight = (props) => {
+    const user = UserData();
     const [bookings, setBookings] = React.useState([]);
     const [booking, setBooking] = useState({});
     const [show, setShow] = useState(false);
     const [open, setOpen] = useState(true);
     const [loadingCancel, setLoadingCancel] = useState(false);
     const [loadingCheckIn, setLoadingCheckIn] = useState(false);
-    //const [flights, setFlights] = useState('');
-
-    const [newList, setNewList] = useState([]);
-
     const [toSend, setToSend] = useState({});
-
-    const user = UserData();
 
     const handleChange = (e) => {
         setToSend({ ...toSend, [e.target.name]: e.target.value });
     };
 
-
-
-    // function handleClose() {
-    //     return setShow(false);
-    // }
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -50,7 +34,6 @@ const ViewReservedFlight = (props) => {
         setBooking(booking);
         handleShow();
     }
-    // const [cancellation, setCancellation] = useState(false);
 
     console.log("show", show);
     console.log("open", open);
@@ -60,40 +43,42 @@ const ViewReservedFlight = (props) => {
     function confirmCancel(_id) {
 
         //setNewList(bookings.filter((booking) => booking._id !== _id));
-
+        console.log("id", _id)
         setBookings(bookings.filter((booking) => booking._id !== _id));
         console.log(bookings.filter((booking) => booking._id !== _id), 'newlisttttt')
         setLoadingCancel(true);
         // await props.cancelBookingView(state.booking._id);
 
 
-        axios.put('http://localhost:8000/users/61a49102b62a597189c517f0', { newList: bookings.filter((booking) => booking._id !== _id) }).then(res => {
+        axios.put(`http://localhost:8000/users/${user._id}`, { newList: bookings.filter((booking) => booking._id !== _id) }).then(res => {
             setLoadingCancel(false);
             props.setCancellation(true);
             let path = `/CancelPage`;
             history.push(path, { id: _id });
-            // <CancelPage cancellation={cancellation} />
-
         });
-
-        // console.log("cancellationnnnnn", cancellation);
-
-
-
-
     }
 
-    const routeChange = (booking) => {
+    const routeChange = (booking, index) => {
+        console.log('boookinnngg', booking)
+        let path = `/tripDetails`;
+        history.push(path, {
+            trip: {...booking},
+            tripIndex: index
+        });
+    }
+
+    const iteniraryRoute = (booking) => {
         console.log('boookinnngg', booking)
         let path = `/BookingConfirmation`;
         history.push(path, {
+            trip: {...booking},
             first: { ...booking.Departure }, second: { ...booking.Return }
             , cabins2: booking.ChosenCabin, depSeats2: booking.ChosenDepSeats,
             retSeats2: booking.ChosenRetSeats
         });
     }
 
-    console.log(user._id, "ID");
+    console.log(user._id, "IDDDDD");
 
     useEffect(() => {
         setOpen(true)
@@ -105,10 +90,6 @@ const ViewReservedFlight = (props) => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-
-
-
 
     return (
         <div style = {{height : '100%'}}><div>
@@ -244,17 +225,28 @@ const ViewReservedFlight = (props) => {
                                         </table>
                                         <span style={{ textAlign: "start" }}></span>
                                     </Card.Text>
+                                    
                                     <Button
                                         variant="secondary"
                                         style={{ marginRight: "2rem" }}
                                         onClick={() => cancelBookingView(booking)}
-                                    // href={"/book/" + flight._id}
                                     >
                                         Cancel booking
                                     </Button>
                                     <Button
                                         variant="primary"
-                                        onClick={() => routeChange(booking)}
+                                        style={{ marginRight: "2rem" }}
+                                        onClick={() => routeChange(booking, i)}
+                                    >
+                                        {loadingCheckIn ? (
+                                            <Spinner animation="border" size="sm" />
+                                        ) : null}
+                                        View Trip Details
+                                    </Button>
+                                    <Button
+                                        variant="primary"
+                                        style={{ marginRight: "2rem" }}
+                                        onClick={() => iteniraryRoute(booking)}
                                     >
                                         {loadingCheckIn ? (
                                             <Spinner animation="border" size="sm" />

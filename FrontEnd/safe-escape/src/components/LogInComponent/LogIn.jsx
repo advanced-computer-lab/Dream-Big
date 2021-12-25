@@ -67,7 +67,7 @@ const Login = props => {
     return (
         <>
             <Card className="m-auto w-25 text-center d-flex flex-column justify-content-center align-items-center"
-                style={{ height: '50vh', backgroundColor: "white", opacity: '0.85'}}>
+                style={{ height: '50vh', backgroundColor: "white", opacity: '0.85' }}>
                 <Card.Title className='mt-3'>Log In</Card.Title>
                 <Card.Body className='d-flex flex-column justify-content-center align-items-center justify-content-around'>
                     <TextField

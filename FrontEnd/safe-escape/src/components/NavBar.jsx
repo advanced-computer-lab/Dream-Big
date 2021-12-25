@@ -38,7 +38,7 @@ const NavBar = () => {
     <Navbar bg="dark" variant="dark" className='d-flex justify-content-between' style={{ height: '120px' }}>
       <Image src={logoFinal} rounded style={{ height: '220px', width: '180px', marginLeft: '2vw'}} />
       <Container>
-        <Nav className="me-auto">
+        <Nav className="me-auto ml-5">
           {
             (Object.keys(user).length === 0)
               ?
@@ -49,9 +49,9 @@ const NavBar = () => {
               ((user.isAdmin)
                 ?
                 <>
-                  <Nav.Link href="/" style={{ color: 'white' }}>List All</Nav.Link>
-                  <Nav.Link href="/search" style={{ color: 'white' }}>Search</Nav.Link>
-                  <Nav.Link href="/CreateFlights" style={{ color: 'white' }}>Create Flights</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/listAll')} >List All</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/search')} >Search</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/CreateFlights')}>Create Flights</Nav.Link>
                 </>
                 :
                 <>

@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Form, Input, Button, Radio } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { Form, Input, Button } from 'antd';
 import { Card } from 'antd';
 import { useHistory } from "react-router-dom";
 import validator from 'validator'
+import { useEffect } from "react";
 //import showPassword from '../assets/visibility.png'
 // const style = {
 //   position: 'absolute',
@@ -23,7 +23,6 @@ const Signup = () => {
 
   const baseURL = 'http://localhost:8000/users/signup';
 
-  //const [form] = Form.useForm();
   const [formLayout, setFormLayout] = useState('horizontal');
   const [missingInputs,setMissingInputs]=useState(true);
   const [warningMessage,setWarningMessage]=useState(false);
@@ -74,27 +73,34 @@ const Signup = () => {
       };
 
       const checkMissing=()=>{
-        (missingPassword || missingEmail || missingFirstName || missingMiddle || missingLast || setMissingAge || missingPass || missingPhone) ?setWarningMessage(true):setWarningMessage(false);
+        (missingPassword || missingEmail || missingFirstName || missingMiddle || missingLast || missingAge || missingPass || missingPhone) ? 
+         setWarningMessage(true) : setWarningMessage(false);
       };
+
       const handleSubmit=()=>{
         //alert("Hellooo");
 //if(missingEmail === false && missingFirstName === false && missingMiddle === false && missingLast === false && missingPass === false && missingUserName===false && missingPassword === false && missingPhone === false && setMissingAge === false) 
          
             // if(isStrongPassword)
             // {
-         
-            axios.post(baseURL, user).then(res => {
-            
-              alert("You Registered Successfully");
-              history.push('/login');
-              setClear(true);
-             });
+
+            if(missingPassword || missingEmail || missingFirstName || missingMiddle || missingLast || missingAge || missingPass || missingPhone) {
+              console.log('IFFFFFFFF')
+              setWarningMessage(true)
+            }
+            else{
+              console.log('ELSEEEEEEEE')
+              setWarningMessage(false);
+              axios.post(baseURL, user).then(res => {
+                console.log(res.data)
+                setClear(true);
+                alert("You Registered Successfully");
+                history.push('/login');
+              });
+            }
           // }
           //    else
           //         alert("Use a stronger password");
-                
-             
-               
           
       };
   return (
@@ -122,7 +128,7 @@ const Signup = () => {
                                     {warningMessage && missingFirstName?
                                       <div> <span style={{color:'red'}}>This is required</span></div>
                                         :''}
-                                  </Form.Item>
+                              </Form.Item>
 
                               </div>
                               <div style={{display:'flex', flexDirection:'column'}}>
@@ -225,7 +231,7 @@ const Signup = () => {
                           <Form.Item style={{marginRight:'3vw',marginTop:'3vh'}}>
                                  Already have an account? <a onClick={(e)=>{routeChange()}} style={{color:'blue'}}>Sign in</a>
                           </Form.Item>
-                          <Button type="primary" onClick={{handleSubmit}}>Submit</Button>
+                          <Button type="primary" onClick={handleSubmit}>Submit</Button>
                           {/* isStrongPassword? handleSubmit() : alert("Use Stronger Password");checkMissing(); */}
                            </div>
                         </Form.Item>

@@ -84,16 +84,15 @@ const UserSearch = (props) => {
       setDepartureFlightsOutput(res.data);
       console.log(res.data);
       props.setDepFlights(res.data);
-      if (res.data.length == 0)
+      if (res.data.length === 0)
         setDepLengthZero(true);
     });
     axios.post(baseURL, userSearchRetInput).then(res => {
       setReturnFlightsOutput(res.data);
       console.log(res.data);
       props.setRetFlights(res.data);
-      if (res.data.length == 0)
+      if (res.data.length === 0)
         setRetLengthZero(true);
-
     });
 
    // routeChange();
@@ -104,11 +103,9 @@ const UserSearch = (props) => {
     //   setNoMatchingFlights(true);
     if (depLengthZero && retLengthZero)
       setNoMatchingFlights(true);
-
     else{
-      props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
       routeChange();
-
+      props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
     }
 
   }
@@ -163,7 +160,6 @@ const UserSearch = (props) => {
 
                       <input type="date" min={depDate} label="Return Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserRetSearchInput({ ...userSearchRetInput, "FlightDepDate": changingFlight? 'Changing Flight' : e.target.value }); setIsEmpty(false); }} />
 
-
                     </div>
                   </Form.Group>
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -176,7 +172,7 @@ const UserSearch = (props) => {
                       defaultValue={'Select A Class Type'}
                       className="mt-3"
                       //onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"Cabin":e.target.value});setUserRetSearchInput({...userSearchRetInput,"Cabin":e.target.value})}}
-                      onChange={e => { if (!(e.target.value == '')) { setCabin(e.target.value); } }}
+                      onChange={e => { if (!(e.target.value === '')) { setCabin(e.target.value); } }}
                     >
                       <option value={''}>Select A Cabin</option>
                       <option value={'EconomySeats'}>Economy</option>

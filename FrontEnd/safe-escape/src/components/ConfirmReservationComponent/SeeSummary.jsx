@@ -3,29 +3,36 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Descriptions, Badge } from 'antd';
+import { Descriptions } from 'antd';
 import { Button } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 import { Result } from 'antd';
-import { useRef } from 'react';
 import qrcode from './Safe-Escape_Airlines.png';
 import Qrcode from './qrcode_localhost.png';
 import "./index.css";
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
 import { useLocation } from 'react-router-dom';
+import { UserData } from '../../UserContext';
 
 var QRCode = require('qrcode.react');
 const randomstring = require("randomstring");
 
 export default function SeeSum() {
 
+  const user = UserData();
+
     function print() {
         window.print();
     }
 
-    let componentRef = useRef();
+    function  printDocument() {
+      
+        axios.post(`http://localhost:8000/users/sendEmail`, {
+            trip : location.state.trip,
+            email: user.Email,
+            user
+        }).then((res) => {console.log('Donee', res); alert('Check your email')});
+    }
+
     const [barCodeNumber, setBarcode] = useState("");
 
     const history = useHistory();
@@ -76,12 +83,19 @@ export default function SeeSum() {
     }, []);
 
     return (
-        <div style = {{backgroundColor: 'white', opacity: '85%', height : '100%'}} >
+        <div id='divToPrint' style = {{backgroundColor: 'white', height : '100%'}} >
             <div>
                 <Result
                     icon={<SmileOutlined />}
                     title="Congratulations, Here Is Your Ticket Along Your Confirmation Number."
                 />
+            </div>
+            <div className="d-flex justify-content-center">
+            <Descriptions title={`Your Info`} bordered>
+                  <Descriptions.Item label="Full Name">{user.FirstName} {user.MiddleName} {user.LastName}</Descriptions.Item>
+                  <Descriptions.Item label="Email">{user.Email}</Descriptions.Item>
+                  <Descriptions.Item label="Passport Number">{user.PassportNumber}</Descriptions.Item>
+            </Descriptions>
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Descriptions title={`Your Confirmation Number: ${barCodeNumber}`} bordered>
@@ -104,6 +118,9 @@ export default function SeeSum() {
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={print}>Print Ticket As PDF</Button>
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <Button onClick={printDocument}>Send To Self</Button>
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={routeChange}>View All Reserved Flights</Button>
