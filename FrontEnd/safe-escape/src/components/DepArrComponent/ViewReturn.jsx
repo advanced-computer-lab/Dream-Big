@@ -1,4 +1,3 @@
-
 import Carousel from "react-spring-3d-carousel";
 import { config } from "react-spring";
 import { useState } from "react";
@@ -13,11 +12,8 @@ import { useHistory } from "react-router-dom";
 import { css } from '@emotion/react';
 import { useParams } from "react-router-dom";
 import { Steps } from 'antd';
-
 import { withRouter } from 'react-router-dom';
 import { useEffect } from "react";
-
-
 
 const ViewReturn2 = (props) => {
 
@@ -164,6 +160,9 @@ const ViewReturn2 = (props) => {
 
   return (
     <div>
+      <div>
+      <Button variant="contained" style={{ position: 'center', right: -90, top: -40, backgroundColor: 'white', color: "#f99965" }} className="float-right" onClick={() => history.push('/users/search')} type="primary">Previous</Button>
+      </div>
       <div>
         <div className="d-flex justify-content-center mt-5"><h3>Outbound Flights</h3> </div>,
         <div
