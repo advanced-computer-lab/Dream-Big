@@ -147,7 +147,6 @@ const UserSearch = (props) => {
 
                       <input type="date" label="Return Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserRetSearchInput({ ...userSearchRetInput, "FlightDepDate": e.target.value }); setIsEmpty(false); }} />
 
-
                     </div>
                   </Form.Group>
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -160,7 +159,7 @@ const UserSearch = (props) => {
                       defaultValue={'Select A Class Type'}
                       className="mt-3"
                       //onChange = {e => {setUserSearchDeptInput({...userSearchDeptInput,"Cabin":e.target.value});setUserRetSearchInput({...userSearchRetInput,"Cabin":e.target.value})}}
-                      onChange={e => { if (!(e.target.value == '')) { setCabin(e.target.value); } }}
+                      onChange={e => { if (!(e.target.value === '')) { setCabin(e.target.value); } }}
                     >
                       <option value={''}>Select A Cabin</option>
                       <option value={'EconomySeats'}>Economy</option>

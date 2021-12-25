@@ -50,6 +50,7 @@ const EditSeats = props => {
 
 
   console.log("User: ", user)
+  console.log('statee', location.state)
 
   useEffect(() => {
 

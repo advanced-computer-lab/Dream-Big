@@ -71,6 +71,7 @@ const ViewReservedFlight = (props) => {
         console.log('boookinnngg', booking)
         let path = `/BookingConfirmation`;
         history.push(path, {
+            trip: {...booking},
             first: { ...booking.Departure }, second: { ...booking.Return }
             , cabins2: booking.ChosenCabin, depSeats2: booking.ChosenDepSeats,
             retSeats2: booking.ChosenRetSeats

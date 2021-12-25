@@ -46,9 +46,15 @@ const ReservedTripDetails = () => {
         
     // }
 
-    const routeChange2 = () => {
-        let path = `/ViewOutBoundFlight`;
-        history.push(path);
+    const changeRoute = (flight, passengersInfo, Flighttype, tIndex, ChosenCabin, trip) => {
+        let path = `/editSeats`;
+        history.push(path, {
+            flight,
+            passengersInfo,
+            Flighttype,
+            tIndex,
+            ChosenCabin
+        })
     }
 
     const editRoute = (flight, passengersInfo, Flighttype, tIndex, ChosenCabin) => {
@@ -61,6 +67,7 @@ const ReservedTripDetails = () => {
             ChosenCabin
         })
     }
+    
 
     //let { id } = useParams();
 
@@ -109,7 +116,8 @@ const ReservedTripDetails = () => {
                                 </Typography>
                             </Card>
                         </CardContent>
-                        <Button className = "m-3" type = "default" onClick = {routeChange2} >Change Flight</Button>
+                        <Button className = "m-3" type = "default" onClick = {() => changeRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, 
+                        trip.ChosenCabin, trip)} >Change Flight</Button>
                     </Card>
                     <Card sx={{ maxWidth: 345 }} className = "m-2 d-flex flex-column justify-content-center">
                             <CardMedia
@@ -141,8 +149,8 @@ const ReservedTripDetails = () => {
                                 }
                     
                             </CardContent>
-                            <Button className = "m-3" type = "default" onClick = {() => editRoute(trip.Departure, trip.depPassengerInfo, 'Departure', tripIndex, 
-                            trip.ChosenCabin)} >
+                            <Button className = "m-3" type = "default" 
+                                onClick = {() => editRoute(trip.Departure, trip.depPassengerInfo, 'Departure', tripIndex, trip.ChosenCabin)} >
                                 Edit Flight
                             </Button>
                         </Card>
@@ -182,7 +190,10 @@ const ReservedTripDetails = () => {
                                 </Typography>
                                 </Card>
                             </CardContent>
-                            <Button className = "m-3" type = "default" onClick = {routeChange2} >Change Flight</Button>
+                            <Button className = "m-3" type = "default" 
+                                onClick = {() => changeRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, trip.ChosenCabin, trip)}>
+                                Change Flight
+                            </Button>
                     </Card>
                     <Card sx={{ maxWidth: 345 }} className = "m-2 d-flex flex-column justify-content-center">
                         <CardMedia
@@ -213,8 +224,8 @@ const ReservedTripDetails = () => {
                                 )))
                             }
                         </CardContent>
-                        <Button className = "m-3" type = "default" onClick = {() => editRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, 
-                        trip.ChosenCabin)} >
+                        <Button className = "m-3" type = "default" 
+                            onClick = {() => editRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, trip.ChosenCabin)} >
                             Edit Flight
                         </Button>
                     </Card>
