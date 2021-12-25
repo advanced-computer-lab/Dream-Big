@@ -22,7 +22,6 @@ const SeeDets = () => {
 
     const cabins = location.state.cabin;
     const depSeats = location.state.dSeats;
-    
     const retSeats = location.state.rSeats;
 
     const depPassInfo = location.state.depPassInfo
