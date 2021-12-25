@@ -18,13 +18,6 @@ const Login = props => {
     const history = useHistory();
     const location = useLocation();
 
-    // const returnFlight = location.state.hello;
-    // const departureFlight = location.state.myFlight;
-
-    // console.log(returnFlight, "Helloretttt");
-    // console.log(departureFlight, "Flighttdeppppp");
-
-
     const handleUserNameChange = (e) => {
         const user = e.target.value
         setShowMessage(false);
@@ -63,7 +56,7 @@ const Login = props => {
     return (
         <>
             <Card className="m-auto w-25 text-center d-flex flex-column justify-content-center align-items-center"
-                style={{ height: '50vh', backgroundColor: "white", opacity: '0.85'}}>
+                style={{ height: '50vh', backgroundColor: "white", opacity: '0.85' }}>
                 <Card.Title className='mt-3'>Log In</Card.Title>
                 <Card.Body className='d-flex flex-column justify-content-center align-items-center justify-content-around'>
                     <TextField
