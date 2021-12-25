@@ -22,6 +22,11 @@ const seed2 = async() => {
     console.log('User', registeredUser);
 }
 
-seed2();
+const change = async() => {
+    const User = new Users({username: 'kamal', Email: 'kamal@gmail.com', })
+    const registeredUser = await Users.register(User, 'password');
+    console.log('User', registeredUser);
+}
+change();
 
 

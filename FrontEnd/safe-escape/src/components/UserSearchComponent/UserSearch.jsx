@@ -77,24 +77,23 @@ const UserSearch = (props) => {
       setDepartureFlightsOutput(res.data);
       console.log(res.data);
       props.setDepFlights(res.data);
-      if (res.data.length == 0)
+      if (res.data.length === 0)
         setDepLengthZero(true);
     });
     axios.post(baseURL, userSearchRetInput).then(res => {
       setReturnFlightsOutput(res.data);
       console.log(res.data);
       props.setRetFlights(res.data);
-      if (res.data.length == 0)
+      if (res.data.length === 0)
         setRetLengthZero(true);
-
     });
-
-    routeChange();
-
-    props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
-
+    
     if (depLengthZero && retLengthZero)
       setNoMatchingFlights(true);
+    else{
+      routeChange();
+      props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
+    }
 
   }
 

@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import background from '../assets/background.jpeg';
 import "antd/dist/antd.css";
 
 import { Switch, Route, Redirect } from 'react-router-dom'
@@ -17,12 +16,12 @@ import { React } from 'react';
 
 import ViewReservedFlight from "./ReservedFlights/ViewReservedFlights";
 import CancelPage from "./ReservedFlights/CancelPage";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import UserSearch from './UserSearchComponent/UserSearch';
 import UpdateUser from './UpdateUserComponent/UpdateUser';
-import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaContext";
-import { UserData, UserContext } from "../UserContext";
-import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
+import { SearchCriteriaContext } from "../SearchCriteriaContext";
+import { UserContext } from "../UserContext";
+import { RetFlightContext, DepFlightContext } from "../FlightContext";
 import MediaCard from './ConfirmReservationComponent/ConfirmMessage';
 import MediaCard2 from './ConfirmReservationComponent/ConfirmMessage';
 import { Card, Steps } from 'antd';
@@ -35,6 +34,8 @@ import ViewReturn2 from './DepArrComponent/ViewReturn';
 import ViewDepDetails from './DepArrComponent/ViewDepDetails';
 import ReservedSuccessfully2 from './ConfirmReservationComponent/LoadingSystem2';
 import GreenConfirmation from './ConfirmReservationComponent/GreenConfirmation';
+import EditSeats from './editReservedSeatsComponent/SelectSeat';
+import ReservedTripDetails from './ViewReservedTripDetails/ReservedTripDetails';
 import PaymentFront from './PaymentStripe/PaymentFront';
 import PaymentForm from './PaymentStripe/FrontPayment';
 import ChangePassword from './ChangePassword/ChangePassword';
@@ -64,7 +65,7 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat: 'no-repeat' }} className="flex-column justify-content-center align-items-center">
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat: 'repeat-y' }} className="flex-column justify-content-center align-items-center">
                 {
                   loggedIn === false
                     ?
@@ -96,8 +97,8 @@ const App = () => {
                               <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                             </Steps>
                           </div>
+                          <ViewReturn2 depFlights={depFlights} />
                         </div>
-                        <ViewReturn2 depFlights={depFlights} />
                       </Route>
 
                       <Route exact path='/ArrivalFlightDetails'>
@@ -113,8 +114,8 @@ const App = () => {
                               <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                             </Steps>
                           </div>
+                          <ViewReturn retFlights={retFlights} />
                         </div>
-                        <ViewReturn retFlights={retFlights} />
                       </Route>
 
                       <Route exact path='/ReturnFlightDetails'>
@@ -160,7 +161,7 @@ const App = () => {
                               <Restriction />
                             </Route>
                             <Route exact path='/search'>
-                              <Search />
+                              <UserSearch setSearchCriteria={setSearchCriteria} setDepFlights={setDepFlights} setRetFlights={setRetFlights} />
                             </Route>
                             <Route exact path='/seats'>
                               <SelectSeats />
@@ -209,7 +210,7 @@ const App = () => {
                             </Route>
 
                             <Route exact path='/users/update/:id'>
-                              <UpdateUser />
+                              <UpdateUser setUser={setUser}/>
                             </Route>
                             <Route exact path='/users/search'>
                               <UserSearch setSearchCriteria={setSearchCriteria} setDepFlights={setDepFlights} setRetFlights={setRetFlights} />
@@ -227,9 +228,9 @@ const App = () => {
                                     <Step className="ml-2 mr-2" title="Waiting" description="Confirm Flight Reservation" />
                                     <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                                   </Steps>
-                                </div>
+                                </div><ViewReturn2 depFlights={depFlights} />
                               </div>
-                              <ViewReturn2 depFlights={depFlights} />
+                              
                             </Route>
 
                             <Route exact path='/ArrivalFlightDetails'>
@@ -244,9 +245,9 @@ const App = () => {
                                     <Step className="ml-2 mr-2" title="Waiting" description="Confirm Flight Reservation" />
                                     <Step className="ml-2 mr-2" title="Waiting" description="Enjoy Your Trip" />
                                   </Steps>
-                                </div>
+                                </div> <ViewReturn retFlights={retFlights} />
                               </div>
-                              <ViewReturn retFlights={retFlights} />
+                             
                             </Route>
 
                             <Route exact path='/GoogleLogout'>
@@ -255,6 +256,13 @@ const App = () => {
 
                             <Route exact path='/ReturnFlightDetails'>
                               <MediaCard />
+                            </Route>
+
+                            <Route exact path='/editSeats'>
+                              <EditSeats setUser={setUser}/>
+                            </Route>
+                            <Route exact path='/tripDetails'>
+                              <ReservedTripDetails />
                             </Route>
                           </Switch>
                         </>

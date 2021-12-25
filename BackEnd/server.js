@@ -1,4 +1,7 @@
 const express = require("express");
+//Engy
+const jwt = require('jsonwebtoken');
+//
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -18,6 +21,10 @@ const stripe = require('stripe')('sk_test_51K8Gt8JB7TR08zEVSXWAbJdwsl6776ujRtQzl
 const MongoURI = process.env.Mongo_URI
 
 const port = process.env.PORT || "8000";
+//Engy
+const key =process.env.key;
+
+//
 
 const flightCont = require('./Controllers/flightController');
 const userCont = require('./Controllers/UserController');
@@ -55,8 +62,34 @@ app.use('/users', userCont);
 app.get('/', (req, res) => {
   res.send('Welcome');
 })
+//Engy's ACL Authentication Task
+app.get('/test',(req,res)=>{
+  const token = req.body.token;
+  
+  // If the token is present
+  if(token){
+
+      // Verify the token using jwt.verify method
+      const decode = jwt.verify(token, 'secret');
+      if(decode.type != null)
+        res.send('PASSED');
+      else
+        res.send(err);
+      
+};
+
+jwt.sign(
+  {type:"admin"},
+  "key",
+  {expiresIn:"1h"}
+)
+});
+
+//jwt.verify()
+//
 
 app.post('/Payment', async (req, res) => {
+  console.log("AY HAGAAAAAAAAAAAAAAAAAAAAA", req.body.body);
   const customer = await stripe.customers.create({
     customer: req.body.body.user.name,
     email: req.body.body.user.email,
@@ -70,7 +103,7 @@ app.post('/Payment', async (req, res) => {
           product_data: {
             name: req.body.body.flightNumber,
           },
-          unit_amount: req.body.body.price,
+          unit_amount: req.body.body.priceTotal * 100,
         },
         quantity: 1,
       },
@@ -79,7 +112,7 @@ app.post('/Payment', async (req, res) => {
     success_url: 'https://example.com/success',
     cancel_url: 'https://example.com/cancel',
   });
-  res.redirect(303, session.url);
+  res.send("response");
 });
 
 app.listen(port, () => {

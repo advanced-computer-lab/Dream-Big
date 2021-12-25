@@ -7,13 +7,12 @@ import { Descriptions, Badge } from 'antd';
 import { Button } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 import { Result } from 'antd';
-import { useRef } from 'react';
 import qrcode from './Safe-Escape_Airlines.png';
 import Qrcode from './qrcode_localhost.png';
 import "./index.css";
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
+import ReactDOMServer from "react-dom/server";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { useLocation } from 'react-router-dom';
 
 var QRCode = require('qrcode.react');
@@ -25,7 +24,42 @@ export default function SeeSum() {
         window.print();
     }
 
-    let componentRef = useRef();
+    function  printDocument() {
+        console.log('printtt')
+        let itenerary = (
+            <div id='divToPrint' style = {{backgroundColor: 'white', height : '100%'}} >
+            <div>
+                <Result
+                    icon={<SmileOutlined />}
+                    title="Congratulations, Here Is Your Ticket Along Your Confirmation Number."
+                />
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <Descriptions title={`Your Confirmation Number: ${barCodeNumber}`} bordered>
+                    <Descriptions.Item label="Outbound Flight Date (Departure)">{f.FlightDepDate}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Date (Arrival)">{f.FlightArrDate}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Date (Departure)">{s.FlightDepDate}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Date (Arrival)">{s.FlightArrDate}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Time (Departure)">{f.FlightDepTime}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Time (Arrival)">{f.FlightArrTime}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Time (Departure)">{s.FlightDepTime}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Time (Arrival)">{s.FlightArrTime}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Price">{f.Price}</Descriptions.Item>
+                    <Descriptions.Item label="Return Price">{s.Price}</Descriptions.Item>
+                    <Descriptions.Item label="Total Price">{parseInt( f.Price + s.Price)}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Chosen Cabin">{c}</Descriptions.Item>
+                    <Descriptions.Item label="Return Chosen Cabin">{c}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Chosen Seat/s">{ds.toString()}</Descriptions.Item>
+                    <Descriptions.Item label="Return Chosen Seat/s">{rs.toString()}</Descriptions.Item>
+                </Descriptions>
+            </div>
+            </div>
+        )
+        axios.get(`http://localhost:8000/users/sendEmail`, {
+            attach : itenerary
+        }).then((res) => console.log('Donee', res));
+    }
+
     const [barCodeNumber, setBarcode] = useState("");
 
     const history = useHistory();
@@ -76,7 +110,7 @@ export default function SeeSum() {
     }, []);
 
     return (
-        <div style = {{backgroundColor: 'white', opacity: '85%', height : '100%'}} >
+        <div id='divToPrint' style = {{backgroundColor: 'white', height : '100%'}} >
             <div>
                 <Result
                     icon={<SmileOutlined />}
@@ -104,6 +138,9 @@ export default function SeeSum() {
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={print}>Print Ticket As PDF</Button>
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <Button onClick={printDocument}>Send To Self</Button>
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={routeChange}>View All Reserved Flights</Button>

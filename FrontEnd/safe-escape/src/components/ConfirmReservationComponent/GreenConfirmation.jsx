@@ -23,10 +23,6 @@ export default function GreenConfirmation() {
   const priceTotal = first.Price + second.Price;
 
   console.log(first, "first")
-  console.log(first.rice, "1st");
-  console.log(second.price, "2nd");
-
-
   console.log(priceTotal, "price total");
 
   const cabins2 = location.state.cabins;
@@ -50,6 +46,8 @@ export default function GreenConfirmation() {
     return axios.post(`http://localhost:8000/Payment`, { body })
       .then(response => {
         const { status } = response;
+        console.log("ay haga");
+        history.push('/ReservedFlights');
       })
       .catch(error => console.log(error));
   };
@@ -64,6 +62,8 @@ export default function GreenConfirmation() {
     let path = `/Payment`;
     history.push(path, { first, second, cabins2, depSeats2, retSeats2 });
   }
+
+  const [paid, setpaid] = useState(false);
 
   const [DepDate, setDD] = useState();
   const [ArrDate, setAD] = useState();
@@ -112,7 +112,8 @@ export default function GreenConfirmation() {
           <StripeCheckout stripeKey="pk_test_51K8Gt8JB7TR08zEV5mdyWVlpGCIDrx4iqtbGUOj1ZBSPo5sMAubRPjvcGhOe5uCCL4CRHwp4pNPkyOGiqb5q3qjr00gmVHRoX4"
             token={makePayment}
             name="Pay Your Reservation"
-            amount={priceTotal * 100}>
+            amount={priceTotal * 100}
+            setpaid = {setpaid}>
           </StripeCheckout>
         </div>
       </Card>
