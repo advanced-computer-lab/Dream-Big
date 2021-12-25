@@ -24,7 +24,11 @@ const Login = props => {
     // console.log(returnFlight, "Helloretttt");
     // console.log(departureFlight, "Flighttdeppppp");
 
-
+    const routeChangeSignUp=()=>
+    {
+            let path='/signup';
+            history.push(path);
+    }
     const handleUserNameChange = (e) => {
         const user = e.target.value
         setShowMessage(false);
@@ -96,6 +100,7 @@ const Login = props => {
                         onClick={handleLogIn}>
                         Log In
                     </Button>
+                   <p> Don't have an account?  <a onClick={(e)=>{routeChangeSignUp()}} style={{color:'blue'}}>Sign up</a></p>
                 </Card.Body>
             </Card>
         </>

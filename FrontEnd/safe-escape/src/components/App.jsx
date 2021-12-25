@@ -11,6 +11,7 @@ import CreateFlight from "./CreateFlightsComponent/CreateFlight";
 import FlightDetails from './ViewComponent/FlightDetails';
 import SelectSeats from './SelectSeatComponent/SelectSeat';
 import Login from './LogInComponent/LogIn';
+import Signup from './SignUpComponent/Signup';
 import Restriction from './RestrictionComponent/Restriction';
 
 import { React } from 'react';
@@ -54,7 +55,7 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat : 'no-repeat'}} className="flex-column justify-content-center align-items-center">
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '170vh', zIndex: '0', backgroundRepeat : 'repeat-y'}} className="flex-column justify-content-center align-items-center">
                 {
                   loggedIn === false
                     ?
@@ -62,6 +63,11 @@ const App = () => {
                       <Route exact path='/login'>
                         <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', width: '100%' }}>
                           <Login setLoggedIn={setLoggedIn} setUser={setUser} />
+                        </div>
+                      </Route>
+                      <Route exact path='/signup'>
+                        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', width: '100%' }}>
+                          <Signup />
                         </div>
                       </Route>
 

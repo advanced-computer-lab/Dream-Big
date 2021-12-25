@@ -20,6 +20,7 @@ const NavBar = () => {
   const history = useHistory();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [registerHover,setRegisterHover]=useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -35,14 +36,14 @@ const NavBar = () => {
 
   return (
     <Navbar bg="dark" variant="dark" className='d-flex justify-content-between' style={{ height: '120px' }}>
-      <Image src={logoFinal} rounded style={{ height: '220px', width: '180px', marginLeft: '2vw', position: 'absolute' }} />
+      <Image src={logoFinal} rounded style={{ height: '220px', width: '180px', marginLeft: '2vw'}} />
       <Container>
         <Nav className="me-auto">
           {
             (Object.keys(user).length === 0)
               ?
               (
-                <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
+                <Nav.Link onClick={() => history.push('/users/search')} style={{ color: 'white' }}>Search</Nav.Link>
               )
               :
               ((user.isAdmin)
@@ -54,9 +55,9 @@ const NavBar = () => {
                 </>
                 :
                 <>
-                  <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
-                  <Nav.Link onClick={() => history.push('/ReservedFlights')}>View Reserved Flights</Nav.Link>
-                  <Nav.Link onClick={() => history.push(`/users/update/${user._id}`)}>Update Profile</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/users/search')} style={{ color: 'white' }}>Search</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/ReservedFlights')} style={{ color: 'white' }}>View Reserved Flights</Nav.Link>
+                  <Nav.Link onClick={() => history.push(`/users/update/${user._id}`)} style={{ color: 'white' }}>Update Profile</Nav.Link>
                 </>)
           }
 
@@ -68,8 +69,14 @@ const NavBar = () => {
                 ?
                 (
                   <>
-                    <Nav.Link onClick={() => history.push('/')}>Sign Up</Nav.Link>
-                    <Nav.Link onClick={() => history.push('/login')}>Log In</Nav.Link>
+                  <div style={{display:'flex'}} className="flex-column">
+                    <Nav.Link onClick={() => history.push('/signup')} onMouseOver={()=>setRegisterHover(true)} onMouseLeave={()=>setRegisterHover(false)} style={{ color: 'white'}}>Sign Up</Nav.Link>
+                    {registerHover ? <span registerHover style={{color:'black',background:'white'}} >New User? Register Now</span>:''}
+                   </div>
+                   
+                   
+                   
+                    <Nav.Link onClick={() => history.push('/login')} style={{ color: 'white' }}>Log In</Nav.Link>
                   </>
                 )
                 :
