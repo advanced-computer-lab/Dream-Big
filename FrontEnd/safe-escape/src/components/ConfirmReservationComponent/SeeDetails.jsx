@@ -1,16 +1,15 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios'
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import download from './download.jpg';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom"
-import { Modal, Button } from 'antd';
+import { Button } from 'antd';
 import { UserData } from '../../UserContext'
 
 const SeeDets = () => {
@@ -29,13 +28,15 @@ const SeeDets = () => {
     const depPassInfo = location.state.depPassInfo
     const retPassInfo = location.state.retPassInfo
 
-    console.log(dflight, 'fwofo')
-    console.log(rflight, 'kokokoo')
+    console.log(dflight, 'dflight')
+    console.log(rflight, 'rflight')
     console.log(user, 'userrr')
 
     console.log('dseats', depSeats)
     console.log('rseats', retSeats)
     console.log('cabinsss', cabins)
+    console.log('dpass', depPassInfo)
+    console.log('rpass', retPassInfo)
 
     const baseUrl = `http://localhost:8000/users/users/${user._id}`;
 
@@ -46,7 +47,9 @@ const SeeDets = () => {
                 Return: rflight,
                 ChosenDepSeats: depSeats,
                 ChosenCabin: cabins,
-                ChosenRetSeats: retSeats
+                ChosenRetSeats: retSeats,
+                depPassengerInfo: depPassInfo,
+                retPassengerInfo: retPassInfo,
             }]
         }).then((response) => {
             let path = `/RoundTripReserved`;
@@ -72,7 +75,7 @@ const SeeDets = () => {
     console.log(location.state.dFlight, "1111");
     console.log(location.state.rFlight, "2222");
 
-    let { id } = useParams();
+    //let { id } = useParams();
 
     // useEffect(() => {
     //     axios.get(baseUrl).then((response) => {

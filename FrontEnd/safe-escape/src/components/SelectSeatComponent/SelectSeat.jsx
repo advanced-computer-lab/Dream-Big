@@ -3,6 +3,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Cabins from './Cabins'
 import Transition from "./Plane"
+import TextField from '@mui/material/TextField'
 import './style.scss'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -14,13 +15,16 @@ import { useState, useEffect } from 'react'
 import { UserData } from '../../UserContext'
 import { useHistory } from "react-router-dom"
 import { useLocation } from "react-router-dom"
-import { SearchCriteriaData } from "../../SearchCriteriaContext";
+import { SearchCriteriaData } from "../../SearchCriteriaContext"
+import FadeInOut from "./Fader"
 import axios from 'axios'
 
 const SelectSeats = () => {
   const scData = SearchCriteriaData();
   const history = useHistory();
   const location = useLocation();
+  const user = UserData();
+  
   const [depFirstSeats, setDepFirstSeats] = useState([]);
   const [depBusinessSeats, setDepBusinessSeats] = useState([]);
   const [depEconomySeats, setDepEconomySeats] = useState([]);
@@ -42,25 +46,17 @@ const SelectSeats = () => {
   const [passInfo, setPassInfo] = useState({});
   const [passInfo1, setPassInfo1] = useState({});
 
-  console.log('passinfoo', passInfo);
-  console.log('deparrayy', depSeatsOfPass);
-  console.log('retarrayyy', retSeatsOfPass);
-  console.log('deparrayy333', depBusinessSeats);
-  console.log('retarrayyy444', retBusinessSeats);
-  console.log(scData, 'sdddd')
-  console.log('locationnn', location.state)
+  const [loadingBtn1, setloadingBtn1] = useState(true);
+  const [loadingBtn2, setloadingBtn2] = useState(false);
 
-  const user = UserData();
+  const [showDepPassInfo, setShowDepPassInfo] = useState([]);
+  const [showRetPassInfo, setShowRetPassInfo] = useState([]);
+  const [indexOfCurrEdit, setIndexOfCurrEdit] = useState();
 
-  let buttons = [];
+  const [errorHandlingMessage, setErrorHandlingMessage] = useState('');
 
-  for (let i = 1; i <= numOfPass; i++) {
-    buttons.push(
-      <Button className='m-1' variant="warning" id="button-1" >
-        Passenger {i}
-      </Button>
-    );
-  }
+
+  console.log("User: ", user)
 
   useEffect(() => {
 
@@ -73,6 +69,25 @@ const SelectSeats = () => {
     setRetEconomySeats(location.state.returnFlight.EconomySeats)
     setNumOfPass(scData.depCriteria.chosenSeats);
     setCabin(scData.depCriteria.cabin);
+    console.log("Cabinnn", scData.depCriteria.cabin)
+
+    let passInfos = [];
+    for(let i = 0; i < scData.depCriteria.chosenSeats; i++) {
+      passInfos.push({show: false});
+    }
+    setShowDepPassInfo(passInfos);
+
+    let passInfos1 = [];
+    for(let i = 0; i < scData.depCriteria.chosenSeats; i++) {
+      passInfos1.push({show: false});
+    }
+    setShowRetPassInfo(passInfos1);
+
+    setDepSeatsOfPass([...Array(scData.depCriteria.chosenSeats)].map(() => ""))
+    setDepCabinOfPass([...Array(scData.depCriteria.chosenSeats)].map(() => ""))
+    setRetSeatsOfPass([...Array(scData.depCriteria.chosenSeats)].map(() => ""))
+    setDepCabinOfPass([...Array(scData.depCriteria.chosenSeats)].map(() => ""))
+
     setFetched(true)
     setLoading(false)
 
@@ -84,9 +99,9 @@ const SelectSeats = () => {
     addCb(row, number, id)
     setLoading(true)
     if (cCabin === 'FirstSeats') {
-      setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
-      setDepCabinOfPass([...depCabinOfPass, 'First'])
-      setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
+      setDepSeatsOfPass([...depSeatsOfPass.slice(0, indexOfCurrEdit), `${row}${number}`, ...depSeatsOfPass.slice((row.charCodeAt(0) - 65) + 1, depSeatsOfPass.length)])
+      setDepCabinOfPass([...depCabinOfPass.slice(0, indexOfCurrEdit), `First`, ...depCabinOfPass.slice((row.charCodeAt(0) - 65) + 1, depCabinOfPass.length)])
+      setPassInfo({ ...passInfo, [`Passenger ${indexOfCurrEdit}`]: { ...passInfo[`Passenger ${indexOfCurrEdit}`], seat: `${row}${number}`, cabin: 'First' } })
       setChosenDepartureSeats([[...chosenDepartureSeats[0], `${row}${number}`], chosenDepartureSeats[1], chosenDepartureSeats[2]])
       setDepFirstSeats({
         availableSeatsNum: depFirstSeats.availableSeatsNum - 1, allSeats: [...depFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -96,9 +111,9 @@ const SelectSeats = () => {
       })
     }
     else if (cCabin === 'BusinessSeats') {
-      setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
-      setDepCabinOfPass([...depCabinOfPass, 'Business'])
-      setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
+      setDepSeatsOfPass([...depSeatsOfPass.slice(0, indexOfCurrEdit), `${row}${number}`, ...depSeatsOfPass.slice((row.charCodeAt(0) - 65) + 1, depSeatsOfPass.length)])
+      setDepCabinOfPass([...depCabinOfPass.slice(0, indexOfCurrEdit), `Business`, ...depCabinOfPass.slice((row.charCodeAt(0) - 65) + 1, depCabinOfPass.length)])
+      setPassInfo({ ...passInfo, [`Passenger ${indexOfCurrEdit}`]: { ...passInfo[`Passenger ${indexOfCurrEdit}`], seat: `${row}${number}`, cabin: 'Economy' } })
       setChosenDepartureSeats([chosenDepartureSeats[0], [...chosenDepartureSeats[1], `${row}${number}`], chosenDepartureSeats[2]])
       setDepBusinessSeats({
         availableSeatsNum: depBusinessSeats.availableSeatsNum - 1, allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65), 
@@ -108,9 +123,9 @@ const SelectSeats = () => {
       })
     }
     else {
-      setDepSeatsOfPass([...depSeatsOfPass, `${row}${number}`])
-      setDepCabinOfPass([...depCabinOfPass, 'Economy'])
-      setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
+      setDepSeatsOfPass([...depSeatsOfPass.slice(0, indexOfCurrEdit), `${row}${number}`, ...depSeatsOfPass.slice((row.charCodeAt(0) - 65) + 1, depSeatsOfPass.length)])
+      setDepCabinOfPass([...depCabinOfPass.slice(0, indexOfCurrEdit), `Economy`, ...depCabinOfPass.slice((row.charCodeAt(0) - 65) + 1, depCabinOfPass.length)])
+      setPassInfo({ ...passInfo, [`Passenger ${indexOfCurrEdit}`]: { ...passInfo[`Passenger ${indexOfCurrEdit}`], seat: `${row}${number}`, cabin: 'Economy' } })
       setChosenDepartureSeats([chosenDepartureSeats[0], chosenDepartureSeats[1], [...chosenDepartureSeats[2], `${row}${number}`]])
       setDepEconomySeats({
         availableSeatsNum: depEconomySeats.availableSeatsNum - 1, allSeats: [...depEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65), 
@@ -127,6 +142,9 @@ const SelectSeats = () => {
     removeCb(row, number, newTooltip)
     setLoading(true)
     if (cCabin === 'FirstSeats') {
+      setDepSeatsOfPass(depSeatsOfPass.map((seat,i) => i === indexOfCurrEdit ? "" : seat));
+      setDepCabinOfPass(depCabinOfPass.map((cabin,i) => i === indexOfCurrEdit ? "" : cabin));
+      //setPassInfo({ ...passInfo, [`Passenger ${depSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
       setChosenDepartureSeats([[...(chosenDepartureSeats[0].filter(seat => seat !== `${row}${number}`))], chosenDepartureSeats[1], chosenDepartureSeats[2]])
       setDepFirstSeats({
         availableSeatsNum: depFirstSeats.availableSeatsNum + 1, allSeats: [...depFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -136,6 +154,8 @@ const SelectSeats = () => {
       })
     }
     else if (cCabin === 'BusinessSeats') {
+      setDepSeatsOfPass(depSeatsOfPass.map((seat,i) => i === indexOfCurrEdit ? "" : seat));
+      setDepCabinOfPass(depCabinOfPass.map((cabin,i) => i === indexOfCurrEdit ? "" : cabin));
       setChosenDepartureSeats([chosenDepartureSeats[0], [...(chosenDepartureSeats[1].filter(seat => seat !== `${row}${number}`))], chosenDepartureSeats[2]])
       setDepBusinessSeats({
         availableSeatsNum: depBusinessSeats.availableSeatsNum + 1, allSeats: [...depBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -145,6 +165,8 @@ const SelectSeats = () => {
       })
     }
     else {
+      setDepSeatsOfPass(depSeatsOfPass.map((seat,i) => i === indexOfCurrEdit ? "" : seat));
+      setDepCabinOfPass(depCabinOfPass.map((cabin,i) => i === indexOfCurrEdit ? "" : cabin));
       setChosenDepartureSeats([chosenDepartureSeats[0], chosenDepartureSeats[1],
       [...(chosenDepartureSeats[2].filter(seat => seat !== `${row}${number}`))]])
       setDepEconomySeats({
@@ -163,9 +185,9 @@ const SelectSeats = () => {
     setLoading(true)
     console.log()
     if (cCabin === 'FirstSeats') {
-      setRetSeatsOfPass([...retSeatsOfPass, `${row}${number}`])
-      setRetCabinOfPass([...retCabinOfPass, 'First'])
-      setPassInfo1({ ...passInfo1, [`Passenger ${retSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'First' } })
+      setRetSeatsOfPass([...retSeatsOfPass.slice(0, indexOfCurrEdit), `${row}${number}`, ...retSeatsOfPass.slice((row.charCodeAt(0) - 65) + 1, retSeatsOfPass.length)])
+      setRetCabinOfPass([...retCabinOfPass.slice(0, indexOfCurrEdit), `First`, ...retCabinOfPass.slice((row.charCodeAt(0) - 65) + 1, retCabinOfPass.length)])
+      setPassInfo1({ ...passInfo1, [`Passenger ${indexOfCurrEdit}`]: { ...passInfo1[`Passenger ${indexOfCurrEdit}`], seat: `${row}${number}`, cabin: 'First' } })
       setChosenArrivalSeats([[...chosenArrivalSeats[0], `${row}${number}`], chosenArrivalSeats[1], chosenArrivalSeats[2]])
       setRetFirstSeats({
         availableSeatsNum: retFirstSeats.availableSeatsNum - 1, allSeats: [...retFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65)
@@ -175,9 +197,9 @@ const SelectSeats = () => {
       })
     }
     else if (cCabin === 'BusinessSeats') {
-      setRetSeatsOfPass([...retSeatsOfPass, `${row}${number}`])
-      setRetCabinOfPass([...retCabinOfPass, 'Business'])
-      setPassInfo1({ ...passInfo1, [`Passenger ${retSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Business' } })
+      setRetSeatsOfPass([...retSeatsOfPass.slice(0, indexOfCurrEdit), `${row}${number}`, ...retSeatsOfPass.slice((row.charCodeAt(0) - 65) + 1, retSeatsOfPass.length)])
+      setRetCabinOfPass([...retCabinOfPass.slice(0, indexOfCurrEdit), `Business`, ...retCabinOfPass.slice((row.charCodeAt(0) - 65) + 1, retCabinOfPass.length)])
+      setPassInfo1({ ...passInfo1, [`Passenger ${indexOfCurrEdit}`]: { ...passInfo1[`Passenger ${indexOfCurrEdit}`], seat: `${row}${number}`, cabin: 'Business' } })
       setChosenArrivalSeats([chosenArrivalSeats[0], [...chosenArrivalSeats[1], `${row}${number}`], chosenArrivalSeats[2]])
       setRetBusinessSeats({
         availableSeatsNum: retBusinessSeats.availableSeatsNum - 1, allSeats: [...retBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65), retBusinessSeats.allSeats[row.charCodeAt(0) - 65].map(
@@ -186,9 +208,9 @@ const SelectSeats = () => {
       })
     }
     else {
-      setRetSeatsOfPass([...retSeatsOfPass, `${row}${number}`])
-      setRetCabinOfPass([...retCabinOfPass, 'Economy'])
-      setPassInfo1({ ...passInfo1, [`Passenger ${retSeatsOfPass.length + 1}`]: { seat: `${row}${number}`, cabin: 'Economy' } })
+      setRetSeatsOfPass([...retSeatsOfPass.slice(0, indexOfCurrEdit), `${row}${number}`, ...retSeatsOfPass.slice((row.charCodeAt(0) - 65) + 1, retSeatsOfPass.length)])
+      setRetCabinOfPass([...retCabinOfPass.slice(0, indexOfCurrEdit), `Economy`, ...retCabinOfPass.slice((row.charCodeAt(0) - 65) + 1, retCabinOfPass.length)])
+      setPassInfo1({ ...passInfo1, [`Passenger ${indexOfCurrEdit}`]: { ...passInfo1[`Passenger ${indexOfCurrEdit}`], seat: `${row}${number}`, cabin: 'Economy' } })
       setChosenArrivalSeats([chosenArrivalSeats[0], chosenArrivalSeats[1], [...chosenArrivalSeats[2], `${row}${number}`]])
       setRetEconomySeats({
         availableSeatsNum: retEconomySeats.availableSeatsNum - 1, allSeats: [...retEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65), retEconomySeats.allSeats[row.charCodeAt(0) - 65].map(
@@ -204,6 +226,8 @@ const SelectSeats = () => {
     removeCb(row, number, newTooltip)
     setLoading(true)
     if (cCabin === 'FirstSeats') {
+      setRetSeatsOfPass(retSeatsOfPass.map((seat,i) => i === indexOfCurrEdit ? "" : seat));
+      setRetCabinOfPass(retCabinOfPass.map((cabin,i) => i === indexOfCurrEdit ? "" : cabin));
       setChosenArrivalSeats([[...(chosenArrivalSeats[0].filter(seat => seat !== `${row}${number}`))], chosenArrivalSeats[1], chosenArrivalSeats[2]])
       setRetFirstSeats({
         availableSeatsNum: retFirstSeats.availableSeatsNum + 1, allSeats: [...retFirstSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -213,6 +237,8 @@ const SelectSeats = () => {
       })
     }
     else if (cCabin === 'BusinessSeats') {
+      setRetSeatsOfPass(retSeatsOfPass.map((seat,i) => i === indexOfCurrEdit ? "" : seat));
+      setRetCabinOfPass(retCabinOfPass.map((cabin,i) => i === indexOfCurrEdit ? "" : cabin));
       setChosenArrivalSeats([chosenArrivalSeats[0], [...(chosenArrivalSeats[1].filter(seat => seat !== `${row}${number}`))], chosenArrivalSeats[2]])
       setRetBusinessSeats({
         availableSeatsNum: retBusinessSeats.availableSeatsNum + 1, allSeats: [...retBusinessSeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -222,6 +248,8 @@ const SelectSeats = () => {
       })
     }
     else {
+      setRetSeatsOfPass(retSeatsOfPass.map((seat,i) => i === indexOfCurrEdit ? "" : seat));
+      setRetCabinOfPass(retCabinOfPass.map((cabin,i) => i === indexOfCurrEdit ? "" : cabin));
       setChosenArrivalSeats([chosenArrivalSeats[0], chosenArrivalSeats[1], [...(chosenArrivalSeats[2].filter(seat => seat !== `${row}${number}`))]])
       setRetEconomySeats({
         availableSeatsNum: retEconomySeats.availableSeatsNum + 1, allSeats: [...retEconomySeats.allSeats.slice(0, row.charCodeAt(0) - 65),
@@ -234,33 +262,78 @@ const SelectSeats = () => {
   }
 
   const handleSubmit = () => {
-    console.log('heree in departure seats', depFirstSeats)
-    axios.patch('http://localhost:8000/flights/61ab38be47a43061f70d0262', {
-      updatedFlights: {
-        FirstSeats: depFirstSeats, BusinessSeats: depBusinessSeats,
-        EconomySeats: depEconomySeats
-      }
-    })
-      .then((response) => { console.log('dep updated: ', response); })
+    let depFlag = true;
+    let retFlag = true;
+    console.log('prop1', Object.keys(passInfo).length)
+    console.log('prop2', Object.keys(passInfo1).length)
 
-    console.log('heree in return seats', retFirstSeats)
-    axios.patch('http://localhost:8000/flights/61aabb22a6e8ee04242bcdbe', {
-      updatedFlights: {
-        FirstSeats: retFirstSeats, BusinessSeats: retBusinessSeats,
-        EconomySeats: retEconomySeats
+    for(let i = 0; i < Object.keys(passInfo).length; i++){
+      if(Object.keys(passInfo[`Passenger ${i}`]).length !== 3){
+        console.log('prop11', Object.keys(passInfo[`Passenger ${i}`]).length)
+        depFlag = false;
+        break;
       }
-    })
-      .then((response) => { console.log('arr updated: ', response); })
-
-    history.push(`/BookingTripInfo`, {
-      dFlight: location.state.departureFlight, rFlight: location.state.returnFlight, dSeats: depSeatsOfPass, rSeats: retSeatsOfPass,
-      cabin: scData.depCriteria.cabin, depPassInfo: passInfo, retPassInfo: passInfo1
+    }
+    for(let i = 0; i < Object.keys(passInfo1).length; i++){
+      if(Object.keys(passInfo1[`Passenger ${i}`]).length !== 3){
+        console.log('prop22', Object.keys(passInfo1[`Passenger ${i}`]).length)
+        retFlag = false;
+        break;
+      }
+    }
+    if(Object.keys(passInfo).length !== numOfPass || Object.keys(passInfo1).length !== numOfPass){
+      console.log('First caseee')
+      setErrorHandlingMessage('You Forgot To Fill All Inputs');
+    }
+    else if(!depFlag || !retFlag){
+      console.log('second caseee')
+      setErrorHandlingMessage('You Forgot To Fill All Inputs')
+    }
+    else{
+      console.log('flag11', depFlag)
+      console.log('flag22', retFlag)
+      console.log('elseeeee')
+      
+      console.log('heree in departure seats', depFirstSeats)
+      axios.patch(`http://localhost:8000/flights/${location.state.departureFlight._id}`, {
+        updatedFlights: {
+          FirstSeats: depFirstSeats, BusinessSeats: depBusinessSeats,
+          EconomySeats: depEconomySeats
+        }
+      }).then((response) => {
+        let updatedDep =  response.data;
+        console.log('heree in return seats', retFirstSeats)
+        axios.patch(`http://localhost:8000/flights/${location.state.returnFlight._id}`, {
+          updatedFlights: {
+            FirstSeats: retFirstSeats, BusinessSeats: retBusinessSeats,
+            EconomySeats: retEconomySeats
+          }
+        }).then((res) => {
+          let updatedRet = res.data;
+          history.push(`/BookingTripInfo`, {
+            dFlight: updatedDep, rFlight: updatedRet, dSeats: depSeatsOfPass, rSeats: retSeatsOfPass,
+            cabin: scData.depCriteria.cabin, depPassInfo: passInfo, retPassInfo: passInfo1
+        })
+      })
     })
   }
+}
+
+  const toggleDepShow = (index) => {
+    setShowDepPassInfo(showDepPassInfo.map((info, i) => i === index ? {show: !info.show} : {show: false}))
+    setIndexOfCurrEdit(index)
+  };
+  const toggleRetShow = (index) => {
+    setShowRetPassInfo(showRetPassInfo.map((info, i) => i === index ? {show: !info.show} : {show: false}))
+    setIndexOfCurrEdit(index)
+  };
+
   ///BookingTripInfo
-  console.log('deparrayy', depSeatsOfPass);
+  console.log('deparrayyy', depSeatsOfPass);
   console.log('retarrayyy', retSeatsOfPass);
-  //setTimeout(()=>myRef.current.scrollIntoView({behavior: 'smooth'}), 500)
+  //
+  console.log('depPass', passInfo);
+  console.log('retPass', passInfo1);
 
   const [depVisible, setDepVisible] = useState(true);
   const depTransitions = useTransition(depVisible, {
@@ -282,11 +355,12 @@ const SelectSeats = () => {
     <>
       <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100% 100%', zIndex: '1' }} className="flex-column justify-content-center align-items-center">
         <Card className="m-auto w-100" style={{ backgroundColor: 'transparent' }}>
-        <Card.Body className="d-flex">
-          <Col lg={6}>
+        {(fetched === true) ?
+        (<Card.Body className="d-flex">
+          <Col lg={6} >
 
-            <Paper elevation={3} style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', height: '120vh' }}>
-              <div className='d-flex justify-content-center align-items-center w-100' style={{ marginBottom: '4vh' }} >
+            <Paper className='pt-3' elevation={3} style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', height: '120vh' }}>
+              <div className='d-flex justify-content-center align-items-center w-100 '>
                 {
                   (fetched === true) ?
                     (
@@ -323,9 +397,9 @@ const SelectSeats = () => {
 
           </Col>
 
-          <Col lg={6} className='d-flex flex-column justify-content-center align-items-center'
-            style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', height: '120vh' }}>
-            <Paper elevation={3} className='w-75 text-center d-flex justify-content-center'>
+          <Col lg={6} className='d-flex flex-column align-items-center p-3'
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}>
+            <Paper elevation={3} className='w-100 text-center d-flex justify-content-center'>
               <CardContent>
                 <Typography variant="h5" color="text.secondary" gutterBottom>
                   Departure/Return Flight Seats Details
@@ -343,59 +417,144 @@ const SelectSeats = () => {
               </CardContent>
             </Paper>
 
-            <div className='mt-3 mb-3'>
-              <Button className='m-2' variant='warning' onClick={() => { setRetVisible(false); setTimeout(() => setDepVisible(true), 1000) }}  >
-                Show Departure Plane
+            <div className='w-75 mt-3 mb-4 d-flex justify-content-between'>
+              <Button className='m-2' variant='warning' onClick={() => { setRetVisible(false); setloadingBtn1(true); setloadingBtn2(false); setTimeout(() => setDepVisible(true), 1000); showRetPassInfo.map(info => info.show = false)}} 
+              disabled = {loadingBtn1 === true} >
+                {loadingBtn1 ? "Currently Viewing Departure Seats" : "Show Departure Plane"}
               </Button>
-              <Button className='m-2' variant='warning' onClick={() => { setDepVisible(false); setTimeout(() => setRetVisible(true), 1000) }}  >
-                Show Return Plane
+              <Button className='m-2' variant='warning' onClick={() => { setDepVisible(false); setloadingBtn1(false); setloadingBtn2(true); setTimeout(() => setRetVisible(true), 1000); showDepPassInfo.map(info => info.show = false) }}
+                disabled = {loadingBtn2 === true}  >
+                {loadingBtn2 ? "Currently Viewing Return Seats" : "Show Return Plane"}
               </Button>
             </div>
 
-            <div className='w-100 d-flex justify-content-center align-items-center' style={{ height: '40vh', marginRight: '2vh' }}>
+            <div className='w-100 d-flex justify-content-center align-items-center mt-4 mb-4' style={{ height: '40vh', marginRight: '2vh' }}>
               {depTransitions(
                 (styles, item) =>
                   item && (
-                    <Transition width={'w-75'} style={styles} >
+                    <Transition width={'w-100'} style={styles} >
                       <Paper elevation={3} className='m-2 w-100 text-center'>
                         <CardContent>
                           <Typography variant="h5" color="text.secondary" gutterBottom>
                             Chosen Departure Flight Seats
                           </Typography>
-                          <div className='d-flex justify-content-center'>
-                            <div>
-                              <Typography className='m-3' variant="h6" component="div">
-                                Passengers
-                              </Typography>
-                              <div className='d-flex flex-column justify-content-center'>
-                                {buttons}
-                              </div>
-                            </div>
+                          <Typography variant="h6" color="text.secondary" gutterBottom>
+                            {errorHandlingMessage === '' ? 'Press On The Buttons On The Right To Start Editing Info For Passengers' : errorHandlingMessage}
+                          </Typography>
+                          <div>
+                          <div className='d-flex justify-content-center justify-content-between'>
+                            
+                                  <div>
+                                    <Typography className='m-2 p-1' variant="h6" component="div">
+                                      Passengers
+                                    </Typography>
+                                  </div>
 
-                            <div>
-                              <Typography className='m-3' variant="h6" component="div">
-                                Chosen Seats
-                              </Typography>
-                              <div className='d-flex flex-column justify-content-center'>
-                                {depSeatsOfPass.map(seat => (
-                                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {seat}
-                                  </Typography>
-                                ))}
-                              </div>
-                            </div>
+                                  <div>
+                                    <Typography className='m-2 p-1' variant="h6" component="div">
+                                      Chosen Seats
+                                    </Typography>
+                                  </div>
 
-                            <div>
-                              <Typography className='m-3' variant="h6" component="div">
-                                Chosen Class
-                              </Typography>
-                              {depCabinOfPass.map(cabin => (
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                  {cabin}
-                                </Typography>
-                              ))}
-                            </div>
+                                  <div>
+                                    <Typography className='m-2 p-1' variant="h6" component="div">
+                                      Chosen Class
+                                    </Typography>
+                                  </div>
+
+                                  <div>
+                                    <Typography className='m-2 p-1' variant="h6" component="div">
+                                      Press To Choose Seat
+                                    </Typography>
+                                  </div>
+
                           </div>
+                          {
+                            
+                            ([...Array(numOfPass)].map((e, index) => (
+                              <div className='d-flex justify-content-center  justify-content-between'>
+                              {
+                                showDepPassInfo[index].show === false ? (
+                                  <FadeInOut show={!showDepPassInfo[index].show } duration={500} >
+                                  <Typography className='mt-3' variant="h5" color="text.secondary" gutterBottom>
+                                   Passenger {index} Info
+                                  </Typography>
+                                </FadeInOut>
+                                ) : (
+                                  <>
+                                  <div>
+                                  <FadeInOut show={showDepPassInfo[index].show } duration={500} >
+                                    <div className='d-flex flex-column justify-content-center w-75'>
+                                      <TextField
+                                        id="standard-password-input"
+                                        label={`Passenger ${index + 1 } Name`}
+                                        type="text"
+                                        variant="standard"
+                                        defaultValue = { 
+                                        passInfo.hasOwnProperty(`Passenger ${indexOfCurrEdit}`) && 
+                                        passInfo[`Passenger ${indexOfCurrEdit}`].hasOwnProperty('name') ? passInfo[`Passenger ${indexOfCurrEdit}`].name : '' }
+                                        onChange={(e) => 
+                                          setPassInfo({ ...passInfo, [`Passenger ${indexOfCurrEdit}`]: 
+                                          {...passInfo[`Passenger ${indexOfCurrEdit}`], name: e.target.value, 
+                                           } })}
+                                        />
+                                    </div>
+                                  </FadeInOut>
+                                  </div>
+  
+                                  <div>
+                                
+                                    {depSeatsOfPass.map((seat, i) => i === index ? (
+                                    <FadeInOut show={showDepPassInfo[index].show } duration={500} >
+                                       <div className='d-flex flex-column justify-content-center align-items-center'
+                                       style = {{marginTop : '7px'}}>
+                                        <Typography className = "mr-5 pr-3 mt-2" color="text.secondary">
+                                          {seat}
+                                        </Typography>
+                                      </div>
+                                       </FadeInOut>
+                                    ) : (
+                                      ''
+                                    )
+                                    )}
+                                 
+                                  </div>
+  
+                                  <div>
+                                
+                                    {depCabinOfPass.map((cabin, i) => i === index ? (
+                                    <FadeInOut show={showDepPassInfo[index].show } duration={500} >
+                                       <div className='d-flex flex-column justify-content-center mt-3'
+                                        style = {{marginTop : '5px'}}>
+                                        <Typography color="text.secondary">
+                                          {cabin}
+                                        </Typography>
+                                      </div>
+                                    </FadeInOut>
+                                    ) : (
+                                      ''
+                                    )
+                                    )}
+                                
+                                  </div>
+                                  </>
+                                )
+                              }
+                                <div>
+                                  <div className='d-flex flex-column justify-content-center align-items-center'>
+                                  {
+                                    <Button className='m-3' variant="warning" id="button-1" onClick={() => toggleDepShow(index)} disabled = {showDepPassInfo[index].show}>
+                                      {showDepPassInfo[index].show ? `Now Editing Passenger ${index + 1}` :`Edit Info Passenger ${index + 1}`} 
+                                    </Button>
+                                  }
+                                  </div>
+                                </div>
+                              </div>
+                              
+                            )))
+                          }
+                          </div>
+                          
                         </CardContent>
                       </Paper>
                     </Transition>
@@ -404,56 +563,142 @@ const SelectSeats = () => {
               {retTransitions(
                 (styles, item) =>
                   item && (
-                    <Transition width={'w-75'} style={styles} >
-                      <Paper elevation={3} className='m-2 w-100 text-center'>
-                        <CardContent>
-                          <Typography variant="h5" color="text.secondary" gutterBottom>
-                            Chosen Arrival Flight Seats
-                          </Typography>
-                          <div className='d-flex justify-content-center'>
-                            <div>
-                              <Typography className='m-3' variant="h6" component="div">
-                                Passengers
-                              </Typography>
-                              <div className='d-flex flex-column justify-content-center'>
-                                {buttons}
+                    <Transition width={'w-100'} style={styles} >
+                    <Paper elevation={3} className='m-2 w-100 text-center'>
+                      <CardContent>
+                        <Typography variant="h5" color="text.secondary" gutterBottom>
+                          Chosen Return Flight Seats
+                        </Typography>
+                        <Typography variant="h6" color="text.secondary" gutterBottom>
+                          {errorHandlingMessage === '' ? 'Press On The Buttons On The Right To Start Editing Info For Passengers' : errorHandlingMessage}
+                        </Typography>
+                        <div>
+                        <div className='d-flex justify-content-center justify-content-between'>
+                            
+                                <div>
+                                  <Typography className='m-2 p-1' variant="h6" component="div">
+                                    Passengers
+                                  </Typography>
+                                </div>
+
+                                <div>
+                                  <Typography className='m-2 p-1' variant="h6" component="div">
+                                    Chosen Seats
+                                  </Typography>
+                                </div>
+
+                                <div>
+                                  <Typography className='m-2 p-1' variant="h6" component="div">
+                                    Chosen Class
+                                  </Typography>
+                                </div>
+
+                                <div>
+                                  <Typography className='m-2 p-1' variant="h6" component="div">
+                                    Press To Choose Seat
+                                  </Typography>
+                                </div>
+
+                        </div>
+                        {
+                            
+                          ([...Array(numOfPass)].map((e, index) => (
+                            <div className='d-flex justify-content-center  justify-content-between'>
+                            {
+                                showRetPassInfo[index].show === false ? (
+                                <FadeInOut show={!showRetPassInfo[index].show } duration={500} >
+                                <Typography className='mt-3' variant="h5" color="text.secondary" gutterBottom>
+                                Passenger {index} Info
+                                </Typography>
+                              </FadeInOut>
+                              ) : (
+                                <>
+                                <div>
+                                <FadeInOut show={showRetPassInfo[index].show } duration={500} >
+                                  <div className='d-flex flex-column justify-content-center w-75'>
+                                    <TextField
+                                      id="standard-password-input"
+                                      label={`Passenger ${index + 1 } Name`}
+                                      type="text"
+                                      variant="standard"
+                                      defaultValue = { 
+                                        passInfo1.hasOwnProperty(`Passenger ${indexOfCurrEdit}`) && 
+                                        passInfo1[`Passenger ${indexOfCurrEdit}`].hasOwnProperty('name') ? passInfo1[`Passenger ${indexOfCurrEdit}`].name : '' }
+                                      onChange={(e) => 
+                                        setPassInfo1({ ...passInfo1, [`Passenger ${indexOfCurrEdit}`]: 
+                                        { ...passInfo1[`Passenger ${indexOfCurrEdit}`], name: e.target.value, 
+                                         } })}
+                                      />
+                                  </div>
+                                </FadeInOut>
+                                </div>
+  
+                                <div>
+                                
+                                {retSeatsOfPass.map((seat, i) => i === index ? (
+                                <FadeInOut show={showRetPassInfo[index].show } duration={500} >
+                                   <div className='d-flex flex-column justify-content-center align-items-center'
+                                   style = {{marginTop : '7px'}}>
+                                    <Typography className = "mr-5 pr-3 mt-2" color="text.secondary">
+                                      {seat}
+                                    </Typography>
+                                  </div>
+                                   </FadeInOut>
+                                ) : (
+                                  ''
+                                )
+                                )}
+                             
+                              </div>
+
+                              <div>
+                            
+                                {retCabinOfPass.map((cabin, i) => i === index ? (
+                                <FadeInOut show={showRetPassInfo[index].show } duration={500} >
+                                   <div className='d-flex flex-column justify-content-center mt-3'
+                                    style = {{marginTop : '5px'}}>
+                                    <Typography color="text.secondary">
+                                      {cabin}
+                                    </Typography>
+                                  </div>
+                                </FadeInOut>
+                                ) : (
+                                  ''
+                                )
+                                )}
+                            
+                              </div>
+                                </>
+                              )
+                            }
+                              <div>
+                                <div className='d-flex flex-column justify-content-center align-items-center'>
+                                {
+                                  <Button className='m-3' variant="warning" id="button-1" onClick={() => toggleRetShow(index)} disabled = {showRetPassInfo[index].show}>
+                                    {showRetPassInfo[index].show ? `Now Editing Passenger ${index + 1}` :`Edit Info Passenger ${index + 1}`} 
+                                  </Button>
+                                }
+                                </div>
                               </div>
                             </div>
-
-                            <div>
-                              <Typography className='m-3' variant="h6" component="div">
-                                Chosen Seats
-                              </Typography>
-                              {retSeatsOfPass.map(seat => (
-                                <Typography className = 'mt-5' sx={{ mb: 1.5 }} color="text.secondary">
-                                  {seat}
-                                </Typography>
-                              ))}
-                            </div>
-
-                            <div>
-                              <Typography className='m-3' variant="h6" component="div">
-                                Chosen Class
-                              </Typography>
-                              {retCabinOfPass.map(cabin => (
-                                <Typography className = 'mt-5' sx={{ mb: 1.5 }} color="text.secondary">
-                                  {cabin}
-                                </Typography>
-                              ))}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Paper>
-                    </Transition>
+                              
+                          )))
+                        }
+                        </div>
+                          
+                      </CardContent>
+                    </Paper>
+                  </Transition>
                   )
               )}
             </div>
 
-            <Button className='w-25 mt-3' variant="success" id="button-1" onClick={handleSubmit} >
+            <Button className='w-25 mt-4' variant="success" id="button-1" onClick={handleSubmit}>
               Submit
             </Button>
           </Col>
-        </Card.Body>
+        </Card.Body>) : ''
+        }
       </Card>
       </div>
     </>

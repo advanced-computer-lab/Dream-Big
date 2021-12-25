@@ -32,6 +32,8 @@ import ViewReturn2 from './DepArrComponent/ViewReturn';
 import ViewDepDetails from './DepArrComponent/ViewDepDetails';
 import ReservedSuccessfully2 from './ConfirmReservationComponent/LoadingSystem2';
 import GreenConfirmation from './ConfirmReservationComponent/GreenConfirmation';
+import EditSeats from './editReservedSeatsComponent/SelectSeat';
+import ReservedTripDetails from './ViewReservedTripDetails/ReservedTripDetails';
 
 const App = () => {
 
@@ -103,7 +105,7 @@ const App = () => {
                       </Route>
 
                       <Route path='/'>
-                        <Redirect to="login" />
+                        <Redirect to="/users/search" />
                       </Route>
 
                     </Switch>
@@ -186,7 +188,7 @@ const App = () => {
                             </Route>
 
                             <Route exact path='/users/update/:id'>
-                              <UpdateUser />
+                              <UpdateUser setUser={setUser}/>
                             </Route>
                             <Route exact path='/users/search'>
                               <UserSearch setSearchCriteria={setSearchCriteria} setDepFlights={setDepFlights} setRetFlights={setRetFlights} />
@@ -224,6 +226,13 @@ const App = () => {
 
                             <Route exact path='/ReturnFlightDetails'>
                               <MediaCard />
+                            </Route>
+
+                            <Route exact path='/editSeats'>
+                              <EditSeats setUser={setUser}/>
+                            </Route>
+                            <Route exact path='/tripDetails'>
+                              <ReservedTripDetails />
                             </Route>
                           </Switch>
                         </>

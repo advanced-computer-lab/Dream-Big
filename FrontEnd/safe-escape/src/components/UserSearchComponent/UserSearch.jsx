@@ -86,14 +86,10 @@ const UserSearch = (props) => {
       props.setRetFlights(res.data);
       if (res.data.length === 0)
         setRetLengthZero(true);
-
     });
-
-
-
+    
     if (depLengthZero && retLengthZero)
       setNoMatchingFlights(true);
-
     else{
       routeChange();
       props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
