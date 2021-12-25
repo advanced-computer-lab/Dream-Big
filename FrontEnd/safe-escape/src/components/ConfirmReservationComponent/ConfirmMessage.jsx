@@ -92,20 +92,6 @@ export default function MediaCard() {
                 return diffInMs / (1000 * 60 * 60);
             }
             setayhaga(response.data);
-            // setDD(response.data.FlightDepDate);
-            // setAD(response.data.FlightArrDate);
-            // setDT(response.data.FlightDepTime);
-            // setAT(response.data.FlightArrTime);
-            // setFN(response.data.FlightNumber);
-            // setBA(response.data.BaggageAllowance);
-            // setBBA(response.data.BusinessSeats.availableSeatsNum);
-            // setFS(response.data.FirstSeats.availableSeatsNum);
-            // setEA(response.data.EconomySeats.availableSeatsNum);
-            // setPrice(response.data.Price);
-            // setA(response.data.FlightDepDate);
-            // setB(response.data.FlightArrDate);
-            // setBB(toDate(response.data.FlightDepTime, "h:m"));
-            // setBBB(toDate2(response.data.FlightArrTime, "h:m"));
             setTD(Math.floor(getDifferenceInHours(toDate(myParams.FlightDepTime, "h:m"), toDate2(myParams.FlightArrTime, "h:m"))))
         })
     }, [])
@@ -113,7 +99,7 @@ export default function MediaCard() {
     const handleSubmit = (hello) => {
         setUR(updateReservedFlights.push(ayhaga));
         if (Object.keys(user).length === 0){
-            let path = `/login`;
+            let path = `/detsBeforeLogin`;
             history.push(path,{hello, myFlight});
         }
         else{
