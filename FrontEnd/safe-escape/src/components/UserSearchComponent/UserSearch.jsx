@@ -26,14 +26,17 @@ const style = {
   p: 4,
 };
 
-
+const currYear = new Date().getUTCFullYear();
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+//const currDate=new Date();
 const UserSearch = (props) => {
 
   const history = useHistory();
 
   const routeChange = () => {
     let path = `/ViewOutBoundFlight`;
-    history.push(path);
+    history.push(path,{departureFlightsOutput});
   }
 
   const baseURL = 'http://localhost:8000/users/getUserSearch';
@@ -48,6 +51,7 @@ const UserSearch = (props) => {
   const [TravellerDetailsValue, setTravellerDetailsValue] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [depDate,setDepDate]=useState(date);
   //USER'S INPUT
   const [userSearchDeptInput, setUserSearchDeptInput] = useState({});
   const [userSearchRetInput, setUserRetSearchInput] = useState({});
@@ -68,6 +72,9 @@ const UserSearch = (props) => {
   //
   const [retLengthZero, setRetLengthZero] = useState(false);
 
+  const [changingFlight, setChangingFlight] = useState(false);
+
+
   const handleClassChange = (event) => {
     setClassType(event.target.value);
   };
@@ -87,7 +94,13 @@ const UserSearch = (props) => {
       if (res.data.length === 0)
         setRetLengthZero(true);
     });
-    
+
+   // routeChange();
+
+    // props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
+
+    // if (depLengthZero && retLengthZero)
+    //   setNoMatchingFlights(true);
     if (depLengthZero && retLengthZero)
       setNoMatchingFlights(true);
     else{
@@ -110,7 +123,7 @@ const UserSearch = (props) => {
               <Row>
                 <Col>
                   <Form.Group controlId="validationCustom01">
-                    <TextField id="standard-basic" label="From" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "From": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "To": e.target.value }); setIsEmpty(false); }} />
+                    <TextField id="standard-basic" label="From (CAI)" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "From": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "To": changingFlight? 'Changing Flight' : e.target.value }); setIsEmpty(false); }} />
 
                   </Form.Group>
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -119,7 +132,7 @@ const UserSearch = (props) => {
                 <Col>
                   <Form.Group controlId="validationCustom01">
 
-                    <TextField id="standard-basic" label="To" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "To": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "From": e.target.value }); setShowDiv(true); setIsEmpty(false); }} />
+                    <TextField id="standard-basic" label="To (BER)" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "To": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "From": changingFlight? 'Changing Flight' : e.target.value }); setShowDiv(true); setIsEmpty(false); }} />
                   </Form.Group>
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Col>
@@ -130,7 +143,7 @@ const UserSearch = (props) => {
                     <div style={{ display: 'flex', flexDirection: "column", flexWrap: "wrap" }} className="d-flex justify-content-center align-items-center">
                       <label>Departure Date</label>
 
-                      <input type="date" label="Departure Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "FlightDepDate": e.target.value }); setIsEmpty(false); }} />
+                      <input type="date" min={date} label="Departure Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "FlightDepDate": changingFlight? 'Changing Flight' :  e.target.value }); setIsEmpty(false); setDepDate(e.target.value)}} />
 
 
                     </div>
@@ -145,7 +158,7 @@ const UserSearch = (props) => {
                     <div style={{ display: 'flex', flexDirection: "column", flexWrap: "wrap" }} className="d-flex justify-content-center align-items-center">
                       <label>Return Date</label>
 
-                      <input type="date" label="Return Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserRetSearchInput({ ...userSearchRetInput, "FlightDepDate": e.target.value }); setIsEmpty(false); }} />
+                      <input type="date" min={depDate} label="Return Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserRetSearchInput({ ...userSearchRetInput, "FlightDepDate": changingFlight? 'Changing Flight' : e.target.value }); setIsEmpty(false); }} />
 
                     </div>
                   </Form.Group>
@@ -181,13 +194,13 @@ const UserSearch = (props) => {
               <div className="d-flex justify-content-center  align-items-center w-100">
                 <div className="d-flex justify-content-center justify-content-between align-items-center w-25">
                   <div>
-                    From {userSearchDeptInput.From}
+                    From {userSearchDeptInput.From!=null ? userSearchDeptInput.From :""}
                   </div>
                   <div>
                     <i className="gg-airplane plane"></i>
                   </div>
                   <div>
-                    To {userSearchDeptInput.To}
+                    To {userSearchDeptInput.To!=null ? userSearchDeptInput.To : ""}
                   </div>
                 </div>
               </div> : ''}
@@ -201,8 +214,10 @@ const UserSearch = (props) => {
 
                 </div>
               </div> : ''}
-
+            
             <Button className="btn-warning" variant="success" onClick={handleSubmit} disabled={isEmpty}>Search</Button>
+           {isEmpty?<div style={{color:'brown'}}><span>Enter Your desired round trip details to proceed with your journey</span></div>:''}
+            
           </Card.Body>
 
         </Card>
@@ -251,7 +266,7 @@ const UserSearch = (props) => {
                   }
                   setNumberOfPassengers(adultsNumber + childrenNumber);
                   //  setUserSearchDeptInput({...userSearchDeptInput,[cabin]:{"availableSeatsNum": {"$gte":parseInt(adultsNumber)+parseInt(childrenNumber)}}});
-                  setUserSearchDeptInput({ ...userSearchDeptInput, cabin: cabin, chosenSeats: (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
+                  setUserSearchDeptInput({ ...userSearchDeptInput, cabin: cabin, chosenSeats: changingFlight? 'Changing Flight' : (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
                   setUserRetSearchInput({ ...userSearchRetInput, cabin: cabin, chosenSeats: (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
                   setOpen(false);
                   // { [req.body.Cabin] :{availableSeatsNum:{$gte : req.body.numberOfPassengers}}, ...req.body}

@@ -204,6 +204,21 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
+router.route('/signup').post(async (req, res, next) => {
+  const user =new Users( req.body);
+ 
+  try{
+    const registeredUser = await Users.register(user, req.body.Password);
+    res.send("Registered Successfully");
+  }
+  catch(err)
+  {
+      console.log(err);
+      res.status(500).send(err)
+  }
+
+}
+);
 router.get('/:id/getReservedFlights', async (req, res, next) => {
   try {
     console.log(req.params.id)

@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { Steps } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const ViewReturn2 = (props) => {
 
@@ -23,11 +24,14 @@ const ViewReturn2 = (props) => {
   const history = useHistory();
   const color = 'white'
 
+  console.log(props.depFlights,"VIEW RETURN");
+
   const routeChange = (slide) => {
     let path = `/ArrivalFlightDetails`;
     history.push(path, { slide });
   }
-
+  const location = useLocation();
+  console.log(location.state,"STATE");
   const [state, setState] = useState({
     goToSlide: 0,
     offsetRadius: 2,
