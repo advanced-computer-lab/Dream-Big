@@ -36,28 +36,36 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  ReservedFlights: {
-    Departure: { type: Schema.Types.ObjectId, ref: 'Flight' },
-    Return: { type: Schema.Types.ObjectId, ref: 'Flight' },
+  ReservedFlights: [{
+    Departure: { 
+      type: mongoose.SchemaTypes.Mixed,
+      required: true 
+    },
+    Return: { 
+      type: mongoose.SchemaTypes.Mixed,
+      required: true 
+    },
     ChosenDepSeats: {
-      type: Map,
-      of: String,
+      type: Array,
       required: false
     },
-    ChosenDepCabin: {
+    ChosenCabin: {
       type: String,
       required: false
     },
     ChosenRetSeats: {
-      type: Map,
-      of: String,
+      type: Array,
       required: false
     },
-    ChosenRetCabin: {
-      type: String,
+    depPassengerInfo: {
+      type: mongoose.SchemaTypes.Mixed,
       required: false
-    }
-  }
+    },
+    retPassengerInfo: {
+      type: mongoose.SchemaTypes.Mixed,
+      required: false
+    },
+  }]
 }, { timestamps: true });
 
 // plugin for passport-local-mongoose

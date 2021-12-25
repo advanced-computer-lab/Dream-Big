@@ -18,14 +18,13 @@ import { border } from '@mui/system';
 import ReactDOM from 'react-dom';
 import { useSpring, animated } from 'react-spring';
 import { Steps } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlane } from '@fortawesome/free-solid-svg-icons'
-import backgrnd from './bground.jpeg';
 import { useLocation } from "react-router-dom";
+import { UserData } from '../../UserContext';
 
 export default function MediaCard() {
 
     const location = useLocation();
+    const user = UserData();
 
     const myParams = location.state.slide;
     const myFlight = location.state.flight
@@ -52,13 +51,11 @@ export default function MediaCard() {
     const [To, setTo] = useState();
     const [Fname, setFname] = useState();
 
-    let { id } = useParams();
     const baseUrl = `http://localhost:8000/flights/FlightDetails/6186c408f38e49ec1e0d3011`;
     const baseUrl2 = `http://localhost:8000/users/61a49102b62a597189c517f0`
 
     const [updateReservedFlights, setUR] = useState([]);
 
-    let users = { Fname: "Engy", Lname: "Khaled" }
 
     const history = useHistory();
 
@@ -69,8 +66,8 @@ export default function MediaCard() {
             setTo(response.data.To);
 
             function toDate(dStr, format) {
-                var now = new Date(response.data.FlightDepDate);
-                if (format == "h:m") {
+                var now = new Date(myParams.FlightDepDate);
+                if (format === "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
                     now.setSeconds(0);
@@ -80,8 +77,8 @@ export default function MediaCard() {
             }
 
             function toDate2(dStr, format) {
-                var now = new Date(response.data.FlightArrDate);
-                if (format == "h:m") {
+                var now = new Date(myParams.FlightArrDate);
+                if (format === "h:m") {
                     now.setHours(dStr.substr(0, dStr.indexOf(":")));
                     now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
                     now.setSeconds(0);
@@ -95,58 +92,30 @@ export default function MediaCard() {
                 return diffInMs / (1000 * 60 * 60);
             }
             setayhaga(response.data);
-            // setDD(response.data.FlightDepDate);
-            // setAD(response.data.FlightArrDate);
-            // setDT(response.data.FlightDepTime);
-            // setAT(response.data.FlightArrTime);
-            // setFN(response.data.FlightNumber);
-            // setBA(response.data.BaggageAllowance);
-            // setBBA(response.data.BusinessSeats.availableSeatsNum);
-            // setFS(response.data.FirstSeats.availableSeatsNum);
-            // setEA(response.data.EconomySeats.availableSeatsNum);
-            // setPrice(response.data.Price);
-            // setA(response.data.FlightDepDate);
-            // setB(response.data.FlightArrDate);
-            // setBB(toDate(response.data.FlightDepTime, "h:m"));
-            // setBBB(toDate2(response.data.FlightArrTime, "h:m"));
             setTD(Math.floor(getDifferenceInHours(toDate(myParams.FlightDepTime, "h:m"), toDate2(myParams.FlightArrTime, "h:m"))))
         })
     }, [])
 
     const handleSubmit = (hello) => {
         setUR(updateReservedFlights.push(ayhaga));
-        let path = `/login`;
-        history.push(path,{hello, myFlight});
+        if (Object.keys(user).length === 0){
+            let path = `/detsBeforeLogin`;
+            history.push(path,{hello, myFlight});
+        }
+        else{
+            let path = `/seats`;
+            history.push(path,{ departureFlight: {...myFlight}, returnFlight: {...hello}});
+        }
         console.log(hello, "Hello");
         console.log(myFlight, "Flightt");
         axios.put(baseUrl2, { updateReservedFlights }).then((response) => { console.log('updateddd', updateReservedFlights); })
     };
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
     return (
         <div>
-            <div className=" d-flex mt-2 ml-5">
-                <div className = "ml-5">
-                    <Avatar size={84} icon={<UserOutlined />} />
-                    <h3 className=" mt-2">Welcome: {users.Fname} {users.Lname}</h3>
-                </div>
-            </div>
             <div className="d-flex align-items-center justify-content-center">
                 <div>
-                    <div className="">
+                    <div className="mt-5">
                         <div className="mt-5 ml-5">
                             <Steps direction="horizontal" current={1}>
                                 <Step className="ml-2 mr-2" title="Finished" description="Choose Suitable Flight" />

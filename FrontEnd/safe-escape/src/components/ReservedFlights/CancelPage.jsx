@@ -4,8 +4,16 @@ import { Card, Modal, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Result, Button } from 'antd';
 // import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const CancelPage = (props) => {
+
+    const history = useHistory();
+
+    const routeChange = () => {
+        let path = `/users/search`;
+        history.push(path);
+    }
     
     console.log("this props", props.cancellation);
     // console.log("paramssss", myParams);
@@ -17,12 +25,12 @@ const CancelPage = (props) => {
                     title="Booking cancelled!"
                     title="Your payment will be refunded soon "
                     extra={
-                        <Button type="primary" >
+                        <Button type="primary" onClick = {routeChange}>
                             <Link
                                 to="/"
                                 style={{ color: "inherit", textDecoration: "inherit" }}
                             >
-                                Book new flight
+                                Book new Trip
                             </Link>
                         </Button>
                     }

@@ -7,13 +7,13 @@ import { Descriptions, Badge } from 'antd';
 import { Button } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 import { Result } from 'antd';
-import { useRef } from 'react';
 import qrcode from './Safe-Escape_Airlines.png';
 import Qrcode from './qrcode_localhost.png';
 import "./index.css";
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
+import ReactDOMServer from "react-dom/server";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { useLocation } from 'react-router-dom';
 
 var QRCode = require('qrcode.react');
 const randomstring = require("randomstring");
@@ -24,10 +24,54 @@ export default function SeeSum() {
         window.print();
     }
 
-    let componentRef = useRef();
+    function  printDocument() {
+        console.log('printtt')
+        let itenerary = (
+            <div id='divToPrint' style = {{backgroundColor: 'white', height : '100%'}} >
+            <div>
+                <Result
+                    icon={<SmileOutlined />}
+                    title="Congratulations, Here Is Your Ticket Along Your Confirmation Number."
+                />
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <Descriptions title={`Your Confirmation Number: ${barCodeNumber}`} bordered>
+                    <Descriptions.Item label="Outbound Flight Date (Departure)">{f.FlightDepDate}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Date (Arrival)">{f.FlightArrDate}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Date (Departure)">{s.FlightDepDate}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Date (Arrival)">{s.FlightArrDate}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Time (Departure)">{f.FlightDepTime}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Time (Arrival)">{f.FlightArrTime}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Time (Departure)">{s.FlightDepTime}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Time (Arrival)">{s.FlightArrTime}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Price">{f.Price}</Descriptions.Item>
+                    <Descriptions.Item label="Return Price">{s.Price}</Descriptions.Item>
+                    <Descriptions.Item label="Total Price">{parseInt( f.Price + s.Price)}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Chosen Cabin">{c}</Descriptions.Item>
+                    <Descriptions.Item label="Return Chosen Cabin">{c}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Chosen Seat/s">{ds.toString()}</Descriptions.Item>
+                    <Descriptions.Item label="Return Chosen Seat/s">{rs.toString()}</Descriptions.Item>
+                </Descriptions>
+            </div>
+            </div>
+        )
+        axios.get(`http://localhost:8000/users/sendEmail`, {
+            attach : itenerary
+        }).then((res) => console.log('Donee', res));
+    }
+
     const [barCodeNumber, setBarcode] = useState("");
 
     const history = useHistory();
+    const location = useLocation();
+
+    const f = location.state.first;
+    const s = location.state.second;
+    const c = location.state.cabins2;
+    const ds = location.state.depSeats2;
+    const rs = location.state.retSeats2;
+
+    console.log(location.state, "STTAEEE");
 
     const routeChange = () => {
         let path = `/ReservedFlights`;
@@ -47,8 +91,6 @@ export default function SeeSum() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState();
 
-
-    let { id } = useParams();
     const baseUrl = `http://localhost:8000/users/UserDetails/61a4708e8c20bdc40a534333`;
 
     useEffect(() => {
@@ -67,41 +109,8 @@ export default function SeeSum() {
         })
     }, []);
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
-
     return (
-        <div>
-            <div className=" d-flex mt-2 ml-5">
-                <div>
-                    <Avatar size={84} icon={<UserOutlined />} />
-                    <div className = "ml-3">
-                        <Button className = "mt-2 ml-5" type="primary" onClick={showModal}>
-                            Show My Details
-                        </Button>
-                        <Modal title="User Details" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                            <p>Age: {Age}</p>
-                            <p>Email: {email}</p>
-                            <p>Lives In: {LivesIn}</p>
-                            <p>Passport Number: {passportNumber}</p>
-                            <p>Phone Number: {phone}</p>
-                        </Modal>
-                    </div>
-                    <h3 className=" mt-2">Welcome: {Fname} {Mname} {Lname}</h3>
-                </div>
-            </div>
+        <div id='divToPrint' style = {{backgroundColor: 'white', height : '100%'}} >
             <div>
                 <Result
                     icon={<SmileOutlined />}
@@ -110,25 +119,28 @@ export default function SeeSum() {
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Descriptions title={`Your Confirmation Number: ${barCodeNumber}`} bordered>
-                    <Descriptions.Item label="Outbound Flight Date (Departure)">{flight_1.FlightDepDate}</Descriptions.Item>
-                    <Descriptions.Item label="Outbound Flight Date (Arrival)">{flight_1.FlightArrDate}</Descriptions.Item>
-                    <Descriptions.Item label="Return Flight Date (Departure)">{flight_1.FlightDepTime}</Descriptions.Item>
-                    <Descriptions.Item label="Return Flight Date (Arrival)">{flight_1.FlightArrTime}</Descriptions.Item>
-                    <Descriptions.Item label="Outbound Flight Time (Departure)">{flight_2.FlightDepDate}</Descriptions.Item>
-                    <Descriptions.Item label="Outbound Flight Time (Arrival)">{flight_2.FlightArrDate}</Descriptions.Item>
-                    <Descriptions.Item label="Return Flight Time (Departure)">{flight_2.FlightDepTime}</Descriptions.Item>
-                    <Descriptions.Item label="Return Flight Time (Arrival)">{flight_2.FlightArrTime}</Descriptions.Item>
-                    <Descriptions.Item label="Outbound Price">{flight_1.Price}</Descriptions.Item>
-                    <Descriptions.Item label="Return Price">{flight_2.Price}</Descriptions.Item>
-                    <Descriptions.Item label="Total Price">{flight_1.Price + flight_2.Price}</Descriptions.Item>
-                    <Descriptions.Item label="Outbound Chosen Cabin">{flight_1.CabinChosen}</Descriptions.Item>
-                    <Descriptions.Item label="Return Chosen Cabin">{flight_2.CabinChosen}</Descriptions.Item>
-                    <Descriptions.Item label="Outbound Chosen Seat/s">{flight_1.SeatsChosen}</Descriptions.Item>
-                    <Descriptions.Item label="Return Chosen Seat/s">{flight_2.SeatsChosen}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Date (Departure)">{f.FlightDepDate}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Date (Arrival)">{f.FlightArrDate}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Date (Departure)">{s.FlightDepDate}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Date (Arrival)">{s.FlightArrDate}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Time (Departure)">{f.FlightDepTime}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Flight Time (Arrival)">{f.FlightArrTime}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Time (Departure)">{s.FlightDepTime}</Descriptions.Item>
+                    <Descriptions.Item label="Return Flight Time (Arrival)">{s.FlightArrTime}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Price">{f.Price}</Descriptions.Item>
+                    <Descriptions.Item label="Return Price">{s.Price}</Descriptions.Item>
+                    <Descriptions.Item label="Total Price">{parseInt( f.Price + s.Price)}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Chosen Cabin">{c}</Descriptions.Item>
+                    <Descriptions.Item label="Return Chosen Cabin">{c}</Descriptions.Item>
+                    <Descriptions.Item label="Outbound Chosen Seat/s">{ds.toString()}</Descriptions.Item>
+                    <Descriptions.Item label="Return Chosen Seat/s">{rs.toString()}</Descriptions.Item>
                 </Descriptions>
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={print}>Print Ticket As PDF</Button>
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <Button onClick={printDocument}>Send To Self</Button>
             </div>
             <div className="d-flex justify-content-center mt-2">
                 <Button onClick={routeChange}>View All Reserved Flights</Button>
@@ -139,4 +151,3 @@ export default function SeeSum() {
         </div >
     );
 }
-

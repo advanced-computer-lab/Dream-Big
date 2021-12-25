@@ -5,51 +5,107 @@ import Image from 'react-bootstrap/Image'
 
 import './NavBar.css'
 
-import logo from '../assets/acl_logo.jpg'
-import logo2 from '../assets/Logo.png'
-import logoFinal from '../assets/LogoFinal.png'
+import logoFinal from '../assets/LogoFinal2.png'
+import { Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
+import { Button } from 'antd';
 
-import { React } from 'react'
+import { React, useState } from 'react'
 import { useHistory } from "react-router-dom"
-import { UserData } from './UserContext'
+import { UserData } from '../UserContext'
 
 const NavBar = () => {
   const user = UserData();
   const history = useHistory();
 
-    return (
-        <Navbar bg="dark" variant="dark" className= 'd-flex justify-content-between'>
-          <Image src={logoFinal} rounded style = {{height : '100px', marginLeft : '2vw'}}/>
-          <Container>
-            <Nav className="me-auto">
-              <Nav.Link onClick = {() => history.push('/listAll') }>List All</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/search') }>Search</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/seats') }>Seats</Nav.Link>
-              <Nav.Link onClick = {() => history.push('/CreateFlights') }>Create Flights</Nav.Link>
-            </Nav>
-            <Navbar.Collapse className="justify-content-end">
-              <Nav>
-                {
-                  (Object.keys(user).length === 0) 
-                  ?
-                  (
-                    <>
-                    <Nav.Link onClick = {() => history.push('/')}>Sign Up</Nav.Link>
-                    <Nav.Link onClick = {() => history.push('/login')}>Log In</Nav.Link>
-                    </>
-                  )
-                  :
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  return (
+    <Navbar bg="dark" variant="dark" className='d-flex justify-content-between' style={{ height: '120px' }}>
+      <Image src={logoFinal} rounded style={{ height: '220px', width: '200px'}} />
+      <Container>
+        <Nav className="me-auto ml-5">
+          {
+            (Object.keys(user).length === 0)
+              ?
+              (
+                <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
+              )
+              :
+              ((user.isAdmin)
+                ?
+                <>
+                  <Nav.Link onClick={() => history.push('/listAll')} >List All</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/search')} >Search</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/CreateFlights')}>Create Flights</Nav.Link>
+                </>
+                :
+                <>
+                  <Nav.Link onClick={() => history.push('/resetPassword')}>Change Password</Nav.Link>
+                  {/* <Nav.Link onClick={() => history.push('/Payment')}>Payment</Nav.Link> */}
+                  <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/ReservedFlights')}>View Reserved Flights</Nav.Link>
+                  <Nav.Link onClick={() => history.push(`/users/update/${user._id}`)}>Update Profile</Nav.Link>
+                </>)
+          }
+
+        </Nav>
+        <Navbar.Collapse className="justify-content-end">
+          <Nav>
+            {
+              (Object.keys(user).length === 0)
+                ?
+                (
                   <>
-                  <Navbar.Text>
-                    Welcome : <a href="#login">{user.username}</a>
-                  </Navbar.Text>
+                    <Nav.Link onClick={() => history.push('/GoogleLogin')}>Login With Google</Nav.Link>
+                    <Nav.Link onClick={() => history.push('/')}>Sign Up</Nav.Link>
+                    <Nav.Link onClick={() => history.push('/login')}>Log In</Nav.Link>
                   </>
-                }
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-    );
+                )
+                :
+                <>
+                  <div>
+                    <Navbar.Text>
+                      Welcome : <a href="#login">{user.FirstName} {user.MiddleName} {user.LastName}</a>
+                      <div className=" d-flex mt-2 ml-5">
+                        <div className=" d-flex flex-column justify-content-center align-items-center">
+                          <Avatar size={30} icon={<UserOutlined />} />
+                          <div className="ml-3">
+                            <Button className="mt-2 ml-5" variant="warning" type="primary" onClick={showModal} style={{ backgroundColor: '#f99965' }}>
+                              Show My Details
+                            </Button>
+                            <Modal title="User Details" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                              <p>Age: {user.Age}</p>
+                              <p>Email: {user.Email}</p>
+                              <p>Lives In: {user.LivesIn}</p>
+                              <p>Passport Number: {user.PassportNumber}</p>
+                              <p>Phone Number: {user.PhoneNumber}</p>
+                            </Modal>
+                          </div>
+                        </div>
+                      </div>
+                    </Navbar.Text>
+                  </div>
+                </>
+            }
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 };
 
 export default NavBar;

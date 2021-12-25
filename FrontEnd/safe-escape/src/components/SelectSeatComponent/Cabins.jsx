@@ -3,6 +3,7 @@ import React from "react"
 
 const Cabins = props => {
     const {loading, firstSeats, businessSeats, economySeats} = props.state
+    console.log(props, 'propsss')
     return (
         <div className = {`plane d-flex flex-column align-items-center text-center ${props.title}`}>
             <div className="cockpit" >
@@ -12,7 +13,7 @@ const Cabins = props => {
             </div>
             <div className = "d-flex flex-column align-items-center fuselage" style = {{backgroundColor: 'rgba(255, 255, 255, 0.3 )'}}>
             <div className = 'mt-2 mb-2' >
-                <Cabin cabin = 'First' maxNum = {props.passengers} chosenCabin = { props.chosenCabin } seats = {firstSeats.allSeats} loading = {loading} 
+                <Cabin cabin = 'FirstSeats' name = 'First' maxNum = {props.passengers} chosenCabin = { props.chosenCabin } seats = {firstSeats.allSeats} loading = {loading} 
                 addSeatCallback = {props.addSeatCallback} 
                 removeSeatCallback = {props.removeSeatCallback}/>
             </div>
@@ -21,7 +22,7 @@ const Cabins = props => {
                 <img src="https://img.icons8.com/ios/50/000000/exit-sign.png" alt = 'Exit'/>
             </div>
             <div className = 'mt-2 mb-2'>
-                <Cabin cabin = 'Business' maxNum = {props.passengers} chosenCabin = { props.chosenCabin } seats = {businessSeats.allSeats} loading = {loading} 
+                <Cabin cabin = 'BusinessSeats' name = 'Business' maxNum = {props.passengers} chosenCabin = { props.chosenCabin } seats = {businessSeats.allSeats} loading = {loading} 
                 addSeatCallback = {props.addSeatCallback} 
                 removeSeatCallback = {props.removeSeatCallback}/>
             </div>
@@ -30,7 +31,7 @@ const Cabins = props => {
                 <img src="https://img.icons8.com/ios/50/000000/exit-sign.png" alt = 'Exit'/>
             </div>
             <div className = 'mt-2 mb-2 ' >
-                <Cabin cabin = 'Economy' maxNum = {props.passengers} seats = {economySeats.allSeats} loading = {loading} 
+                <Cabin cabin = 'EconomySeats' name = 'Economy' maxNum = {props.passengers} chosenCabin = { props.chosenCabin } seats = {economySeats.allSeats} loading = {loading} 
                 addSeatCallback = {props.addSeatCallback} 
                 removeSeatCallback = {props.removeSeatCallback}/>
             </div>

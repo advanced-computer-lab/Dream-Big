@@ -4,22 +4,22 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import {
-    useParams
-} from "react-router-dom";
+import { UserData } from '../../UserContext'
 import Card from 'react-bootstrap/Card';
+import { useHistory } from "react-router-dom"
 
-const UpdateUser = () => {
+const UpdateUser = (props) => {
     const [toBeUpdatedInUser, setToBeUpdatedInUser] = useState({});
      //isEmpty
      const [isEmpty,setIsEmpty]= useState(true);
+     const history = useHistory();
      //
-    let { id } = useParams();
-    const baseURL = `http://localhost:8000/users/${id}`;
+     const user = UserData();
+    const baseURL = `http://localhost:8000/users/userInfo/${user._id}`;
 
     const [validated, setValidated] = useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         
         const form = event.currentTarget;
         console.log('form', form.checkValidity())
@@ -29,10 +29,16 @@ const UpdateUser = () => {
         }
         else{
             setValidated(true);
-            axios.put(baseURL, { toBeUpdatedInUser })
+            event.preventDefault()
+            console.log('elseee')
+            
+            await axios.put(baseURL, { toBeUpdatedInUser })
             .then((response) => 
             { 
                 console.log('updateddd',toBeUpdatedInUser);
+                console.log('response', response.data)
+                props.setUser(response.data);
+                history.push('/users/search')
             }
             );
         }
@@ -40,7 +46,6 @@ const UpdateUser = () => {
 
    
     return (
-        // style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         <div style={{alignItems:'center'}}>
         <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)",backgroundSize:'100%',height:'100vh',zIndex:'0'}} className="d-flex flex-column justify-content-center align-items-center" >
             
@@ -53,8 +58,21 @@ const UpdateUser = () => {
                         <Form.Control
                             input="text"
                             onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "FirstName": event.target.value }));setIsEmpty(false);}}          
+                            defaultValue={user.FirstName}
                             type="text"
-                            placeholder="FirstName"
+                            placeholder='First Name'
+                        />
+                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col} md="4" controlId="validationCustom03">
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>MiddleName</Form.Label>
+                        <Form.Control
+                            input="text"
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "MiddleName": event.target.value }));setIsEmpty(false);}}
+                            defaultValue={user.MiddleName}
+                            type="text"
+                            placeholder='Middle Name'
                         />
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
@@ -64,26 +82,12 @@ const UpdateUser = () => {
                         <Form.Control
                             input="text"
                             onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "LastName": event.target.value }));setIsEmpty(false);}}
-                            
+                            defaultValue={user.LastName}
                             type="text"
-                            placeholder="LastName"
+                            placeholder='Last Name'
                         />
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} md="4" controlId="validationCustom04">
-                        <Form.Label style={{color:'black', fontWeight:'bold'}}>Email</Form.Label>
-                        <Form.Control
-                            input="text"
-                            type="text"
-                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "Email": event.target.value }));setIsEmpty(false);}}
-                            placeholder="Email"
-                            
-                        />
-                        <Form.Control.Feedback type="invalid">
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    
-                 
                 </Row>
                 <Row className="mb-5 mt-3" >
                     <Form.Group as={Col} md="4" controlId="validationCustom08">
@@ -91,13 +95,38 @@ const UpdateUser = () => {
                         <Form.Control
                             type="text"
                             onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "PassportNumber": event.target.value }));setIsEmpty(false);}}
-                            placeholder="Seat Number"
+                            defaultValue={user.PassportNumber}
+                            placeholder='Passport Number'
                             
                         />
                         <Form.Control.Feedback type="invalid">
                         </Form.Control.Feedback>
                     </Form.Group>
-                    
+                    <Form.Group as={Col} md="4" controlId="validationCustom04">
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>Email</Form.Label>
+                        <Form.Control
+                            input="text"
+                            type="text"
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "Email": event.target.value }));setIsEmpty(false);}}
+                            defaultValue={user.Email}
+                            placeholder='Email'
+                            
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="4" controlId="validationCustom08">
+                        <Form.Label style={{color:'black', fontWeight:'bold'}}>LivesIn</Form.Label>
+                        <Form.Control
+                            type="text"
+                            onChange={event => {setToBeUpdatedInUser(Object.assign(toBeUpdatedInUser, { "LivesIn": event.target.value }));setIsEmpty(false);}}
+                            defaultValue={user.LivesIn}
+                            placeholder= "Lives In"
+                            
+                        />
+                        <Form.Control.Feedback type="invalid">
+                        </Form.Control.Feedback>
+                    </Form.Group>
                    
                 </Row>
                 <Form.Group className="mb-3 d-flex justify-content-center" >
