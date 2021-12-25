@@ -24,15 +24,23 @@ import { SearchCriteriaContext, SearchCriteriaData } from "../SearchCriteriaCont
 import { UserData, UserContext } from "../UserContext";
 import { RetFlightContext, RetFlightData, DepFlightContext, DepFlightData } from "../FlightContext";
 import MediaCard from './ConfirmReservationComponent/ConfirmMessage';
+import MediaCard2 from './ConfirmReservationComponent/ConfirmMessage';
 import { Card, Steps } from 'antd';
 import ReservedSuccessfully from './ConfirmReservationComponent/LoadingSystem';
 import SeeDets from './ConfirmReservationComponent/SeeDetails';
+import SeeDets2 from './ConfirmReservationComponent/SeeDets2';
 import SeeSum from './ConfirmReservationComponent/SeeSummary';
 import ViewReturn from './DepArrComponent/ViewArrival';
 import ViewReturn2 from './DepArrComponent/ViewReturn';
 import ViewDepDetails from './DepArrComponent/ViewDepDetails';
 import ReservedSuccessfully2 from './ConfirmReservationComponent/LoadingSystem2';
 import GreenConfirmation from './ConfirmReservationComponent/GreenConfirmation';
+import PaymentFront from './PaymentStripe/PaymentFront';
+import PaymentForm from './PaymentStripe/FrontPayment';
+import ChangePassword from './ChangePassword/ChangePassword';
+import { PassWord, PassWordData, UserName, UserNameData } from './LogInContext';
+import Googlelogin from './GoogleLogIn/GoogleLogin';
+import Googlelogout from './GoogleLogIn/GoogleLogout';
 
 const App = () => {
 
@@ -46,6 +54,8 @@ const App = () => {
   const [searchCriteria, setSearchCriteria] = useState({});
   const [retFlights, setRetFlights] = useState([]);
   const [depFlights, setDepFlights] = useState([]);
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
 
   return (
     <>
@@ -54,7 +64,7 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <NavBar />
-              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat : 'no-repeat'}} className="flex-column justify-content-center align-items-center">
+              <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '100vh', zIndex: '0', backgroundRepeat: 'no-repeat' }} className="flex-column justify-content-center align-items-center">
                 {
                   loggedIn === false
                     ?
@@ -63,6 +73,14 @@ const App = () => {
                         <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh', width: '100%' }}>
                           <Login setLoggedIn={setLoggedIn} setUser={setUser} />
                         </div>
+                      </Route>
+
+                      <Route exact path = '/detsBeforeLogin'>
+                        <SeeDets2/>
+                      </Route>
+
+                      <Route exact path='/GoogleLogin'>
+                        <Googlelogin />
                       </Route>
 
                       <Route exact path='/users/search'>
@@ -104,7 +122,7 @@ const App = () => {
                       </Route>
 
                       <Route path='/'>
-                        <Redirect to="login" />
+                        <Redirect to="/users/search" />
                       </Route>
 
                     </Switch>
@@ -148,10 +166,14 @@ const App = () => {
                               <SelectSeats />
                             </Route>
 
+                            <Route exact path='/resetPassword'>
+                              <ChangePassword />
+                            </Route>
+
                             <Route exact path='/ReservedFlights'>
                               <div className="d-flex flex-column justify-content-center align-items-center">
                                 <Card
-                                style = {{marginTop: '5vh', marginLeft: '5vh', marginRight: '5vh', opacity: '85%', marginBottom : '5vh', backgroundSize : '100%'}}>
+                                  style={{ marginTop: '5vh', marginLeft: '5vh', marginRight: '5vh', opacity: '85%', marginBottom: '5vh', backgroundSize: '100%' }}>
                                   <ViewReservedFlight setCancellation={setCancellation} />
                                 </Card>
                               </div>
@@ -193,6 +215,10 @@ const App = () => {
                               <UserSearch setSearchCriteria={setSearchCriteria} setDepFlights={setDepFlights} setRetFlights={setRetFlights} />
                             </Route>
 
+                            <Route exact path='/Payment'>
+                              <PaymentFront />
+                            </Route>
+
                             <Route exact path='/ViewOutBoundFlight'>
                               <div className="d-flex flex-column align-items-center">
                                 <div className="d-flex flex-column align-items-center mt-3">
@@ -221,6 +247,10 @@ const App = () => {
                                 </div>
                               </div>
                               <ViewReturn retFlights={retFlights} />
+                            </Route>
+
+                            <Route exact path='/GoogleLogout'>
+                              <Googlelogout />
                             </Route>
 
                             <Route exact path='/ReturnFlightDetails'>

@@ -12,11 +12,15 @@ import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom"
 import { Modal, Button } from 'antd';
 import { UserData } from '../../UserContext'
+import StripeCheckout from "react-stripe-checkout";
 
 const SeeDets = () => {
 
     const history = useHistory();
     const location = useLocation();
+
+    console.log(location.state, "state");
+
     const dflight =  location.state.dFlight;
     const rflight =  location.state.rFlight;
     const user = UserData();
@@ -51,9 +55,7 @@ const SeeDets = () => {
         }).then((response) => {
             let path = `/RoundTripReserved`;
             history.push(path,{dflight, rflight, cabins, depSeats, retSeats})
-            console.log('respp', response)
         })
-        
     }
 
     const routeChange2 = () => {
@@ -69,19 +71,7 @@ const SeeDets = () => {
     const [flight_1, setFlight_1] = useState(location.state.dFlight);
     const [flight_2, setFlight_2] = useState(location.state.rFlight);
 
-    console.log(location.state.dFlight, "1111");
-    console.log(location.state.rFlight, "2222");
-
     let { id } = useParams();
-
-    // useEffect(() => {
-    //     axios.get(baseUrl).then((response) => {
-    //         console.log(response.data);
-    //         setFlight_1(response.data.ReservedFlights[0]);
-    //         console.log(response.data.ReservedFlights[0], "w7da");
-    //         setFlight_2(response.data.ReservedFlights[1]);
-    //     })
-    // }, []);
 
     return (
         <div>

@@ -21,6 +21,7 @@ const seed2 = async() => {
     const registeredUser = await Users.register(User, 'password');
     console.log('User', registeredUser);
 }
+
 seed2();
 
 

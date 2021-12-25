@@ -54,6 +54,8 @@ const NavBar = () => {
                 </>
                 :
                 <>
+                  <Nav.Link onClick={() => history.push('/resetPassword')}>Change Password</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/Payment')}>Payment</Nav.Link>
                   <Nav.Link onClick={() => history.push('/users/search')}>Search</Nav.Link>
                   <Nav.Link onClick={() => history.push('/ReservedFlights')}>View Reserved Flights</Nav.Link>
                   <Nav.Link onClick={() => history.push(`/users/update/${user._id}`)}>Update Profile</Nav.Link>
@@ -68,6 +70,7 @@ const NavBar = () => {
                 ?
                 (
                   <>
+                    <Nav.Link onClick={() => history.push('/GoogleLogin')}>Login With Google</Nav.Link>
                     <Nav.Link onClick={() => history.push('/')}>Sign Up</Nav.Link>
                     <Nav.Link onClick={() => history.push('/login')}>Log In</Nav.Link>
                   </>
