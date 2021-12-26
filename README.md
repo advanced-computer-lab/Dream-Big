@@ -1,3 +1,9 @@
+# Project Title (Summary)
+	Safe-Escape, an Airline Reservation System developed by a team of 5 amazing engineering students using MERN stack. This Airline Reservation System is a web application through which individuals can reserve and pay for flights in order to travel to different countries and domestic cities.
+
+# Motivation
+	The main reasons behind pursuing such a great project was to develop collaborative thinking, problem solving, and many other important techniques that are needed to form a great engineer in order to perform in the future market. 
+
 # Installation
 	In Order to download the project and try the demo, clone the project link in your command prompt using the following link “https://github.com/advanced-computer-lab/Dream-Big.git”.
 	Install npm using “npm i” in order to download all packages and dependencies needed for the project to function. Repeat the process in both the FrontEnd and the BackEnd.
