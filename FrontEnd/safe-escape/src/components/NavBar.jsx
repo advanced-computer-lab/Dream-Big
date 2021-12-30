@@ -77,8 +77,6 @@ const NavBar = props => {
                     {registerHover ? <span registerHover style={{color:'black',background:'white'}} >New User? Register Now</span>:''}
                    </div>
                    
-                   
-                   
                     <Nav.Link onClick={() => history.push('/login')} style={{ color: 'white' }}>Log In</Nav.Link>
                   </>
                 )
@@ -91,8 +89,11 @@ const NavBar = props => {
                         <div className=" d-flex flex-column justify-content-center align-items-center">
                           <Avatar size={30} icon={<UserOutlined />} />
                           <div className="ml-3">
-                            <Button className="mt-2 ml-5" variant="warning" type="primary" onClick={showModal} style={{ backgroundColor: '#f99965' }}>
+                            <Button className="mt-2 ml-5"  type="primary" onClick={showModal} style={{ backgroundColor: '#f99965' }}>
                               Show My Details
+                            </Button>
+                            <Button className="mt-2 ml-5" type="primary" onClick={() => {props.setUser({}); props.setLoggedIn(false) ; history.push('/users/search')}} style={{ backgroundColor: '#f99965' }}>
+                              Log Out
                             </Button>
                             <Modal title="User Details" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                               <p>Age: {user.Age}</p>

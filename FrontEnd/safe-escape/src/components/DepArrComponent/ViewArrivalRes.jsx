@@ -3,14 +3,7 @@
 // 3mlt route f app.js bs m3mlt4 al redirection al sahh
 
 import axios from "axios";
-import { useState,useEffect } from "react";
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import download from './jpeg.jpeg';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import Button from 'react-bootstrap/Button';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import List from "./ListOfFlights";
@@ -35,10 +28,11 @@ const ViewArrivalnRes = (props) => {
     
       <div>
         <div className="App" >
-           <List title = { 'Searched Departure Flights' } data = { {...location.state} } priceToSubtract = {props.ResFlights.Price} type = "Departure" searchedFlights = {props.retFlights}/>
+           <List title = { 'Searched Departure Flights' } data = { {...location.state} } priceToSubtract = {props.ResFlights.Price} type = "Departure" 
+           searchedFlights = {props.retFlights}/>
         </div>
         <div>
-          <Button className="btn-warning" variant="success" onClick={() => history.push('/users/search')}>Back </Button>
+          <Button variant="warning" onClick={() => history.push('/users/search', {...location.state})}>Back To Search</Button>
         </div>
       </div>
 

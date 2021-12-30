@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import download from './download.jpg';
 import { useHistory } from "react-router-dom";
-import { Button } from 'antd';
+import Button from 'react-bootstrap/Button';
 import { Steps } from 'antd';
 import { useLocation } from "react-router-dom";
 import { UserData } from '../../UserContext';
@@ -19,7 +19,7 @@ export default function MediaCard() {
     const user = UserData();
 
     const myParams = location.state.slide;
-    const myFlight = location.state.flight
+    const myFlight = location.state.flight;
 
     console.log('locationn returnnn', location.state)
 
@@ -136,6 +136,18 @@ export default function MediaCard() {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
+                                    <Button variant="warning"
+                                        
+                                        onClick={() => {
+                                            if(location.state){
+                                                history.push('/EditReturFlightDetails', {...location.state})
+                                            }
+                                            else{
+                                                history.push('/ViewReturnFlight', {hello: {...myFlight}})
+                                            }
+                                        }}>
+                                        Back To Res List
+                                        </Button>
                                         <Button type="primary"
                                             onClick={() => { handleSubmit(myParams) }}>
                                             Confirm Reservation</Button>

@@ -10,9 +10,9 @@ import { useParams } from "react-router-dom";
 import download from './download.jpg';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom"
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
+import Button from 'react-bootstrap/Button';
 import { UserData } from '../../UserContext'
-import StripeCheckout from "react-stripe-checkout";
 
 const SeeDets2 = () => {
 
@@ -40,7 +40,7 @@ const SeeDets2 = () => {
 
     const routeChange3 = () => {
         let path = `/ViewReturnFlight`;
-        history.push(path);
+        history.push(path, {hello: {...myFlight}});
     }
 
     const [flight_1, setFlight_1] = useState(location.state.myFlight);
@@ -107,7 +107,7 @@ const SeeDets2 = () => {
                 </Card>
             </div>
             <div className="d-flex justify-content-center mt-2">
-                <Button type="primary" onClick={routeChange}>Login To Confirm Booking</Button>
+                <Button variant="success" onClick={routeChange}>Login To Confirm Booking</Button>
             </div>
         </div>
     );

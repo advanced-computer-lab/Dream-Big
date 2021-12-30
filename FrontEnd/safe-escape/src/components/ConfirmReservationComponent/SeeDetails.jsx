@@ -9,7 +9,7 @@ import axios from 'axios'
 import download from './download.jpg';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom"
-import { Button } from 'antd';
+import Button from 'react-bootstrap/Button';
 import { UserData } from '../../UserContext'
 import StripeCheckout from "react-stripe-checkout";
 
@@ -67,7 +67,7 @@ const SeeDets = () => {
 
     const routeChange3 = () => {
         let path = `/ViewReturnFlight`;
-        history.push(path);
+        history.push(path, {hello: {...dflight}});
     }
 
     const [flight_1, setFlight_1] = useState(location.state.dFlight);
@@ -91,7 +91,7 @@ const SeeDets = () => {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        <div className="d-flex flex-column align-items-center">
+                        <div className="d-flex flex-column align-items-center w-100">
                             Flight Number : {flight_1.FlightNumber}
                         </div>
                     </Typography>
@@ -118,7 +118,7 @@ const SeeDets = () => {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        <div className="d-flex flex-column align-items-center">
+                        <div className="d-flex flex-column align-items-center w-100">
                             Flight Number : {flight_2.FlightNumber}
                         </div>
                     </Typography>
@@ -134,7 +134,7 @@ const SeeDets = () => {
                         <div>Price : {flight_2.Price}</div>
                     </Typography>
                 </CardContent>
-                <Button className = "m-3" type = "default" onClick = {routeChange2} >Edit Flight</Button>
+                <Button className = "m-3" type = "default" onClick = {routeChange3} >Edit Flight</Button>
             </Card>
         </div>
         <div className="d-flex justify-content-center mt-2">

@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import download from './jpeg.jpeg';
 import { useHistory } from "react-router-dom";
-import { Button } from 'antd';
+import Button from 'react-bootstrap/Button'
 import { Steps } from 'antd';
 import { useLocation } from "react-router-dom";
 
@@ -124,7 +124,18 @@ export default function ViewDepDetails() {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button type="primary"
+                                        <Button variant="warning"
+                                        onClick={() => {
+                                            if(location.state){
+                                                history.push('/EditDepartureFlightDetails', {...location.state})
+                                            }
+                                            else{
+                                                history.push('/ViewOutBoundFlight')
+                                            }
+                                        }}>
+                                        Back To Dep List
+                                        </Button>
+                                        <Button variant="primary"
                                             onClick={() => {handleSubmit(myParams)}}>
                                             Choose Flight</Button>
                                     </CardActions>

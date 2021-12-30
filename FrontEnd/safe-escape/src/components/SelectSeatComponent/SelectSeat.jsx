@@ -608,7 +608,7 @@ const SelectSeats = () => {
                                 showRetPassInfo[index].show === false ? (
                                 <FadeInOut show={!showRetPassInfo[index].show } duration={500} >
                                 <Typography className='mt-3' variant="h5" color="text.secondary" gutterBottom>
-                                Passenger {index} Info
+                                Passenger {index + 1} Info
                                 </Typography>
                               </FadeInOut>
                               ) : (

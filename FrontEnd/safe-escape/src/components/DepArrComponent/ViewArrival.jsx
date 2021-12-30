@@ -1,5 +1,5 @@
 import axios from "axios";
-import Button from '@mui/material/Button';
+import Button from 'react-bootstrap/Button';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import List from "./ListOfFlights";
@@ -26,7 +26,7 @@ const ViewReturn = (props) => {
            <List title = { 'Searched Return Flights' } priceToSubtract = {0} type = "Return" depflight = {flight} searchedFlights = {props.retFlights}/>
         </div>
         <div>
-          <Button className="btn-warning" variant="success" onClick={() => history.push('/users/search')}>Back </Button>
+          <Button variant="warning" onClick={() => history.push('/users/search')}>Back To Search</Button>
         </div>
       </div>
       );

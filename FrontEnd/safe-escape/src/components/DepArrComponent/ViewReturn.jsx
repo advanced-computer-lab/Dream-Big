@@ -1,5 +1,5 @@
 import axios from "axios";
-import Button from '@mui/material/Button';
+import Button from 'react-bootstrap/Button'
 import { useHistory } from "react-router-dom";
 import './StyleB.css';
 import 'react-alice-carousel/lib/alice-carousel.css';
@@ -26,7 +26,7 @@ const ViewReturn2 = (props) => {
          <List title = { 'Searched Departure Flights' } priceToSubtract = {0} type = "Departure" searchedFlights = {props.depFlights}/>
       </div>
       <div>
-        <Button className="btn-warning" variant="success" onClick={() => history.push('/users/search')}>Back </Button>
+        <Button variant="warning" onClick={() => history.push('/users/search')}>Back To Search</Button>
       </div>
     </div>
 

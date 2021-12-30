@@ -70,7 +70,7 @@ const App = () => {
           <RetFlightContext.Provider value={retFlights}>
             <DepFlightContext.Provider value={depFlights}>
               <ResFlightContext.Provider value={ResFlights}>
-                <NavBar myRef = {myRef}/>
+                <NavBar myRef = {myRef} setUser={setUser} setLoggedIn={setLoggedIn}/>
                 <div style={{ backgroundImage: "url(/airplane-sky-flight-clouds.jpg)", backgroundSize: '100%', height: '180vh', zIndex: '0', backgroundRepeat : 'repeat-y'}} className="flex-column justify-content-center align-items-center">
                
                   {

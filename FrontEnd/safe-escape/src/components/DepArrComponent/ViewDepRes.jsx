@@ -2,7 +2,7 @@
 //contains flight price difference
 //m3mlt4 al redirection al sahh
 import axios from "axios";
-import Button from '@mui/material/Button';
+import Button from 'react-bootstrap/Button';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import List from "./ListOfFlights";
@@ -30,7 +30,7 @@ const ViewDepRes = (props) => {
            <List title = { 'Searched Departure Flights' } data = { {...location.state} } priceToSubtract = {props.ResFlights.Price} type = "Departure" searchedFlights = {props.depFlights}/>
         </div>
         <div>
-          <Button className="btn-warning" variant="success" onClick={() => history.push('/users/search')}>Back </Button>
+          <Button className="btn-warning" variant="warning" onClick={() => history.push('/users/search', {...location.state})}>Back To Search</Button>
         </div>
       </div>
        );
