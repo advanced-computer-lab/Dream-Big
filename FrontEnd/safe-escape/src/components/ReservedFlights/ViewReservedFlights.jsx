@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'
 import { init } from 'emailjs-com';
 import { send } from 'emailjs-com';
 import React from "react";
@@ -9,12 +9,15 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { UserData } from '../../UserContext'
+import Pagination from 'react-bootstrap/Pagination'
 
 import { useHistory } from "react-router-dom"
 
 init("user_ExRC07sKMOuwyw6rSr9R9");
 const ViewReservedFlight = (props) => {
     const user = UserData();
+    const [pages, setPages] = useState([]);
+    const [activePage, setActivePage] = useState(0);
     const [bookings, setBookings] = React.useState([]);
     const [booking, setBooking] = useState({});
     const [show, setShow] = useState(false);
@@ -26,6 +29,10 @@ const ViewReservedFlight = (props) => {
     const handleChange = (e) => {
         setToSend({ ...toSend, [e.target.name]: e.target.value });
     };
+
+    const tripPerPage = 5;
+
+    let pagesVisited = activePage * tripPerPage;
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -241,7 +248,7 @@ const ViewReservedFlight = (props) => {
                                         {loadingCheckIn ? (
                                             <Spinner animation="border" size="sm" />
                                         ) : null}
-                                        View Trip Details
+                                        View And Edit Trip Details
                                     </Button>
                                     <Button
                                         variant="primary"

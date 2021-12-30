@@ -22,6 +22,8 @@ const SeeDets2 = () => {
     const hello = location.state.hello;
     const myFlight = location.state.myFlight;
 
+    console.log('locc', location.state)
+
     const user = UserData();
 
     const baseUrl = `http://localhost:8000/users/users/${user._id}`;

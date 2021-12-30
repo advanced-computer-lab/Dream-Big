@@ -8,11 +8,10 @@ import Button from 'react-bootstrap/Button';
 import TextField from '@mui/material/TextField';
 import NativeSelect from '@mui/material/NativeSelect';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import './UserSearch.css'
-import { color } from "@mui/system";
+import './UserSearch.css';
 import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const style = {
   position: 'absolute',
@@ -34,16 +33,10 @@ const UserSearch = (props) => {
 
   const history = useHistory();
 
-  const routeChange = () => {
-    let path = `/ViewOutBoundFlight`;
-    history.push(path,{departureFlightsOutput});
-  }
 
   const baseURL = 'http://localhost:8000/users/getUserSearch';
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [classType, setClassType] = React.useState('');
-  const [searchedDepFlights, setSearchedDepFlights] = useState({});
-  const [searchedRetFlights, setSearchedRetFlights] = useState({});
 
   const [open, setOpen] = React.useState(false);
   const [adultsNumber, setAdultsNumber] = useState(0);
@@ -72,44 +65,87 @@ const UserSearch = (props) => {
   //
   const [retLengthZero, setRetLengthZero] = useState(false);
 
-  const [changingFlight, setChangingFlight] = useState(false);
+  const location = useLocation();
 
+  console.log('Location HEREEEE', location.state)
 
-  const handleClassChange = (event) => {
-    setClassType(event.target.value);
-  };
   const handleSubmit = () => {
 
-    axios.post(baseURL, userSearchDeptInput).then(res => {
-      setDepartureFlightsOutput(res.data);
-      console.log(res.data);
-      props.setDepFlights(res.data);
-      if (res.data.length === 0)
-        setDepLengthZero(true);
-    });
-    axios.post(baseURL, userSearchRetInput).then(res => {
-      setReturnFlightsOutput(res.data);
-      console.log(res.data);
-      props.setRetFlights(res.data);
-      if (res.data.length === 0)
-        setRetLengthZero(true);
-    });
-
-   // routeChange();
-
-    // props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
-
-    // if (depLengthZero && retLengthZero)
-    //   setNoMatchingFlights(true);
-    if (depLengthZero && retLengthZero)
-      setNoMatchingFlights(true);
+    if(location.state){
+      console.log("DAKHAL IFEEEE");
+      if(location.state.Flighttype === 'Return')
+      {
+        console.log("DAKHAL IFEEEE 111");
+        axios.post(baseURL, userSearchRetInput).then(res => {
+          setReturnFlightsOutput(res.data);
+          console.log(res.data," Returnnnn");
+          props.setRetFlights(res.data);
+          if (res.data.length === 0)
+          setNoMatchingFlights(true);
+          else{
+            props.setResFlights(location.state.flightToChange)
+            routeChangeEditRet();
+          }
+        });
+      }
+      else if(location.state.Flighttype === 'Departure')
+      {
+        console.log("DAKHAL IFEEEE 222");
+        axios.post(baseURL, userSearchDeptInput).then(res => {
+          setDepartureFlightsOutput(res.data);
+          console.log("Departuree", res.data);
+          props.setDepFlights( res.data);
+          if (res.data.length === 0)
+          setNoMatchingFlights(true);
+          else{
+            props.setResFlights(location.state.flightToChange)
+            routeChangeEditDep();
+          }
+        });
+      }
+    }
     else{
-      routeChange();
-      props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
+      axios.post(baseURL, userSearchDeptInput).then(res => {
+        setDepartureFlightsOutput(res.data);
+        console.log(res.data);
+        props.setDepFlights(res.data);
+        if (res.data.length === 0){
+          setDepLengthZero(true);
+        }
+        else {
+          axios.post(baseURL, userSearchRetInput).then(res => {
+            setReturnFlightsOutput(res.data);
+            console.log(res.data);
+            props.setRetFlights(res.data);
+            if (res.data.length === 0)
+              setRetLengthZero(true);
+            if (depLengthZero && retLengthZero)
+              setNoMatchingFlights(true);
+            else {
+              routeChange();
+              props.setSearchCriteria({ depCriteria: userSearchDeptInput, retCriteria: userSearchRetInput });
+            }
+          });
+        }
+      });
     }
 
   }
 
+  const routeChange = () => {
+    let path = `/ViewOutBoundFlight`;
+    history.push(path);
+  }
+
+  const routeChangeEditDep = () => {
+    let path = `/EditDepartureFlightDetails`;
+    history.push(path,{...location.state});
+  }
+
+  const routeChangeEditRet = () => {
+    let path = `/EditReturFlightDetails`;
+    history.push(path,{...location.state});
+  }
   return (
 
     <div style={{ alignItems: 'center' }}>
@@ -123,7 +159,7 @@ const UserSearch = (props) => {
               <Row>
                 <Col>
                   <Form.Group controlId="validationCustom01">
-                    <TextField id="standard-basic" label="From (CAI)" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "From": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "To": changingFlight? 'Changing Flight' : e.target.value }); setIsEmpty(false); }} />
+                    <TextField id="standard-basic" label="From (CAI)" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "From": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "To": e.target.value }); setIsEmpty(false); }} />
 
                   </Form.Group>
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -132,7 +168,7 @@ const UserSearch = (props) => {
                 <Col>
                   <Form.Group controlId="validationCustom01">
 
-                    <TextField id="standard-basic" label="To (BER)" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "To": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "From": changingFlight? 'Changing Flight' : e.target.value }); setShowDiv(true); setIsEmpty(false); }} />
+                    <TextField id="standard-basic" label="To (BER)" variant="standard" onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "To": e.target.value }); setUserRetSearchInput({ ...userSearchRetInput, "From": e.target.value }); setShowDiv(true); setIsEmpty(false); }} />
                   </Form.Group>
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Col>
@@ -143,9 +179,9 @@ const UserSearch = (props) => {
                     <div style={{ display: 'flex', flexDirection: "column", flexWrap: "wrap" }} className="d-flex justify-content-center align-items-center">
                       <label>Departure Date</label>
 
-                      <input type="date" min={date} label="Departure Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "FlightDepDate": changingFlight? 'Changing Flight' :  e.target.value }); setIsEmpty(false); setDepDate(e.target.value)}} />
-
-
+                      <input type="date" min={date} label="Departure Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserSearchDeptInput({ ...userSearchDeptInput, "FlightDepDate": e.target.value }); setIsEmpty(false); setDepDate(e.target.value)}} 
+                      disabled = {location.state && location.state.Flighttype === 'Return' ?
+                      true: false}/>
                     </div>
 
                   </Form.Group>
@@ -158,7 +194,9 @@ const UserSearch = (props) => {
                     <div style={{ display: 'flex', flexDirection: "column", flexWrap: "wrap" }} className="d-flex justify-content-center align-items-center">
                       <label>Return Date</label>
 
-                      <input type="date" min={depDate} label="Return Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserRetSearchInput({ ...userSearchRetInput, "FlightDepDate": changingFlight? 'Changing Flight' : e.target.value }); setIsEmpty(false); }} />
+                      <input type="date" min={depDate} label="Return Date" style={{ borderBlock: "unset", borderBlockEnd: "revert", borderLeft: "tan", borderRight: "tan" }} onChange={e => { setUserRetSearchInput({ ...userSearchRetInput, "FlightDepDate": e.target.value }); setIsEmpty(false); }} 
+                      disabled = {location.state && location.state.Flighttype === 'Departure' ?
+                      true: false}/>
 
                     </div>
                   </Form.Group>
@@ -215,7 +253,9 @@ const UserSearch = (props) => {
                 </div>
               </div> : ''}
             
-            <Button className="btn-warning" variant="success" onClick={handleSubmit} disabled={isEmpty}>Search</Button>
+            <Button type = 'button' className="btn-warning" variant="success" onClick={handleSubmit} disabled={isEmpty}>
+              Search
+            </Button>
            {isEmpty?<div style={{color:'brown'}}><span>Enter Your desired round trip details to proceed with your journey</span></div>:''}
             
           </Card.Body>
@@ -242,7 +282,7 @@ const UserSearch = (props) => {
                   <label>Children</label>
                   <input type="number" onChange={(e) => { if (e.target.value < 0) { e.target.value = 0; } else { setChildrenNumber(e.target.value); } }} />
                 </div>
-                <button className="btn-warning" onClick={() => {
+                <button className="btn-warning" type='button' onClick={() => {
                   if (childrenNumber > 0 && adultsNumber > 0) {
                     setTravellerDetailsValue(` Adults ${adultsNumber}` + ` ,Children ${childrenNumber}`);
                   }
@@ -251,25 +291,17 @@ const UserSearch = (props) => {
                     if (childrenNumber > 0) {
                       setTravellerDetailsValue(TravellerDetailsValue + ` Children ${childrenNumber}`);
                       console.log(TravellerDetailsValue);
-
-                      //   const x =`Children ${childrenNumber}`;
-                      // Object.assign(TravellerDetailsValue, {x});
                     }
                     if (adultsNumber > 0) {
-                      //`${TravellerDetailsValue}`+` Adults ${adultsNumber}`)
                       setTravellerDetailsValue(TravellerDetailsValue + ` Adults ${adultsNumber}`);
                       console.log(TravellerDetailsValue);
-                      // Object.assign(`${TravellerDetailsValue}`,` Adults ${adultsNumber}`);
 
                     }
-                    // setTravellerDetailsValue(y);
                   }
                   setNumberOfPassengers(adultsNumber + childrenNumber);
-                  //  setUserSearchDeptInput({...userSearchDeptInput,[cabin]:{"availableSeatsNum": {"$gte":parseInt(adultsNumber)+parseInt(childrenNumber)}}});
-                  setUserSearchDeptInput({ ...userSearchDeptInput, cabin: cabin, chosenSeats: changingFlight? 'Changing Flight' : (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
-                  setUserRetSearchInput({ ...userSearchRetInput, cabin: cabin, chosenSeats: (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
+                  setUserSearchDeptInput({ ...userSearchDeptInput, cabin: cabin, chosenSeats:  location.state && (location.state.statusPath) !== null ? location.state.numOfPassengers : (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
+                  setUserRetSearchInput({ ...userSearchRetInput, cabin: cabin, chosenSeats: location.state && (location.state.statusPath) !== null ? location.state.numOfPassengers : (parseInt(adultsNumber) + parseInt(childrenNumber)), [`${cabin}.availableSeatsNum`]: { $gte: parseInt(adultsNumber) + parseInt(childrenNumber) } });
                   setOpen(false);
-                  // { [req.body.Cabin] :{availableSeatsNum:{$gte : req.body.numberOfPassengers}}, ...req.body}
 
                 }}>Continue</button>
               </div>
@@ -278,17 +310,6 @@ const UserSearch = (props) => {
 
           </Box>
         </Modal>
-
-        {/* <Modal
-                      open={openDeptDate}
-                      onClose={handleCloseDeptDate}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box>
-                        <input type="date" />
-                      </Box>
-                    </Modal> */}
       </div>
     </div>
   );

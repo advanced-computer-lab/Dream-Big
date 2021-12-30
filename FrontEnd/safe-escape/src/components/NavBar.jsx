@@ -15,12 +15,14 @@ import { React, useState } from 'react'
 import { useHistory } from "react-router-dom"
 import { UserData } from '../UserContext'
 
-const NavBar = () => {
+const NavBar = props => {
   const user = UserData();
   const history = useHistory();
+  
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [registerHover,setRegisterHover]=useState(false);
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -35,7 +37,7 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" className='d-flex justify-content-between' style={{ height: '120px' }}>
+    <Navbar bg="dark" variant="dark" className='d-flex justify-content-between' style={{ height: '120px' }} ref={props.myRef}>
       <Image src={logoFinal} rounded style={{ height: '220px', width: '180px', marginLeft: '2vw'}} />
       <Container>
         <Nav className="me-auto ml-5">
@@ -58,6 +60,7 @@ const NavBar = () => {
                   <Nav.Link onClick={() => history.push('/users/search')} style={{ color: 'white' }}>Search</Nav.Link>
                   <Nav.Link onClick={() => history.push('/ReservedFlights')} style={{ color: 'white' }}>View Reserved Flights</Nav.Link>
                   <Nav.Link onClick={() => history.push(`/users/update/${user._id}`)} style={{ color: 'white' }}>Update Profile</Nav.Link>
+                  <Nav.Link onClick={() => history.push('/resetPassword')} style={{ color: 'white' }}>Change Password</Nav.Link>
                 </>)
           }
 

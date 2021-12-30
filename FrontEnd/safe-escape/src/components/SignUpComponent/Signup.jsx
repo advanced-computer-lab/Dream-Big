@@ -59,6 +59,18 @@ const Signup = () => {
       setIsStrongPassword(false);
     }
   }
+
+  const handleAge = (e) => {
+    const age = document.getElementById('age');
+    if (e.target.value < 0) { 
+      age.value = 0;
+    }
+    else if(e.target.value === '')
+    setMissingAge(true);
+    else{
+      setMissingAge(false);setUser({ ...user, "Age": e.target.value });if(clear){e.target.value=""};
+    }
+  }
  
       const [form] = Form.useForm();
       const [requiredMark, setRequiredMarkType] = useState('required');
@@ -86,6 +98,10 @@ const Signup = () => {
 
             if(missingPassword || missingEmail || missingFirstName || missingMiddle || missingLast || missingAge || missingPass || missingPhone) {
               console.log('IFFFFFFFF')
+              setWarningMessage(true)
+            }
+            else if(!isStrongPassword){
+              alert("Use a stronger password");
               setWarningMessage(true)
             }
             else{
@@ -124,7 +140,15 @@ const Signup = () => {
                         <div style={{display:'flex',justifyContent:'spaceBetween', width:'100%'}}>
                             <div style={{display:'flex', flexDirection:'column'}}>
                               <Form.Item label="First Name" required tooltip="This is a required field" style={{display:'flex', flexDirection:'column'}}>
-                                    <Input placeholder="Engy" onChange={(e)=>{setMissingFirstName(false); setUser({ ...user, "FirstName": e.target.value });if(clear){e.target.value=""};}} />
+                                    <Input placeholder="Engy" onChange={(e)=>{
+                                      if(e.target.value === '')
+                                      setMissingFirstName(true);
+                                      else{
+                                        setMissingFirstName(false);
+                                        setUser({ ...user, "FirstName": e.target.value });
+                                        if(clear){e.target.value=""};
+                                      }
+                                       }} />
                                     {warningMessage && missingFirstName?
                                       <div> <span style={{color:'red'}}>This is required</span></div>
                                         :''}
@@ -133,7 +157,14 @@ const Signup = () => {
                               </div>
                               <div style={{display:'flex', flexDirection:'column'}}>
                                   <Form.Item label="Middle Name" required tooltip="This is a required field" style={{display:'flex', flexDirection:'column'}}>
-                                    <Input placeholder="Khaled" onChange={(e)=>{setMissingMiddle(false);setUser({ ...user, "MiddleName": e.target.value });if(clear){e.target.value=""};}} />
+                                    <Input placeholder="Khaled" onChange={(e)=>{
+                                      if(e.target.value === '')
+                                      setMissingMiddle(true);
+                                      else{
+                                        setMissingMiddle(false);
+                                        setUser({ ...user, "MiddleName": e.target.value });if(clear){e.target.value=""};
+                                      }
+                                      }} />
                                     {warningMessage && missingMiddle?
                                       <div> <span style={{color:'red'}}>This is required</span></div>
                                         :''}
@@ -141,7 +172,14 @@ const Signup = () => {
                               </div>
                               <div style={{display:'flex', flexDirection:'column'}}>
                                   <Form.Item label="Last Name" required tooltip="This is a required field" style={{display:'flex', flexDirection:'column'}}>
-                                      <Input placeholder="EzzElarab" onChange={(e)=>{setMissingLast(false);setUser({ ...user, "LastName": e.target.value });if(clear){e.target.value=""};}} />
+                                      <Input placeholder="EzzElarab" onChange={(e)=>{
+                                        if(e.target.value === '')
+                                        setMissingLast(true);
+                                        else{
+                                          setMissingLast(false);
+                                          setUser({ ...user, "LastName": e.target.value });if(clear){e.target.value=""};
+                                        }
+                                        }} />
                                       {warningMessage && missingLast?
                                         <div> <span style={{color:'red'}}>This is required</span></div>
                                           :''}
@@ -152,7 +190,15 @@ const Signup = () => {
                         <div style={{display:'flex',justifyContent:'spaceBetween', width:'100%'}}>
                          <div>
                           <Form.Item label="Username" required tooltip="This is a required field" style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                              <Input placeholder="engy.elarab" onChange={(e)=>{setMissingUserName(false);setUser({ ...user, "username": e.target.value });if(clear){e.target.value=""};}} />
+                              <Input placeholder="engy.elarab" onChange={(e)=>{
+                                if(e.target.value === ''){
+                                  setMissingUserName(true)
+                                }
+                                else{
+                                  setMissingUserName(false)
+                                  setUser({ ...user, "username": e.target.value });if(clear){e.target.value=""};
+                                }
+                                }} />
                               {warningMessage && missingUserName?
                                 <div> <span style={{color:'red'}}>This is required</span></div>
                                   :''}
@@ -160,8 +206,14 @@ const Signup = () => {
                             </div>
                             <div>
                             <Form.Item label="Password" required tooltip="This is a required field" style={{display:'flex', flexDirection:'column', alignItems:'center',justifyContent:'space-between'}}>
-                            <div style={{display:'flex', height:'5.5vh'}}>
-                              <Input placeholder="asbcFG_1" type={showPass?"text":"password"} onChange={(e)=>{setMissingPassword(false);validate(e.target.value);setUser({ ...user, "Password": e.target.value });if(clear){e.target.value=""};}} />
+                            <div style={{display:'flex', height:'4.3vh'}}>
+                              <Input placeholder="asbcFG_1" type={showPass?"text":"password"} onChange={(e)=>{
+                                if(e.target.value === '')
+                                 setMissingPassword(true)
+                                else{
+                                  setMissingPassword(false);validate(e.target.value);setUser({ ...user, "Password": e.target.value });if(clear){e.target.value=""};
+                                }
+                                }} />
                              
                             {showPass?
                             <button onClick={togglePassword}>Hide</button>
@@ -187,38 +239,67 @@ const Signup = () => {
                             </div>
                        </div>
                               <Form.Item label=" Age" required tooltip="This is a required field">
-                                <Input placeholder="23" onChange={(e)=>{setMissingAge(false);setUser({ ...user, "Age": e.target.value });if(clear){e.target.value=""};}} />
+                                <input id = 'age' placeholder="23" style = {{border: '1px solid lightgrey', borderRadius: '2px', width: '100%'}} type = 'number' onChange={(e)=>{
+                                  handleAge(e);
+                                  }} />
                                 {warningMessage && missingAge?
                                   <div> <span style={{color:'red'}}>This is required</span></div>
                                     :''}
                               </Form.Item>
                      
-
-
-                  
                               <Form.Item label="E-mail" required tooltip="This is a required field"
                               >
-                                <Input placeholder="example@gmail.com" onChange={(e)=>{setMissingEmail(false);setUser({ ...user, "Email": e.target.value });if(clear){e.target.value=""};}} />
+                                <Input placeholder="example@gmail.com" onChange={(e)=>{
+                                  if(e.target.value === ''){
+                                    setMissingEmail(true);
+                                  }
+                                  else{
+                                    setMissingEmail(false);
+                                    setUser({ ...user, "Email": e.target.value });if(clear){e.target.value=""};
+                                  }
+                                  }} />
                                 {warningMessage && missingEmail?
                                   <div> <span style={{color:'red'}}>This is required</span></div>
                                     :''}
                               </Form.Item>
 
-                              <Form.Item label="Country" required tooltip="This is a required field">
-                                <Input placeholder="e.g Egypt" onChange={(e)=>{setMissingCountry(false);setUser({ ...user, "LivesIn": e.target.value });if(clear){e.target.value=""};}} />
+                              <Form.Item label="Lives In" required tooltip="This is a required field">
+                                <Input placeholder="e.g 16 street bolaq" onChange={(e)=>{
+                                  if(e.target.value === '')
+                                  {
+                                    setMissingCountry(true);
+                                  }
+                                  else{
+                                    setMissingCountry(false);setUser({ ...user, "LivesIn": e.target.value });if(clear){e.target.value=""};
+                                  }
+                                  }} />
                                 {warningMessage && missingCountry?
                                   <div> <span style={{color:'red'}}>This is required</span></div>
                                     :''}
                               </Form.Item>
 
                         <Form.Item label="Phone Number" required tooltip="This is a required field">
-                          <Input placeholder="123456789" onChange={(e)=>{setMissingPhone(false);setUser({ ...user, "PhoneNumber": e.target.value });if(clear){e.target.value=""};}} />
+                          <Input placeholder="123456789" onChange={(e)=>{
+                            if(e.target.value === ''){
+                              setMissingPhone(true);
+                            }
+                            else{
+                              setMissingPhone(false);setUser({ ...user, "PhoneNumber": e.target.value });if(clear){e.target.value=""};
+                            }
+                            }} />
                           {warningMessage && missingPhone?
                             <div> <span style={{color:'red'}}>This is required</span></div>
                                :''}
                         </Form.Item>
                         <Form.Item label="Passport Number" required tooltip="This is a required field">
-                          <Input placeholder="A51234678" onChange={(e)=>{setMissingPass(false);setUser({ ...user, "PassportNumber": e.target.value });if(clear){e.target.value=""};}} />
+                          <Input placeholder="A51234678" onChange={(e)=>{
+                            if(e.target.value === ''){
+                              setMissingPass(true);
+                            }
+                            else{
+                              setMissingPass(false);setUser({ ...user, "PassportNumber": e.target.value });if(clear){e.target.value=""};
+                            }
+                            }} />
                           {warningMessage && missingPass?
                             <div> <span style={{color:'red'}}>This is required</span></div>
                                :''}

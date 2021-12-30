@@ -80,11 +80,19 @@ router.route('/updatereservedtrip').patch(async (req,res) => {
   console.log('reservedddd')
   try {
     const toUpdate = req.body.updatedFlights;
-    console.log('upddd',toUpdate)
+    console.log('upddd',req.body)
     const user = await Users.findById(req.body.userId);
-    console.log('userr', user.ReservedFlights)
+    //console.log('userr', user.ReservedFlights)
     let newReservedFlights = user.ReservedFlights;
     if(req.body.statusPath){
+      console.log('EDIITTTT')
+      console.log('old list secoond',newReservedFlights)
+      console.log('NEWWW', req.body.slide)
+      console.log('TO CHANGEEE', newReservedFlights[req.body.tIndex][req.body.Flighttype])
+      newReservedFlights[req.body.tIndex][req.body.Flighttype] = req.body.slide
+      console.log('new list secoond',newReservedFlights)
+    }
+    else{
       newReservedFlights[req.body.index][req.body.flightType].FirstSeats = toUpdate.flight.FirstSeats;
       newReservedFlights[req.body.index][req.body.flightType].BusinessSeats = toUpdate.flight.BusinessSeats;
       newReservedFlights[req.body.index][req.body.flightType].EconomySeats = toUpdate.flight.EconomySeats;
@@ -96,11 +104,8 @@ router.route('/updatereservedtrip').patch(async (req,res) => {
       }
       console.log('new list first',newReservedFlights)
     }
-    else{
-      newReservedFlights[req.body.index][req.body.flightType] = toUpdate
-    }
     const result = await Users.findByIdAndUpdate(req.body.userId, { ReservedFlights: newReservedFlights }, { new: true });
-    console.log('new userr ',result)
+    //console.log('new userr ',result)
     await Users.save;
     res.send(result);
   }

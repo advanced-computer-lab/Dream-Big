@@ -1,29 +1,26 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios'
 import { useParams } from "react-router-dom";
-import download from './download.jpg';
+import download from '../ConfirmReservationComponent/download.jpg';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom"
-import { Modal, Button } from 'antd';
-import { UserData } from '../../UserContext'
-import StripeCheckout from "react-stripe-checkout";
+import {  Button } from 'antd';
+import { UserData } from '../../UserContext';
 
-const ChangeComparisonSummary = () => {
-
+const ChangeComparisonSummary = props => {
 
     const history = useHistory();
     const location = useLocation();
 
     console.log(location.state, "state");
 
-    const oldFlight =  location.state.oldFlight;
-    const newFlight =  location.state.newFlight;
+    const oldFlight =  location.state.flightNotToChange;
+    const newFlight =  location.state.slide;
     const user = UserData();
 
     const cabins = location.state.cabin;
@@ -39,37 +36,23 @@ const ChangeComparisonSummary = () => {
     console.log('cabinsss', cabins)
     console.log('dpass', depPassInfo)
 
-    const baseUrl = `http://localhost:8000/users/users/${user._id}`;
+    const baseUrl = `http://localhost:8000/users/updatereservedtrip`;
 
     const routeChange = () => {
-        axios.put(baseUrl,{
-            updateReservedFlights: [...user.ReservedFlights, {
-                Departure: oldFlight,
-                Return: newFlight,
-                ChosenDepSeats: depSeats,
-                ChosenCabin: cabins,
-                depPassengerInfo: depPassInfo,
-            }]
+        axios.patch(baseUrl,{
+            ...location.state,
+            userId: user._id
         }).then((response) => {
             let path = `/RoundTripReserved`;
-            history.push(path,{oldFlight, newFlight, cabins, depSeats})
+            //I Need to send to kamal new flight and reserved flight not changed
+            props.setUser(response.data);
+            history.push(path,{dflight: location.state.flightNotToChange, rflight: location.state.slide})
         })
     }
 
-    const routeChange2 = () => {
-        let path = `/ViewOutBoundFlight`;
-        history.push(path);
-    }
+    const [flight_1, setFlight_1] = useState(location.state.flightNotToChange);
+    const [flight_2, setFlight_2] = useState(location.state.slide);
 
-    const routeChange3 = () => {
-        let path = `/ViewReturnFlight`;
-        history.push(path);
-    }
-
-    const [flight_1, setFlight_1] = useState(location.state.oldFlight);
-    const [flight_2, setFlight_2] = useState(location.state.newFlight);
-
-    let { id } = useParams();
 
     return (
         <div>
@@ -135,7 +118,6 @@ const ChangeComparisonSummary = () => {
                             <div>Price : {flight_2.Price}</div>
                         </Typography>
                     </CardContent>
-                    <Button className="m-3" type="default" onClick={routeChange3} >Edit Flight</Button>
                 </Card>
             </div>
             <div className="d-flex justify-content-center mt-2">

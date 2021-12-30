@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Form, Input } from 'antd';
 import { Button } from "react-bootstrap";
 import "./ChangePassword.css";
-import { useLocation } from "react-router";
 import axios from "axios";
 import { UserData } from "../../UserContext";
 import Card from 'react-bootstrap/Card'
@@ -15,11 +13,9 @@ export default function ChangePassword() {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassaword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [flag, setFlag] = useState(false)
     const [showMessage, setShowMessage] = useState('');
     const [message, setMessage] = useState('');
 
-    const location = useLocation();
     const history = useHistory();
 
     const uzer = UserData();
@@ -47,10 +43,13 @@ export default function ChangePassword() {
             password: oldPassword,
             newPassword: newPassword
         }).then((res) => {
-            console.log(res, "res");
-            setMessage(res.data);
+            console.log(res.data, "ressssssssssssssssssssssss");
+            setMessage(res.data.message);
             setShowMessage(true);
-            setTimeout(() => history.push('/users/search'), 1500);
+            if(res.data.message === 'Password Changed successfully !'){
+                setTimeout(() => history.push('/users/search'), 1500);
+            }
+            
         })
     }
 

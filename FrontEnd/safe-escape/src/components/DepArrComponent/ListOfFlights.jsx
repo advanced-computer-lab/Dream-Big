@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 
 import Flight from './Flight'
 
-const ResultList = props => {
+const List = props => {
     const [pages, setPages] = useState([]);
     const [activePage, setActivePage] = useState(0);
     const [displayedFlights, setDisplayedFlights] = useState(props.searchedFlights);
@@ -46,7 +46,7 @@ const ResultList = props => {
     }
 
     return (
-        <Card className = 'w-75 m-auto text-center mt-4' style = {{backgroundColor: 'rgba(255, 255, 255, 0.7)'}}>
+        <Card className = 'w-100 m-auto text-center ' style = {{backgroundColor: 'rgba(255, 255, 255, 0.7)'}}>
             <Card.Header ref={myRef}>
                 <Card.Title >
                     {
@@ -54,7 +54,7 @@ const ResultList = props => {
                     }
                 </Card.Title>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className = 'd-flex flex-wrap'>
                 {
                     (props.searchedFlights !== '') 
                     &&
@@ -63,7 +63,7 @@ const ResultList = props => {
                         <Card.Title className = 'm-auto text-center'>No flights with this search criteria</Card.Title> 
                     : 
                         displayedFlights.map(flight => (
-                            <Flight key = {flight._id} flightInfo = {flight} deleteFlights = {props.deleteFlights ? props.deleteFlights : ''}/>
+                            <Flight key = {flight._id} type = {props.type} data = {props.data && {...props.data}} priceToSubtract = {props.priceToSubtract} depflight = { props.depflight && props.depflight} flight = {flight}/>
                         )))
                 }
             </Card.Body>
@@ -85,4 +85,4 @@ const ResultList = props => {
     )
 }
 
-export default ResultList
+export default List

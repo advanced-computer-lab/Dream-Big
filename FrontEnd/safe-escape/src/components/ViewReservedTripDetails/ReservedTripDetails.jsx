@@ -2,8 +2,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
-import axios from 'axios'
 import download from '../ConfirmReservationComponent/download.jpg';
 import friends from './friends.jpg'
 import FadeInOut from '../SelectSeatComponent/Fader'
@@ -11,9 +9,9 @@ import { useHistory } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { Button } from 'antd';
 import { UserData } from '../../UserContext'
+import { useRef, useEffect } from 'react'
 
-const ReservedTripDetails = () => {
-
+const ReservedTripDetails = props => {
     const history = useHistory();
     const location = useLocation();
     const user = UserData();
@@ -27,33 +25,24 @@ const ReservedTripDetails = () => {
 
     const baseUrl = `http://localhost:8000/users/users/${user._id}`;
 
-    //const routeChange = () => {
-        // axios.put(baseUrl,{
-        //     updateReservedFlights: [...user.ReservedFlights, {
-        //         Departure: dflight,
-        //         Return: rflight,
-        //         ChosenDepSeats: depSeats,
-        //         ChosenCabin: cabins,
-        //         ChosenRetSeats: retSeats,
-        //         depPassengerInfo: depPassInfo,
-        //         retPassengerInfo: retPassInfo,
-        //     }]
-        // }).then((response) => {
-        //     let path = `/RoundTripReserved`;
-        //     history.push(path,{dflight, rflight, cabins, depSeats, retSeats})
-        //     console.log('respp', response)
-        // })
-        
-    // }
+    useEffect(() => {
+        props.changeDisplay();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    const changeRoute = (flight, passengersInfo, Flighttype, tIndex, ChosenCabin, trip) => {
-        let path = `/editSeats`;
+    const changeRoute = (flightNotToChange, flightToChange, passengersInfo, Flighttype, tIndex, ChosenCabin, trip) => {
+        let path = `/users/search`;
         history.push(path, {
-            flight,
+            statusPath: "Changing Flight",
+            flightNotToChange,
+            flightToChange,
             passengersInfo,
+            numOfPassengers: Object.keys(passengersInfo).length,
             Flighttype,
             tIndex,
-            ChosenCabin
+            ChosenCabin,
+            trip,
+            bothFlights: [trip.Departure, trip.Return]
         })
     }
 
@@ -67,22 +56,9 @@ const ReservedTripDetails = () => {
             ChosenCabin
         })
     }
-    
-
-    //let { id } = useParams();
-
-    // useEffect(() => {
-    //     // axios.get(baseUrl).then((response) => {
-    //     //     console.log(response.data);
-    //     //     settrip(response.data.ReservedFlights[0]);
-    //     //     console.log(response.data.ReservedFlights[0], "w7da");
-    //     //     settrip(response.data.ReservedFlights[1]);
-    //     // })
-
-    // }, []);
 
     return (
-        <div className="d-flex justify-content-center justify-content-between">
+        <div className="d-flex justify-content-center justify-content-between" >
             <div className="d-flex justify-content-center h-100">
             <Card className = 'm-2' style = {{backgroundColor: 'rgba(255, 255, 255, 0.2)'}}>
                 <Typography className='text-center' variant="h5" component="div">
@@ -116,10 +92,10 @@ const ReservedTripDetails = () => {
                                 </Typography>
                             </Card>
                         </CardContent>
-                        <Button className = "m-3" type = "default" onClick = {() => changeRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, 
+                        <Button className = "m-3" type = "default" onClick = {() => changeRoute(trip.Return, trip.Departure, trip.depPassengerInfo, 'Departure', tripIndex, 
                         trip.ChosenCabin, trip)} >Change Flight</Button>
                     </Card>
-                    <Card sx={{ maxWidth: 345 }} className = "m-2 d-flex flex-column justify-content-center">
+                    <Card sx={{ maxWidth: 345 }} className = "m-2 d-flex flex-column justify-content-between">
                             <CardMedia
                                 component="img"
                                 height="140"
@@ -151,7 +127,7 @@ const ReservedTripDetails = () => {
                             </CardContent>
                             <Button className = "m-3" type = "default" 
                                 onClick = {() => editRoute(trip.Departure, trip.depPassengerInfo, 'Departure', tripIndex, trip.ChosenCabin)} >
-                                Edit Flight
+                                Edit Seats
                             </Button>
                         </Card>
                 </CardContent>
@@ -191,11 +167,11 @@ const ReservedTripDetails = () => {
                                 </Card>
                             </CardContent>
                             <Button className = "m-3" type = "default" 
-                                onClick = {() => changeRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, trip.ChosenCabin, trip)}>
+                                onClick = {() => changeRoute(trip.Departure, trip.Return, trip.retPassengerInfo, 'Return', tripIndex, trip.ChosenCabin, trip)}>
                                 Change Flight
                             </Button>
                     </Card>
-                    <Card sx={{ maxWidth: 345 }} className = "m-2 d-flex flex-column justify-content-center">
+                    <Card sx={{ maxWidth: 345 }} className = "m-2 d-flex flex-column justify-content-between">
                         <CardMedia
                             component="img"
                             height="140"
@@ -226,7 +202,7 @@ const ReservedTripDetails = () => {
                         </CardContent>
                         <Button className = "m-3" type = "default" 
                             onClick = {() => editRoute(trip.Return, trip.retPassengerInfo, 'Return', tripIndex, trip.ChosenCabin)} >
-                            Edit Flight
+                            Edit Seats
                         </Button>
                     </Card>
                     </CardContent>

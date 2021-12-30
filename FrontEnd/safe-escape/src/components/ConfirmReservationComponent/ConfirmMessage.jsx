@@ -6,17 +6,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
-import Table from 'react-bootstrap/Table';
-import { useParams } from "react-router-dom";
 import download from './download.jpg';
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
-import { Modal, Button } from 'antd';
-import { Carousel } from 'antd';
-import { List, Avatar } from 'antd';
-import { border } from '@mui/system';
-import ReactDOM from 'react-dom';
-import { useSpring, animated } from 'react-spring';
+import { Button } from 'antd';
 import { Steps } from 'antd';
 import { useLocation } from "react-router-dom";
 import { UserData } from '../../UserContext';
@@ -29,27 +21,13 @@ export default function MediaCard() {
     const myParams = location.state.slide;
     const myFlight = location.state.flight
 
-    const { Step } = Steps;
+    console.log('locationn returnnn', location.state)
 
-    const [DepDate, setDD] = useState();
-    const [ArrDate, setAD] = useState();
-    const [DepTime, setDT] = useState();
-    const [ArrTime, setAT] = useState();
-    const [flightNumber, setFN] = useState();
-    const [BaggageAllowance, setBA] = useState();
-    const [FirstSeats, setFS] = useState();
-    const [BusinessSeats, setBBA] = useState();
-    const [EconomySeats, setEA] = useState();
-    const [Price, setPrice] = useState();
-    const [a, setA] = useState();
-    const [b, setB] = useState();
-    const [bb, setBB] = useState();
-    const [bbb, setBBB] = useState();
+    const { Step } = Steps;
     const [tripDurate, setTD] = useState();
     const [ayhaga, setayhaga] = useState();
     const [From, setFrom] = useState();
     const [To, setTo] = useState();
-    const [Fname, setFname] = useState();
 
     const baseUrl = `http://localhost:8000/flights/FlightDetails/6186c408f38e49ec1e0d3011`;
     const baseUrl2 = `http://localhost:8000/users/61a49102b62a597189c517f0`
@@ -94,21 +72,29 @@ export default function MediaCard() {
             setayhaga(response.data);
             setTD(Math.floor(getDifferenceInHours(toDate(myParams.FlightDepTime, "h:m"), toDate2(myParams.FlightArrTime, "h:m"))))
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleSubmit = (hello) => {
-        setUR(updateReservedFlights.push(ayhaga));
-        if (Object.keys(user).length === 0){
-            let path = `/detsBeforeLogin`;
-            history.push(path,{hello, myFlight});
+        if(location.state && location.state.statusPath){
+            console.log("Ret DETAILS EDIITTT")
+            let path = `/editseats`;
+            history.push(path, {...location.state});
         }
         else{
-            let path = `/seats`;
-            history.push(path,{ departureFlight: {...myFlight}, returnFlight: {...hello}});
+            setUR(updateReservedFlights.push(ayhaga));
+            if (Object.keys(user).length === 0){
+                let path = `/detsBeforeLogin`;
+                history.push(path,{hello, myFlight});
+            }
+            else{
+                let path = `/seats`;
+                history.push(path,{ departureFlight: {...myFlight}, returnFlight: {...hello}});
+            }
+            console.log(hello, "Hello");
+            console.log(myFlight, "Flightt");
+            axios.put(baseUrl2, { updateReservedFlights }).then((response) => { console.log('updateddd', updateReservedFlights); })
         }
-        console.log(hello, "Hello");
-        console.log(myFlight, "Flightt");
-        axios.put(baseUrl2, { updateReservedFlights }).then((response) => { console.log('updateddd', updateReservedFlights); })
     };
 
     return (
