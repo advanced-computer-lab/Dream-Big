@@ -544,7 +544,7 @@ const SelectSeats = () => {
                                   <div className='d-flex flex-column justify-content-center align-items-center'>
                                   {
                                     <Button className='m-3' variant="warning" id="button-1" onClick={() => toggleDepShow(index)} disabled = {showDepPassInfo[index].show}>
-                                      {showDepPassInfo[index].show ? `Now Editing Passenger ${index + 1}` :`Edit Info Passenger ${index + 1}`} 
+                                      {showDepPassInfo[index].show ? `Now Adding Passenger ${index + 1}` :`Edit Add Passenger ${index + 1}`} 
                                     </Button>
                                   }
                                   </div>
@@ -675,7 +675,7 @@ const SelectSeats = () => {
                                 <div className='d-flex flex-column justify-content-center align-items-center'>
                                 {
                                   <Button className='m-3' variant="warning" id="button-1" onClick={() => toggleRetShow(index)} disabled = {showRetPassInfo[index].show}>
-                                    {showRetPassInfo[index].show ? `Now Editing Passenger ${index + 1}` :`Edit Info Passenger ${index + 1}`} 
+                                    {showRetPassInfo[index].show ? `Now Adding Passenger ${index + 1}` :`Add Info Passenger ${index + 1}`} 
                                   </Button>
                                 }
                                 </div>

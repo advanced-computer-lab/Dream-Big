@@ -205,7 +205,7 @@ const Signup = () => {
                             </Form.Item>
                             </div>
                             <div>
-                            <Form.Item label="Password" required tooltip="This is a required field" style={{display:'flex', flexDirection:'column', alignItems:'center',justifyContent:'space-between'}}>
+                            <Form.Item label="Password" required tooltip="Must contain minimum 8 characters : at least 1 lowerCase Letter; at least 1 UpperCase Letter; at least 1 Special Character; at least 1 Number" style={{display:'flex', flexDirection:'column', alignItems:'center',justifyContent:'space-between'}}>
                             <div style={{display:'flex', height:'4.3vh'}}>
                               <Input placeholder="asbcFG_1" type={showPass?"text":"password"} onChange={(e)=>{
                                 if(e.target.value === '')

@@ -126,10 +126,12 @@ export default function ViewDepDetails() {
                                     <CardActions>
                                         <Button variant="warning"
                                         onClick={() => {
-                                            if(location.state){
+                                            if(location.state.statusPath){
+                                                
                                                 history.push('/EditDepartureFlightDetails', {...location.state})
                                             }
                                             else{
+                                                console.log('Normalll')
                                                 history.push('/ViewOutBoundFlight')
                                             }
                                         }}>

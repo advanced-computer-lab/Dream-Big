@@ -102,9 +102,7 @@ const ViewReservedFlight = (props) => {
         <div style = {{height : '100%'}}><div>
             <h1 className = "d-flex justify-content-center align-items-center">View all bookings</h1>
             <Backdrop
-                // className={classes.backdrop}
                 open={open}
-            // onClick={handleClose}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
@@ -115,7 +113,6 @@ const ViewReservedFlight = (props) => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-                                        {/* <h1> {booking.User.FirstName + " " + booking.User.LastName}</h1> */}
                                         <h1>Trip {i + 1}</h1>
                                     </Card.Title>
                                     <Card.Text>

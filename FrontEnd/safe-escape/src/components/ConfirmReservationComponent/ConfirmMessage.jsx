@@ -139,7 +139,7 @@ export default function MediaCard() {
                                     <Button variant="warning"
                                         
                                         onClick={() => {
-                                            if(location.state){
+                                            if(location.state.statusPath){
                                                 history.push('/EditReturFlightDetails', {...location.state})
                                             }
                                             else{

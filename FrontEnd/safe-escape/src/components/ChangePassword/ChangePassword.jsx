@@ -44,7 +44,7 @@ export default function ChangePassword() {
             newPassword: newPassword
         }).then((res) => {
             console.log(res.data, "ressssssssssssssssssssssss");
-            setMessage(res.data.message);
+            setMessage(res.data);
             setShowMessage(true);
             if(res.data.message === 'Password Changed successfully !'){
                 setTimeout(() => history.push('/users/search'), 1500);
