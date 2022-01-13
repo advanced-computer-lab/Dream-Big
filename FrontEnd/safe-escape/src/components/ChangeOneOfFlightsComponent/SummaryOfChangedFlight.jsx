@@ -1,52 +1,58 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios'
 import { useParams } from "react-router-dom";
-import download from './download.jpg';
+import download from '../ConfirmReservationComponent/download.jpg';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom"
-import { Modal } from 'antd';
-import Button from 'react-bootstrap/Button';
-import { UserData } from '../../UserContext'
+import {  Button } from 'antd';
+import { UserData } from '../../UserContext';
 
-const SeeDets2 = () => {
+const ChangeComparisonSummary = props => {
 
     const history = useHistory();
     const location = useLocation();
 
-    const hello = location.state.hello;
-    const myFlight = location.state.myFlight;
+    console.log(location.state, "state");
 
-    console.log('locc', location.state)
-
+    const oldFlight =  location.state.flightNotToChange;
+    const newFlight =  location.state.slide;
     const user = UserData();
 
-    const baseUrl = `http://localhost:8000/users/users/${user._id}`;
+    const cabins = location.state.cabin;
+    const depSeats = location.state.dSeats;
+
+    const depPassInfo = location.state.depPassInfo
+
+    console.log(oldFlight, 'oldFlight')
+    console.log(newFlight, 'newFlight')
+    console.log(user, 'userrr')
+
+    console.log('dseats', depSeats)
+    console.log('cabinsss', cabins)
+    console.log('dpass', depPassInfo)
+
+    const baseUrl = `http://localhost:8000/users/updatereservedtrip`;
 
     const routeChange = () => {
-        let path = `/login`;
-        history.push(path, { hello, myFlight })
+        axios.patch(baseUrl,{
+            ...location.state,
+            userId: user._id
+        }).then((response) => {
+            let path = `/RoundTripReserved`;
+            //I Need to send to kamal new flight and reserved flight not changed
+            props.setUser(response.data);
+            history.push(path,{dflight: location.state.flightNotToChange, rflight: location.state.slide})
+        })
     }
 
-    const routeChange2 = () => {
-        let path = `/ViewOutBoundFlight`;
-        history.push(path);
-    }
+    const [flight_1, setFlight_1] = useState(location.state.flightNotToChange);
+    const [flight_2, setFlight_2] = useState(location.state.slide);
 
-    const routeChange3 = () => {
-        let path = `/ViewReturnFlight`;
-        history.push(path, {hello: {...myFlight}});
-    }
-
-    const [flight_1, setFlight_1] = useState(location.state.myFlight);
-    const [flight_2, setFlight_2] = useState(location.state.hello);
-
-    let { id } = useParams();
 
     return (
         <div>
@@ -59,6 +65,11 @@ const SeeDets2 = () => {
                         alt="Flight Picture"
                     />
                     <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                            <div className="d-flex flex-column align-items-center">
+                                Old Flight
+                            </div>
+                        </Typography>
                         <Typography gutterBottom variant="h5" component="div">
                             <div className="d-flex flex-column align-items-center">
                                 Flight Number : {flight_1.FlightNumber}
@@ -76,7 +87,6 @@ const SeeDets2 = () => {
                             <div>Price : {flight_1.Price}</div>
                         </Typography>
                     </CardContent>
-                    <Button className="m-3" type="default" onClick={routeChange2} >Edit Flight</Button>
                 </Card>
                 <Card sx={{ maxWidth: 345 }} className="m-2 text-center" >
                     <CardMedia
@@ -86,6 +96,11 @@ const SeeDets2 = () => {
                         alt="Flight Picture"
                     />
                     <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            <div className="d-flex flex-column align-items-center">
+                                New Flight
+                            </div>
+                        </Typography>
                         <Typography gutterBottom variant="h5" component="div">
                             <div className="d-flex flex-column align-items-center">
                                 Flight Number : {flight_2.FlightNumber}
@@ -103,14 +118,13 @@ const SeeDets2 = () => {
                             <div>Price : {flight_2.Price}</div>
                         </Typography>
                     </CardContent>
-                    <Button className="m-3" type="default" onClick={routeChange3} >Edit Flight</Button>
                 </Card>
             </div>
             <div className="d-flex justify-content-center mt-2">
-                <Button variant="success" onClick={routeChange}>Login To Confirm Booking</Button>
+                <Button type="primary" onClick={routeChange}>Confirm Booking</Button>
             </div>
         </div>
     );
 }
 
-export default SeeDets2;
+export default ChangeComparisonSummary;

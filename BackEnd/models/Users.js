@@ -34,12 +34,12 @@ const userSchema = new Schema({
   },
   PassportNumber:{
     type: String,
-    required: true
+    required: false
   },
   ReservedFlights: [{
     Departure: { 
       type: mongoose.SchemaTypes.Mixed,
-      required: true 
+      required: false 
     },
     Return: { 
       type: mongoose.SchemaTypes.Mixed,

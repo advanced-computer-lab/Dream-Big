@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'
 import { init } from 'emailjs-com';
 import { send } from 'emailjs-com';
 import React from "react";
@@ -9,12 +9,15 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { UserData } from '../../UserContext'
+import Pagination from 'react-bootstrap/Pagination'
 
 import { useHistory } from "react-router-dom"
 
 init("user_ExRC07sKMOuwyw6rSr9R9");
 const ViewReservedFlight = (props) => {
     const user = UserData();
+    const [pages, setPages] = useState([]);
+    const [activePage, setActivePage] = useState(0);
     const [bookings, setBookings] = React.useState([]);
     const [booking, setBooking] = useState({});
     const [show, setShow] = useState(false);
@@ -26,6 +29,10 @@ const ViewReservedFlight = (props) => {
     const handleChange = (e) => {
         setToSend({ ...toSend, [e.target.name]: e.target.value });
     };
+
+    const tripPerPage = 5;
+
+    let pagesVisited = activePage * tripPerPage;
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -71,6 +78,7 @@ const ViewReservedFlight = (props) => {
         console.log('boookinnngg', booking)
         let path = `/BookingConfirmation`;
         history.push(path, {
+            trip: {...booking},
             first: { ...booking.Departure }, second: { ...booking.Return }
             , cabins2: booking.ChosenCabin, depSeats2: booking.ChosenDepSeats,
             retSeats2: booking.ChosenRetSeats
@@ -94,9 +102,7 @@ const ViewReservedFlight = (props) => {
         <div style = {{height : '100%'}}><div>
             <h1 className = "d-flex justify-content-center align-items-center">View all bookings</h1>
             <Backdrop
-                // className={classes.backdrop}
                 open={open}
-            // onClick={handleClose}
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
@@ -107,7 +113,6 @@ const ViewReservedFlight = (props) => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-                                        {/* <h1> {booking.User.FirstName + " " + booking.User.LastName}</h1> */}
                                         <h1>Trip {i + 1}</h1>
                                     </Card.Title>
                                     <Card.Text>
@@ -240,7 +245,7 @@ const ViewReservedFlight = (props) => {
                                         {loadingCheckIn ? (
                                             <Spinner animation="border" size="sm" />
                                         ) : null}
-                                        View Trip Details
+                                        View And Edit Trip Details
                                     </Button>
                                     <Button
                                         variant="primary"

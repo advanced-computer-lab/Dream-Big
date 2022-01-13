@@ -15,12 +15,10 @@ import { useState, useEffect } from 'react'
 import { UserData } from '../../UserContext'
 import { useHistory } from "react-router-dom"
 import { useLocation } from "react-router-dom"
-import { SearchCriteriaData } from "../../SearchCriteriaContext"
 import FadeInOut from "./Fader"
 import axios from 'axios'
 
 const EditSeats = props => {
-  const scData = SearchCriteriaData();
   const history = useHistory();
   const location = useLocation();
   const user = UserData();
@@ -50,18 +48,29 @@ const EditSeats = props => {
 
 
   console.log("User: ", user)
+  console.log('statee', location.state)
 
   useEffect(() => {
 
     setLoading(true);
 
-    setFirstSeats(location.state.flight.FirstSeats)
-    setBusinessSeats(location.state.flight.BusinessSeats)
-    setEconomySeats(location.state.flight.EconomySeats)
-    setNumOfPass(Object.keys(location.state.passengersInfo).length);
-    setCabin(location.state.ChosenCabin);
+    if(location.state && location.state.statusPath){
+      setFirstSeats(location.state.slide.FirstSeats)
+      setBusinessSeats(location.state.slide.BusinessSeats)
+      setEconomySeats(location.state.slide.EconomySeats)
+      setNumOfPass(location.state.numOfPassengers);
+      setCabin(location.state.ChosenCabin);
+      console.log('Chosennn', location.state.ChosenCabin)
+    }
+    else{
+      setFirstSeats(location.state.flight.FirstSeats)
+      setBusinessSeats(location.state.flight.BusinessSeats)
+      setEconomySeats(location.state.flight.EconomySeats)
+      setNumOfPass(Object.keys(location.state.passengersInfo).length);
+      setCabin(location.state.ChosenCabin);
 
-    console.log('Chosennn', location.state.ChosenCabin)
+      console.log('Chosennn', location.state.ChosenCabin)
+    }
 
     let passInfos = [];
     for(let i = 0; i < Object.keys(location.state.passengersInfo).length; i++) {
@@ -183,30 +192,33 @@ const EditSeats = props => {
     else{
       console.log('Sendinggg')
 
-      axios.patch(`http://localhost:8000/flights/${location.state.flight._id}`, {
-        updatedFlights: {
-          FirstSeats: firstSeats, BusinessSeats: businessSeats,
-          EconomySeats: economySeats
-        }
-      })
-        .then((response) => {
-          console.log('Depppppppp')
-          console.log('Respp', response)
-          axios.patch('http://localhost:8000/users/updatereservedtrip', {
-            updatedFlights: {
-              flight: response.data,
-              depPassengerInfo:passInfo
-            },
-            flightType: location.state.Flighttype,
-            index: location.state.tIndex,
-            userId : user._id
-          })
-            .then((res) => { 
-              console.log('Responneeeeeesssss', res.data)
-              props.setUser(res.data)
-              history.push(`/ReservedFlights`)
-          })
-         })
+      if(location.state && location.state.statusPath){
+        axios.patch(`http://localhost:8000/flights/${location.state.slide._id}`, {
+          updatedFlights: {
+            FirstSeats: firstSeats, BusinessSeats: businessSeats,
+            EconomySeats: economySeats
+          }
+        })
+          .then((response) => {
+            console.log('Depppppppp')
+            console.log('Respp', response)
+            history.push(`/SummaryOfNewFlight`, {...location.state, slide: response.data })
+           })
+      }
+      else{
+        axios.patch(`http://localhost:8000/flights/${location.state.flight._id}`, {
+          updatedFlights: {
+            FirstSeats: firstSeats, BusinessSeats: businessSeats,
+            EconomySeats: economySeats
+          }
+        })
+          .then((response) => {
+            console.log('Depppppppp')
+            console.log('Respp', response)
+            history.push(`/ReservedFlights`)
+          
+           })
+      }
     }
     
   }
