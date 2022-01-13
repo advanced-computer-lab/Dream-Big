@@ -22,7 +22,7 @@ const MongoURI = process.env.Mongo_URI
 
 const port = process.env.PORT || "8000";
 //Engy
-const key =process.env.key;
+const key = process.env.key;
 
 //
 

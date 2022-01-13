@@ -203,7 +203,6 @@ const EditSeats = props => {
             console.log('Depppppppp')
             console.log('Respp', response)
             history.push(`/SummaryOfNewFlight`, {...location.state, slide: response.data })
-
            })
       }
       else{
